@@ -1,8 +1,9 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_audio/core.dart';
+import 'package:flutter_aplayer/widgets/fragments/album_fragment.dart';
+import 'package:flutter_aplayer/widgets/fragments/arist_fragment.dart';
+import 'package:flutter_aplayer/widgets/fragments/genre_fragment.dart';
+import 'package:flutter_aplayer/widgets/fragments/playlist_fragment.dart';
+import 'package:flutter_aplayer/widgets/fragments/song_fragment.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,35 +17,27 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
-  final _audioPlugin = FlutterAudio();
-  final _songs = <Song>[];
+class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+  final children = [
+    const SongFragment(),
+    const AlbumFragment(),
+    const ArtistFragment(),
+    const GenreFragment(),
+    const PlayListFragment()
+  ];
+  final titles = ["歌曲", "专辑", "艺术家", "流派", "播放列表"];
 
   @override
   void initState() {
     super.initState();
-    loadSongs();
+    _tabController = TabController(length: children.length, vsync: this);
   }
 
-  Future<bool> checkPermissions() async {
-    final bool? hasPermissions = await _audioPlugin.permissionsStatus();
-    if (hasPermissions == true) {
-      return true;
-    }
-    return await _audioPlugin.permissionsRequest() ?? false;
-  }
-
-  Future<void> loadSongs() async {
-    if (await checkPermissions()) {
-      final songs = await _audioPlugin.querySongs(
-          sortType: SortTypeSong.TITLE, orderType: OrderType.ASC);
-      if (songs != null) {
-        setState(() {
-          _songs.clear();
-          _songs.addAll(songs);
-        });
-      }
-    }
+  @override
+  void dispose() {
+    super.dispose();
+    _tabController.dispose();
   }
 
   @override
@@ -53,9 +46,14 @@ class _MyAppState extends State<MyApp> {
       home: Scaffold(
         appBar: AppBar(
           title: const Text('APlayer'),
+          bottom: TabBar(
+            tabs: titles.map((e) => Text(e)).toList(),
+            controller: _tabController,
+          ),
         ),
-        body: Center(
-          child: Text('Songs: $_songs'),
+        body: TabBarView(
+          controller: _tabController,
+          children: children,
         ),
       ),
     );
