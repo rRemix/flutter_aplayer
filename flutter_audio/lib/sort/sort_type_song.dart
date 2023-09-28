@@ -1,0 +1,9 @@
+
+enum SortTypeSong{
+  TITLE,
+  DISPLAY_NAME,
+  ARITST,
+  ALBUM,
+  DATE_MODIFIED,
+  TRACK_NUMBER
+}

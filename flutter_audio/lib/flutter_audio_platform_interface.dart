@@ -1,6 +1,9 @@
+import 'package:flutter_audio/sort/order_type.dart';
+import 'package:flutter_audio/sort/sort_type_song.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 import 'flutter_audio_method_channel.dart';
+import 'models/song.dart';
 
 abstract class FlutterAudioPlatform extends PlatformInterface {
   /// Constructs a FlutterAudioPlatform.
@@ -25,5 +28,18 @@ abstract class FlutterAudioPlatform extends PlatformInterface {
 
   Future<String?> getPlatformVersion() {
     throw UnimplementedError('platformVersion() has not been implemented.');
+  }
+
+  Future<bool?> permissionsStatus() {
+    throw UnimplementedError('permissionsStatus() has not been implemented.');
+  }
+
+  Future<bool?> permissionsRequest() {
+    throw UnimplementedError('requestPermissions() has not been implemented.');
+  }
+
+  Future<List<Song>?> querySongs(
+      {SortTypeSong? sortType, OrderType? orderType}) {
+    throw UnimplementedError('getSongs() has not been implemented.');
   }
 }

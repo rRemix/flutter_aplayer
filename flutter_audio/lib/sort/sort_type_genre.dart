@@ -1,0 +1,1 @@
+enum SortTypeGenre { GENRE }

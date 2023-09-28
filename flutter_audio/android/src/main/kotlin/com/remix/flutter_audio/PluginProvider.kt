@@ -32,7 +32,7 @@ object PluginProvider {
     return context.get() ?: throw IllegalStateException(ERROR_MESSAGE)
   }
 
-  fun activity(): Context {
+  fun activity(): Activity {
     return activity.get() ?: throw IllegalStateException(ERROR_MESSAGE)
   }
 

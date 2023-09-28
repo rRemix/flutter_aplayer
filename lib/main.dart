@@ -17,35 +17,34 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String _platformVersion = 'Unknown';
-  final _flutterAudioPlugin = FlutterAudio();
+  final _audioPlugin = FlutterAudio();
+  final _songs = <Song>[];
 
   @override
   void initState() {
     super.initState();
-    initPlatformState();
+    loadSongs();
   }
 
-  // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initPlatformState() async {
-    String platformVersion;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    // We also handle the message potentially returning null.
-    try {
-      platformVersion = await _flutterAudioPlugin.getPlatformVersion() ??
-          'Unknown platform version';
-    } on PlatformException {
-      platformVersion = 'Failed to get platform version.';
+  Future<bool> checkPermissions() async {
+    final bool? hasPermissions = await _audioPlugin.permissionsStatus();
+    if (hasPermissions == true) {
+      return true;
     }
+    return await _audioPlugin.permissionsRequest() ?? false;
+  }
 
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
-    setState(() {
-      _platformVersion = platformVersion;
-    });
+  Future<void> loadSongs() async {
+    if (await checkPermissions()) {
+      final songs = await _audioPlugin.querySongs(
+          sortType: SortTypeSong.TITLE, orderType: OrderType.ASC);
+      if (songs != null) {
+        setState(() {
+          _songs.clear();
+          _songs.addAll(songs);
+        });
+      }
+    }
   }
 
   @override
@@ -53,10 +52,10 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Plugin example app'),
+          title: const Text('APlayer'),
         ),
         body: Center(
-          child: Text('Running on: $_platformVersion\n'),
+          child: Text('Songs: $_songs'),
         ),
       ),
     );

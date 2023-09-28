@@ -1,7 +1,3 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   package="com.remix.flutter_audio">
-
-  <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
-  <uses-permission android:name="android.permission.READ_MEDIA_AUDIO"/>
-  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 </manifest>

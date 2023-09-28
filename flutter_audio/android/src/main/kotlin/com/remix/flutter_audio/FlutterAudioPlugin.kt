@@ -1,5 +1,7 @@
 package com.remix.flutter_audio
 
+import com.remix.flutter_audio.controller.MethodController
+import com.remix.flutter_audio.controller.PermissionController
 import io.flutter.Log
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
@@ -15,6 +17,7 @@ class FlutterAudioPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
   private lateinit var channel: MethodChannel
 
   private val permissionController = PermissionController()
+  private val methodController = MethodController()
 
   override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
     Log.d(TAG, "onAttachedToEngine")
@@ -29,10 +32,36 @@ class FlutterAudioPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
 
   override fun onMethodCall(call: MethodCall, result: Result) {
     Log.d(TAG, "onMethodCall, name: ${call.method}")
-    if (call.method == "getPlatformVersion") {
-      result.success("Android ${android.os.Build.VERSION.RELEASE}")
-    } else {
-      result.notImplemented()
+
+    PluginProvider.setCurrentMethod(call, result)
+
+    val retryRequest = call.argument<Boolean>("retryRequest") ?: false
+    permissionController.retryRequest = retryRequest
+
+    when (call.method) {
+      Method.PERMISSION_STATUS -> {
+        result.success(permissionController.permissionStatus())
+      }
+
+      Method.PERMISSION_REQUEST -> {
+        permissionController.requestPermission()
+      }
+
+      else -> {
+        // check permission
+        val hasPermission = permissionController.permissionStatus()
+        Log.d(TAG, "check permissions: $hasPermission")
+        if (!hasPermission) {
+          result.error(
+            "MissingPermissions",
+            "Application doesn't have access to the library",
+            "Call the [permissionsRequest] method or install a external plugin to handle the app permission."
+          )
+          return
+        }
+
+        methodController.find()
+      }
     }
   }
 

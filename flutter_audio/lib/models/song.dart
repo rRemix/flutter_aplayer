@@ -144,7 +144,7 @@ class Song{
     };
   }
 
-  factory Song.fromMap(Map<String, dynamic> map) {
+  factory Song.fromMap(Map<dynamic, dynamic> map) {
     return Song(
       id: map['id'] as num,
       displayName: map['displayName'] as String,

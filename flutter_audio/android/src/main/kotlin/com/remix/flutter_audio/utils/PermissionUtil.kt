@@ -12,12 +12,7 @@ object PermissionUtil {
   val NECESSARY_PERMISSIONS =
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
       arrayOf(Manifest.permission.READ_MEDIA_AUDIO, Manifest.permission.READ_MEDIA_IMAGES)
-    } else if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q) {
-      arrayOf(
-        Manifest.permission.READ_EXTERNAL_STORAGE,
-//          Manifest.permission.WRITE_EXTERNAL_STORAGE
-      )
-    } else {
+    }  else {
       arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
     }
 
