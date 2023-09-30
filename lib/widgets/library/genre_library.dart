@@ -2,17 +2,17 @@
 
 import 'package:flutter/material.dart';
 
-class GenreFragment extends StatefulWidget {
-  const GenreFragment({super.key});
+class GenreLibrary extends StatefulWidget {
+  const GenreLibrary({super.key});
 
   @override
   State<StatefulWidget> createState() {
-    return _GenreFragmentState();
+    return _GenreLibraryState();
   }
 
 }
 
-class _GenreFragmentState extends State<GenreFragment> {
+class _GenreLibraryState extends State<GenreLibrary> {
   @override
   Widget build(BuildContext context) {
     return Center(

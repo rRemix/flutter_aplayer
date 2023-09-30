@@ -1,26 +1,57 @@
+import 'dart:typed_data';
 
 import 'package:flutter_audio/core.dart';
 import 'package:flutter_audio/flutter_audio.dart';
+import 'package:flutter_audio/type/artwork_type.dart';
+import 'package:flutter_audio/type/order_type.dart';
+import 'package:flutter_audio/type/sort_type/sort_type_song.dart';
 
-class Abilities{
-  final audioPlugin = FlutterAudio();
+class Abilities {
+  Abilities._();
+
+  static Abilities get instance => _getInstance();
+  static Abilities? _instance;
+
+  static Abilities _getInstance() {
+    _instance ??= Abilities._();
+    return _instance!;
+  }
+
+  final _audioPlugin = FlutterAudio();
 
   Future<bool> checkPermissions() async {
-    final bool? hasPermissions = await audioPlugin.permissionsStatus();
+    final bool? hasPermissions = await _audioPlugin.permissionsStatus();
     if (hasPermissions == true) {
       return true;
     }
-    return await audioPlugin.permissionsRequest() ?? false;
+    return await _audioPlugin.permissionsRequest() ?? false;
   }
 
-  Future<List<Song>> loadSongs() async {
+  Future<List<Song>> querySongs() async {
     if (await checkPermissions()) {
-      final songs = await audioPlugin.querySongs(
+      final songs = await _audioPlugin.querySongs(
           sortType: SortTypeSong.TITLE, orderType: OrderType.ASC);
       if (songs != null) {
         return songs;
       }
     }
     return [];
+  }
+
+  Future<List<Album>> queryAlbums() async {
+    if (await checkPermissions()) {
+      final albums = await _audioPlugin.queryAlbums(
+          sortType: SortTypeAlbum.ALBUM, orderType: OrderType.ASC);
+      if (albums != null) {
+        return albums;
+      }
+    }
+    return [];
+  }
+
+  Future<Uint8List?> queryArtwork(num id, ArtworkType type,
+      {ArtworkFormat? format, int? size, int? quality}) async {
+    return await _audioPlugin.queryArtwork(id, type,
+        format: format, size: size, quality: quality);
   }
 }

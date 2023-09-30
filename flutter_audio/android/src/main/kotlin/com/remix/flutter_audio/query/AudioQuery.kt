@@ -15,7 +15,7 @@ class AudioQuery : ViewModel() {
     val call = PluginProvider.call()
     val result = PluginProvider.result()
 
-    val sortOrder = parseSortOrder(call.argument<Int>("sortType"), call.argument<Int>("orderType"))
+    val sortOrder = parseSortOrder(call.argument<Int>("sortType")!!, call.argument<Int>("orderType")!!)
 
     viewModelScope.launch {
       val songs = withContext(Dispatchers.IO) {
@@ -26,7 +26,7 @@ class AudioQuery : ViewModel() {
     }
   }
 
-  private fun parseSortOrder(sort: Int?, order: Int?): String {
+  private fun parseSortOrder(sort: Int, order: Int): String {
     val builder = StringBuilder(when(sort) {
       0 -> MediaStore.Audio.Media.TITLE
       1 -> MediaStore.Audio.Media.DISPLAY_NAME
@@ -38,8 +38,8 @@ class AudioQuery : ViewModel() {
     })
 
     when(order) {
-      0 -> builder.append(" ").append(" ASC")
-      1 -> builder.append(" ").append(" DESC")
+      1 -> builder.append(" DESC")
+      else -> builder.append(" ASC")
     }
 
     return builder.toString()

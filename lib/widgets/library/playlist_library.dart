@@ -2,17 +2,17 @@
 
 import 'package:flutter/material.dart';
 
-class PlayListFragment extends StatefulWidget {
-  const PlayListFragment({super.key});
+class PlayListLibrary extends StatefulWidget {
+  const PlayListLibrary({super.key});
 
   @override
   State<StatefulWidget> createState() {
-    return _PlayListFragmentState();
+    return _PlayListLibraryState();
   }
 
 }
 
-class _PlayListFragmentState extends State<PlayListFragment> {
+class _PlayListLibraryState extends State<PlayListLibrary> {
   @override
   Widget build(BuildContext context) {
     return Center(

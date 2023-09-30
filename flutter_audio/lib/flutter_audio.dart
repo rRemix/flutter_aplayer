@@ -1,8 +1,8 @@
-import 'package:flutter_audio/sort/order_type.dart';
-import 'package:flutter_audio/sort/sort_type_song.dart';
+import 'dart:typed_data';
+
+import 'package:flutter_audio/core.dart';
 
 import 'flutter_audio_platform_interface.dart';
-import 'models/song.dart';
 
 class FlutterAudio {
   Future<String?> getPlatformVersion() {
@@ -19,7 +19,19 @@ class FlutterAudio {
 
   Future<List<Song>?> querySongs(
       {SortTypeSong? sortType, OrderType? orderType}) {
-    return FlutterAudioPlatform.instance.querySongs(
-        sortType: sortType, orderType: orderType);
+    return FlutterAudioPlatform.instance
+        .querySongs(sortType: sortType, orderType: orderType);
+  }
+
+  Future<List<Album>?> queryAlbums(
+      {SortTypeAlbum? sortType, OrderType? orderType}) {
+    return FlutterAudioPlatform.instance
+        .queryAlbums(sortType: sortType, orderType: orderType);
+  }
+
+  Future<Uint8List?> queryArtwork(num id, ArtworkType type,
+      {ArtworkFormat? format, int? size, int? quality}) async {
+    return FlutterAudioPlatform.instance
+        .queryArtwork(id, type, format: format, size: size, quality: quality);
   }
 }

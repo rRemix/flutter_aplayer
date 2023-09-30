@@ -1,5 +1,9 @@
-import 'package:flutter_audio/sort/order_type.dart';
-import 'package:flutter_audio/sort/sort_type_song.dart';
+import 'dart:typed_data';
+
+import 'package:flutter_audio/core.dart';
+import 'package:flutter_audio/type/artwork_type.dart';
+import 'package:flutter_audio/type/order_type.dart';
+import 'package:flutter_audio/type/sort_type/sort_type_song.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 import 'flutter_audio_method_channel.dart';
@@ -41,5 +45,13 @@ abstract class FlutterAudioPlatform extends PlatformInterface {
   Future<List<Song>?> querySongs(
       {SortTypeSong? sortType, OrderType? orderType}) {
     throw UnimplementedError('getSongs() has not been implemented.');
+  }
+
+  Future<List<Album>?> queryAlbums({SortTypeAlbum? sortType, OrderType? orderType}) {
+    throw UnimplementedError('queryAlbums() has not been implemented.');
+  }
+
+  Future<Uint8List?> queryArtwork(num id, ArtworkType type, {ArtworkFormat? format, int? size, int? quality}){
+    throw UnimplementedError('queryArtwork() has not been implemented.');
   }
 }

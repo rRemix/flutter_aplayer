@@ -7,9 +7,10 @@ export 'models/artist.dart';
 export 'models/song.dart';
 
 ///sort & order
-export 'sort/order_type.dart';
-export 'sort/sort_type_album.dart';
-export 'sort/sort_type_artist.dart';
-export 'sort/sort_type_genre.dart';
-export 'sort/sort_type_playlist.dart';
-export 'sort/sort_type_song.dart';
+export 'type/order_type.dart';
+export 'type/artwork_type.dart';
+export 'type/sort_type/sort_type_album.dart';
+export 'type/sort_type/sort_type_artist.dart';
+export 'type/sort_type/sort_type_genre.dart';
+export 'type/sort_type/sort_type_playlist.dart';
+export 'type/sort_type/sort_type_song.dart';

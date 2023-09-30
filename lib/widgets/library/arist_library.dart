@@ -2,17 +2,17 @@
 
 import 'package:flutter/material.dart';
 
-class ArtistFragment extends StatefulWidget {
-  const ArtistFragment({super.key});
+class ArtistLibrary extends StatefulWidget {
+  const ArtistLibrary({super.key});
 
   @override
   State<StatefulWidget> createState() {
-    return _ArtistFragmentState();
+    return _ArtistLibraryState();
   }
 
 }
 
-class _ArtistFragmentState extends State<ArtistFragment> {
+class _ArtistLibraryState extends State<ArtistLibrary> {
   @override
   Widget build(BuildContext context) {
     return Center(

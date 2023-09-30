@@ -1,8 +1,9 @@
 
+import 'package:flutter/cupertino.dart';
+
 class Album{
   final num albumId;
   final String album;
-  final num artistId;
   final String artist;
   final int count;
 
@@ -10,7 +11,6 @@ class Album{
   const Album({
     required this.albumId,
     required this.album,
-    required this.artistId,
     required this.artist,
     required this.count,
   });
@@ -22,7 +22,6 @@ class Album{
           runtimeType == other.runtimeType &&
           albumId == other.albumId &&
           album == other.album &&
-          artistId == other.artistId &&
           artist == other.artist &&
           count == other.count);
 
@@ -30,7 +29,6 @@ class Album{
   int get hashCode =>
       albumId.hashCode ^
       album.hashCode ^
-      artistId.hashCode ^
       artist.hashCode ^
       count.hashCode;
 
@@ -39,7 +37,6 @@ class Album{
     return 'Album{' +
         ' albumId: $albumId,' +
         ' album: $album,' +
-        ' artistId: $artistId,' +
         ' artist: $artist,' +
         ' count: $count,' +
         '}';
@@ -55,7 +52,6 @@ class Album{
     return Album(
       albumId: albumId ?? this.albumId,
       album: album ?? this.album,
-      artistId: artistId ?? this.artistId,
       artist: artist ?? this.artist,
       count: count ?? this.count,
     );
@@ -65,17 +61,15 @@ class Album{
     return {
       'albumId': albumId,
       'album': album,
-      'artistId': artistId,
       'artist': artist,
       'count': count,
     };
   }
 
-  factory Album.fromMap(Map<String, dynamic> map) {
+  factory Album.fromMap(Map<dynamic, dynamic> map) {
     return Album(
       albumId: map['albumId'] as num,
       album: map['album'] as String,
-      artistId: map['artistId'] as num,
       artist: map['artist'] as String,
       count: map['count'] as int,
     );

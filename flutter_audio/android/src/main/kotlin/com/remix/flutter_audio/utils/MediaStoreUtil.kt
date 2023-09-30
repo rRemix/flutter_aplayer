@@ -1,5 +1,6 @@
 package com.remix.flutter_audio.utils
 
+import android.content.ContentResolver
 import android.content.Context
 import android.database.Cursor
 import android.os.Build
@@ -8,6 +9,7 @@ import android.provider.MediaStore.Audio
 import android.provider.MediaStore.Audio.AudioColumns
 import androidx.annotation.WorkerThread
 import com.remix.flutter_audio.PluginProvider
+import com.remix.flutter_audio.model.Album
 import com.remix.flutter_audio.model.Song
 import com.remix.flutter_audio.model.Song.Companion.EMPTY_SONG
 import io.flutter.Log
@@ -23,11 +25,11 @@ import kotlin.collections.HashSet
  */
 object MediaStoreUtil {
   private const val TAG = "MediaStoreUtil"
-
+  
   private val context: Context
     get() = PluginProvider.context()
-
-
+  
+  
   //扫描文件默认大小设置
   var SCAN_SIZE = 1024
   private val BASE_PROJECTION: Array<String> = run {
@@ -108,88 +110,77 @@ object MediaStoreUtil {
 //      artists
 //    }
 //  }
-
-//  @JvmStatic
-//  fun getAllAlbum(): List<Album> {
-//    if (!PermissionUtil.hasNecessaryPermission()) {
-//      return ArrayList()
-//    }
-//    val albumMaps: MutableMap<Long, MutableList<Album>> = LinkedHashMap()
-//    val albums: MutableList<Album> = ArrayList()
+  
+  @JvmStatic
+  fun getAllAlbum(sortOrder: String): List<Album> {
+    if (!PermissionUtil.hasNecessaryPermission()) {
+      return ArrayList()
+    }
+    val albumMaps: MutableMap<Long, MutableList<Album>> = LinkedHashMap()
+    val albums: MutableList<Album> = ArrayList()
 //    val sortOrder = SPUtil.getValue(
 //        context,
 //        SETTING_KEY.NAME,
 //        SETTING_KEY.ALBUM_SORT_ORDER,
 //        SortOrder.ALBUM_A_Z
 //    )
-//    try {
-//      context.contentResolver
-//          .query(Audio.Media.EXTERNAL_CONTENT_URI, arrayOf(Audio.Media.ALBUM_ID,
-//              Audio.Media.ALBUM,
-//              Audio.Media.ARTIST_ID,
-//              Audio.Media.ARTIST),
-//              baseSelection,
-//              baseSelectionArgs,
-//              sortOrder).use { cursor ->
-//            if (cursor != null) {
-//              while (cursor.moveToNext()) {
-//                try {
-//                  val albumId = cursor.getLong(0)
-//                  if (albumMaps[albumId] == null) {
-//                    albumMaps[albumId] = ArrayList()
-//                  }
-//                  albumMaps[albumId]?.add(Album(albumId,
-//                      cursor.getString(1),
-//                      cursor.getLong(2),
-//                      cursor.getString(3),
-//                      0))
-//                } catch (ignored: Exception) {
-//                }
-//              }
-//              for ((_, value) in albumMaps) {
-//                try {
-//                  val album = value[0]
-//                  album.count = value.size
-//                  albums.add(album)
-//                } catch (e: Exception) {
-//                  Timber.v("addAlbum failed: $e")
-//                }
-//              }
-//            }
-//          }
-//    } catch (e: Exception) {
-//      Timber.v("getAllAlbum failed: $e")
-//    }
-//    return if (forceSort) {
-//      ItemsSorter.sortedAlbums(albums, sortOrder)
-//    } else {
-//      albums
-//    }
-//  }
-
+    try {
+      context.contentResolver.query(
+        Audio.Albums.EXTERNAL_CONTENT_URI,
+        arrayOf(
+          Audio.Albums.ALBUM_ID,
+          Audio.Albums.ALBUM,
+          Audio.Albums.ARTIST,
+          Audio.Albums.NUMBER_OF_SONGS
+        ), null, null, null
+      )
+        .use { cursor ->
+          if (cursor != null) {
+            while (cursor.moveToNext()) {
+              val albumId = cursor.getLong(0)
+              val album = cursor.getString(1)
+              val artist = cursor.getString(2)
+              val numberOfSongs = cursor.getInt(3)
+              Log.d(TAG, "albumId: $albumId album: $album artist: $artist number: $numberOfSongs")
+              albums.add(Album(albumId, album, artist, numberOfSongs))
+            }
+          }
+        }
+    } catch (e: Exception) {
+      Log.d(TAG, "getAllAlbum failed: $e")
+    }
+    return albums
+  }
+  
   @JvmStatic
   fun getAllSong(): List<Song> {
-    return getSongs(null,
-        null,
-        null)
+    return getSongs(
+      null,
+      null,
+      null
+    )
   }
-
+  
   @JvmStatic
   fun getLastAddedSong(): List<Song> {
     val today = Calendar.getInstance()
     today.time = Date()
-    return getSongs(Audio.Media.DATE_ADDED + " >= ?", arrayOf((today.timeInMillis / 1000 - 3600 * 24 * 7).toString()),
-        Audio.Media.DATE_ADDED)
+    return getSongs(
+      Audio.Media.DATE_ADDED + " >= ?",
+      arrayOf((today.timeInMillis / 1000 - 3600 * 24 * 7).toString()),
+      Audio.Media.DATE_ADDED
+    )
   }
-
+  
   /**
    * 获得所有歌曲id
    */
   val allSongsId: List<Long>
     get() = getSongIds(
-        null,
-        null,
-        null)
+      null,
+      null,
+      null
+    )
 
 //  @JvmStatic
 //  fun getAllFolder(): List<Folder> {
@@ -217,7 +208,7 @@ object MediaStoreUtil {
 //    }
 //    return folders
 //  }
-
+  
   /**
    * 根据歌手或者专辑id获取所有歌曲
    *
@@ -248,7 +239,7 @@ object MediaStoreUtil {
 //    }
 //    return getSongs(selection, selectionValues, sortOrder)
 //  }
-
+  
   /**
    * 根据记录集获得歌曲详细
    *
@@ -296,20 +287,26 @@ object MediaStoreUtil {
       dateModified = cursor.getLong(cursor.getColumnIndex(AudioColumns.DATE_MODIFIED))
     )
   }
-
+  
   fun getSongIdsByParentId(parentId: Long): List<Int> {
     val ids: MutableList<Int> = ArrayList()
     context.contentResolver
-        .query(MediaStore.Files.getContentUri("external"), arrayOf("_id"), "parent = $parentId", null, null).use { cursor ->
-          if (cursor != null) {
-            while (cursor.moveToNext()) {
-              ids.add(cursor.getInt(0))
-            }
+      .query(
+        MediaStore.Files.getContentUri("external"),
+        arrayOf("_id"),
+        "parent = $parentId",
+        null,
+        null
+      ).use { cursor ->
+        if (cursor != null) {
+          while (cursor.moveToNext()) {
+            ids.add(cursor.getInt(0))
           }
         }
+      }
     return ids
   }
-
+  
   /**
    * 根据专辑id查询歌曲详细信息
    *
@@ -319,7 +316,7 @@ object MediaStoreUtil {
   fun getSongByAlbumId(albumId: Long): Song {
     return getSong(Audio.Media.ALBUM_ID + "=?", arrayOf(albumId.toString() + ""))
   }
-
+  
   /**
    * 根据歌曲id查询歌曲详细信息
    *
@@ -330,7 +327,7 @@ object MediaStoreUtil {
   fun getSongById(id: Long): Song {
     return getSong(Audio.Media._ID + "=?", arrayOf(id.toString() + ""))
   }
-
+  
   fun getSongsByIds(ids: List<Long>?): List<Song> {
     val songs: List<Song> = ArrayList()
     if (ids == null || ids.isEmpty()) {
@@ -343,7 +340,7 @@ object MediaStoreUtil {
     }
     return getSongs(selection.toString(), null)
   }
-
+  
   /**
    * 删除指定歌曲
    */
@@ -379,7 +376,7 @@ object MediaStoreUtil {
 //    context.contentResolver.notifyChange(Audio.Media.EXTERNAL_CONTENT_URI, null)
 //    return songs.size
 //  }
-
+  
   /**
    * 删除单个源文件
    */
@@ -414,7 +411,7 @@ object MediaStoreUtil {
 //      ToastUtil.show(activity, R.string.delete_source_fail_tip, e)
 //    }
 //  }
-
+  
   /**
    * 删除多个源文件
    */
@@ -439,7 +436,7 @@ object MediaStoreUtil {
 //      deleteSource(activity, toDeleteSongs[0])
 //    }
 //  }
-
+  
   /**
    * 过滤移出的歌曲以及铃声等
    */
@@ -480,7 +477,7 @@ object MediaStoreUtil {
       }
       return builder.toString()
     }
-
+  
   val baseSelectionArgs: Array<String?>
     get() {
       val blacklist = HashSet<String>()
@@ -495,9 +492,11 @@ object MediaStoreUtil {
       }
       return selectionArgs
     }
-
-  fun makeSongCursor(selection: String?, selectionValues: Array<String?>?,
-                     sortOrder: String?): Cursor? {
+  
+  fun makeSongCursor(
+    selection: String?, selectionValues: Array<String?>?,
+    sortOrder: String?
+  ): Cursor? {
     var selection = selection
     var selectionValues = selectionValues
     selection = if (selection != null && selection.trim { it <= ' ' } != "") {
@@ -512,33 +511,39 @@ object MediaStoreUtil {
     val newSelectionValues = arrayOfNulls<String>(selectionValues.size + baseSelectionArgs.size)
     System.arraycopy(selectionValues, 0, newSelectionValues, 0, selectionValues.size)
     if (newSelectionValues.size - selectionValues.size >= 0) {
-      System.arraycopy(baseSelectionArgs, 0,
-          newSelectionValues, selectionValues.size,
-          newSelectionValues.size - selectionValues.size)
+      System.arraycopy(
+        baseSelectionArgs, 0,
+        newSelectionValues, selectionValues.size,
+        newSelectionValues.size - selectionValues.size
+      )
     }
-
+    
     return try {
-      context.contentResolver.query(Audio.Media.EXTERNAL_CONTENT_URI,
-          BASE_PROJECTION, selection, newSelectionValues, sortOrder)
+      context.contentResolver.query(
+        Audio.Media.EXTERNAL_CONTENT_URI,
+        BASE_PROJECTION, selection, newSelectionValues, sortOrder
+      )
     } catch (e: SecurityException) {
       null
     }
   }
-
+  
   @JvmStatic
   fun getSongId(selection: String?, selectionValues: Array<String?>?): Long {
     val songs = getSongs(selection, selectionValues, null)
     return if (songs.isNotEmpty()) songs[0].id else -1
   }
-
+  
   @JvmStatic
   fun getSongIds(selection: String?, selectionValues: Array<String?>?): List<Long> {
     return getSongIds(selection, selectionValues, null)
   }
-
+  
   @JvmStatic
-  fun getSongIds(selection: String?, selectionValues: Array<String?>?,
-                 sortOrder: String?): List<Long> {
+  fun getSongIds(
+    selection: String?, selectionValues: Array<String?>?,
+    sortOrder: String?
+  ): List<Long> {
     if (!PermissionUtil.hasNecessaryPermission()) {
       return ArrayList()
     }
@@ -555,16 +560,18 @@ object MediaStoreUtil {
     }
     return ids
   }
-
+  
   @JvmStatic
   fun getSong(selection: String?, selectionValues: Array<String?>?): Song {
     val songs = getSongs(selection, selectionValues, null)
     return if (songs.isNotEmpty()) songs[0] else EMPTY_SONG
   }
-
+  
   @JvmStatic
-  fun getSongs(selection: String?, selectionValues: Array<String?>?,
-               sortOrder: String?): List<Song> {
+  fun getSongs(
+    selection: String?, selectionValues: Array<String?>?,
+    sortOrder: String?
+  ): List<Song> {
     if (!PermissionUtil.hasNecessaryPermission()) {
       return ArrayList()
     }
@@ -587,12 +594,12 @@ object MediaStoreUtil {
 //    }
     return songs
   }
-
+  
   @JvmStatic
   fun getSongs(selection: String?, selectionValues: Array<String?>?): List<Song> {
     return getSongs(selection, selectionValues, null)
   }
-
+  
   /**
    * 歌曲数量
    */
@@ -600,19 +607,105 @@ object MediaStoreUtil {
     get() {
       try {
         context.contentResolver
-            .query(Audio.Media.EXTERNAL_CONTENT_URI, arrayOf(Audio.Media._ID), baseSelection,
-                baseSelectionArgs,
-                null).use { cursor ->
-              if (cursor != null) {
-                return cursor.count
-              }
+          .query(
+            Audio.Media.EXTERNAL_CONTENT_URI, arrayOf(Audio.Media._ID), baseSelection,
+            baseSelectionArgs,
+            null
+          ).use { cursor ->
+            if (cursor != null) {
+              return cursor.count
             }
+          }
       } catch (e: Exception) {
         Log.v(TAG, e.toString())
       }
       return 0
     }
-
+  
+  @Suppress("DEPRECATION")
+  fun loadFirstItem(type: Int, id: Number, resolver: ContentResolver): String? {
+    
+    // We use almost the same method to 'query' the first item from Song/Album/Artist and we
+    // need to use a different uri when 'querying' from playlist.
+    // If [type] is something different, return null.
+    val selection: String? = when (type) {
+      0 -> Audio.Media._ID + "=?"
+      1 -> Audio.Media.ALBUM_ID + "=?"
+      2 -> null
+      3 -> Audio.Media.ARTIST_ID + "=?"
+      4 -> null
+      else -> return null
+    }
+    
+    var dataOrId: String? = null
+    var cursor: Cursor? = null
+    try {
+      // Type 2 or 4 we use a different uri.
+      //
+      // Type 2 == Playlist
+      // Type 4 == Genre
+      //
+      // And the others we use the normal uri.
+      when (true) {
+        (type == 2 && selection == null) -> {
+          cursor = resolver.query(
+            MediaStore.Audio.Playlists.Members.getContentUri("external", id.toLong()),
+            arrayOf(
+              MediaStore.Audio.Playlists.Members.DATA,
+              MediaStore.Audio.Playlists.Members.AUDIO_ID
+            ),
+            null,
+            null,
+            null
+          )
+        }
+        (type == 4 && selection == null) -> {
+          cursor = resolver.query(
+            MediaStore.Audio.Genres.Members.getContentUri("external", id.toLong()),
+            arrayOf(
+              MediaStore.Audio.Genres.Members.DATA,
+              MediaStore.Audio.Genres.Members.AUDIO_ID
+            ),
+            null,
+            null,
+            null
+          )
+        }
+        else -> {
+          cursor = resolver.query(
+            MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+            arrayOf(MediaStore.Audio.Media.DATA, Audio.Media._ID),
+            selection,
+            arrayOf(id.toString()),
+            null
+          )
+        }
+      }
+    } catch (e: Exception) {
+//            Log.i("on_audio_error", e.toString())
+    }
+    
+    //
+    if (cursor != null) {
+      cursor.moveToFirst()
+      // Try / Catch to avoid problems. Everytime someone request the first song from a playlist and
+      // this playlist is empty will crash the app, so we just 'print' the error.
+      try {
+        dataOrId =
+          if (Build.VERSION.SDK_INT >= 29 && (type == 2 || type == 3 || type == 4)) {
+            cursor.getString(1)
+          } else {
+            cursor.getString(0)
+          }
+      } catch (e: Exception) {
+        Log.w(TAG, "err: $e")
+      }
+    }
+    cursor?.close()
+    
+    return dataOrId
+  }
+  
   init {
 //    SCAN_SIZE = SPUtil
 //        .getValue(App.context, SETTING_KEY.NAME, SETTING_KEY.SCAN_SIZE, MB)

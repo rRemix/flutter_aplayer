@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_aplayer/widgets/fragments/album_fragment.dart';
-import 'package:flutter_aplayer/widgets/fragments/arist_fragment.dart';
-import 'package:flutter_aplayer/widgets/fragments/genre_fragment.dart';
-import 'package:flutter_aplayer/widgets/fragments/playlist_fragment.dart';
-import 'package:flutter_aplayer/widgets/fragments/song_fragment.dart';
+import 'package:flutter_aplayer/widgets/library/album_library.dart';
+import 'package:flutter_aplayer/widgets/library/arist_library.dart';
+import 'package:flutter_aplayer/widgets/library/genre_library.dart';
+import 'package:flutter_aplayer/widgets/library/playlist_library.dart';
+import 'package:flutter_aplayer/widgets/library/song_library.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,11 +20,11 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
   late TabController _tabController;
   final children = [
-    const SongFragment(),
-    const AlbumFragment(),
-    const ArtistFragment(),
-    const GenreFragment(),
-    const PlayListFragment()
+    const SongLibrary(),
+    const AlbumLibrary(),
+    const ArtistLibrary(),
+    const GenreLibrary(),
+    const PlayListLibrary()
   ];
   final titles = ["歌曲", "专辑", "艺术家", "流派", "播放列表"];
 
