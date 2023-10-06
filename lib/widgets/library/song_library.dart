@@ -53,7 +53,7 @@ class SongItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const itemHeight = 64.0;
-    final avatar = FutureBuilder(
+    final cover = FutureBuilder(
         future: Abilities.instance.queryArtwork(song.id, ArtworkType.AUDIO),
         builder: (BuildContext context, AsyncSnapshot<Uint8List?> snapshot) {
           Widget img;
@@ -90,7 +90,7 @@ class SongItem extends StatelessWidget {
             indicator,
             Expanded(
                 child: ListTile(
-              leading: avatar,
+              leading: cover,
               title: Text(song.title),
               subtitle: Text(
                 "${song.artist}-${song.album}",

@@ -141,7 +141,6 @@ object MediaStoreUtil {
               val album = cursor.getString(1)
               val artist = cursor.getString(2)
               val numberOfSongs = cursor.getInt(3)
-              Log.d(TAG, "albumId: $albumId album: $album artist: $artist number: $numberOfSongs")
               albums.add(Album(albumId, album, artist, numberOfSongs))
             }
           }
