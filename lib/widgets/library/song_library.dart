@@ -14,6 +14,8 @@ class SongLibrary extends AbsLibrary {
   }
 }
 
+const _itemHeight = 64.0;
+
 class _SongLibraryState extends AbsState<SongLibrary> {
   final _songs = <Song>[];
 
@@ -33,7 +35,8 @@ class _SongLibraryState extends AbsState<SongLibrary> {
 
   @override
   Widget build(BuildContext context) {
-    return SliverList.builder(
+    return SliverFixedExtentList.builder(
+        itemExtent: _itemHeight,
         itemCount: _songs.length,
         itemBuilder: (context, index) {
           return SongItem(
@@ -52,7 +55,8 @@ class SongItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const itemHeight = 64.0;
+    final themeData = Theme.of(context);
+
     final cover = FutureBuilder(
         future: Abilities.instance.queryArtwork(song.id, ArtworkType.AUDIO),
         builder: (BuildContext context, AsyncSnapshot<Uint8List?> snapshot) {
@@ -73,60 +77,58 @@ class SongItem extends StatelessWidget {
         });
     final indicator = Container(
       width: 4,
-      height: itemHeight,
-      color: highLight ? Theme.of(context).primaryColor : Colors.transparent,
+      color: highLight ? themeData.primaryColor : Colors.transparent,
     );
 
-    return InkWell(
-      onTap: () {
-        //TODO
-        debugPrint("click: $song");
-      },
-      child: Container(
-        color: Colors.white,
-        width: double.infinity,
-        height: itemHeight,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            indicator,
-            Expanded(
-                child: ListTile(
-              leading: cover,
-              title: Text(song.title),
-              subtitle: Text(
-                "${song.artist}-${song.album}",
-                maxLines: 1,
-              ),
-              trailing: PopupMenuButton(
-                icon: const Icon(Icons.more_vert_rounded),
-                onSelected: (int value) {
-                  debugPrint("select: $value");
-                },
-                itemBuilder: (context) {
-                  return [
-                    const PopupMenuItem(
-                      value: 0,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [Icon(Icons.playlist_add), Text("添加到播放列表")],
-                      ),
+    return Material(
+      child: InkWell(
+        onTap: () {
+          //TODO
+          debugPrint("click: $song");
+        },
+        child: Container(
+          color: Colors.white,
+          width: double.infinity,
+          child: Row(
+            children: [
+              indicator,
+              Expanded(
+                  child: ListTile(
+                    leading: cover,
+                    title: Text(song.title),
+                    subtitle: Text(
+                      "${song.artist}-${song.album}",
+                      maxLines: 1,
                     ),
-                    const PopupMenuItem(
-                      value: 1,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [Icon(Icons.delete), Text("删除")],
-                      ),
-                    )
-                  ];
-                },
-              ),
-            ))
-          ],
+                    trailing: PopupMenuButton(
+                      icon: const Icon(Icons.more_vert_rounded),
+                      onSelected: (int value) {
+                        debugPrint("select: $value");
+                      },
+                      itemBuilder: (context) {
+                        return [
+                          const PopupMenuItem(
+                            value: 0,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [Icon(Icons.playlist_add), Text("添加到播放列表")],
+                            ),
+                          ),
+                          const PopupMenuItem(
+                            value: 1,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [Icon(Icons.delete), Text("删除")],
+                            ),
+                          )
+                        ];
+                      },
+                    ),
+                  ))
+            ],
+          ),
         ),
       ),
     );
-
   }
 }

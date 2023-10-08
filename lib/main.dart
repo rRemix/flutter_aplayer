@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_aplayer/widgets/bottom_screen.dart';
 import 'package:flutter_aplayer/widgets/library/album_library.dart';
 import 'package:flutter_aplayer/widgets/library/arist_library.dart';
 import 'package:flutter_aplayer/widgets/library/genre_library.dart';
@@ -41,55 +42,65 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        body: DefaultTabController(
-          length: titles.length,
-          child: Scaffold(
-            body: NestedScrollView(
-              headerSliverBuilder:
-                  (BuildContext context, bool innerBoxIsScrolled) {
-                return <Widget>[
-                  SliverOverlapAbsorber(
-                    handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
-                        context),
-                    sliver: SliverAppBar(
-                      title: const Text("APlayer"),
-                      floating: true,
-                      snap: true,
-                      pinned: true,
-                      forceElevated: innerBoxIsScrolled,
-                      bottom: TabBar(
-                        tabs: titles
-                            .map((String name) => Tab(text: name))
-                            .toList(),
-                      ),
-                    ),
-                  ),
-                ];
-              },
-              body: TabBarView(
-                children: titles.asMap().keys.map((int index) {
-                  return Builder(
-                    builder: (BuildContext context) {
-                      return Container(
-                        color: const Color.fromARGB(0xff, 0xf1, 0xf1, 0xf1),
-                        child: CustomScrollView(
-                          key: PageStorageKey<String>(titles[index]),
-                          slivers: <Widget>[
-                            SliverOverlapInjector(
-                              handle:
+        body: Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: bottomScreenHeight),
+              child: DefaultTabController(
+                length: titles.length,
+                child: Scaffold(
+                  body: NestedScrollView(
+                    headerSliverBuilder:
+                        (BuildContext context, bool innerBoxIsScrolled) {
+                      return <Widget>[
+                        SliverOverlapAbsorber(
+                          handle:
                               NestedScrollView.sliverOverlapAbsorberHandleFor(
                                   context),
+                          sliver: SliverAppBar(
+                            title: const Text("APlayer"),
+                            floating: true,
+                            snap: true,
+                            pinned: true,
+                            forceElevated: innerBoxIsScrolled,
+                            bottom: TabBar(
+                              tabs: titles
+                                  .map((String name) => Tab(text: name))
+                                  .toList(),
                             ),
-                            children[index],
-                          ],
+                          ),
                         ),
-                      );
+                      ];
                     },
-                  );
-                }).toList(),
+                    body: TabBarView(
+                      children: titles.asMap().keys.map((int index) {
+                        return Builder(
+                          builder: (BuildContext context) {
+                            return Container(
+                              color:
+                                  const Color.fromARGB(0xff, 0xf1, 0xf1, 0xf1),
+                              child: CustomScrollView(
+                                key: PageStorageKey<String>(titles[index]),
+                                slivers: <Widget>[
+                                  SliverOverlapInjector(
+                                    handle: NestedScrollView
+                                        .sliverOverlapAbsorberHandleFor(
+                                            context),
+                                  ),
+                                  children[index],
+                                ],
+                              ),
+                            );
+                          },
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ),
               ),
             ),
-          ),
+            Positioned(bottom: 0, child: BottomScreen())
+          ],
         ),
       ),
     );
