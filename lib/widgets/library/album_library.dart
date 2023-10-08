@@ -33,18 +33,18 @@ class _AlbumLibraryState extends State<AlbumLibrary> {
 
   @override
   Widget build(BuildContext context) {
-    final mainAxisExtent = MediaQuery.of(context);
-    return LayoutBuilder(builder: (context, constraints){
-      var extent = mainAxisExtent.size.width / 2 + 62;
+    final mediaQuery = MediaQuery.of(context);
+    return LayoutBuilder(builder: (context, constraints) {
+      var mainAxisExtent = mediaQuery.size.width / 2 + 56;
       return DecoratedBox(
         decoration:
-        const BoxDecoration(color: Color.fromARGB(0xff, 0xf1, 0xf1, 0xf1)),
+            const BoxDecoration(color: Color.fromARGB(0xff, 0xf1, 0xf1, 0xf1)),
         child: GridView.builder(
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
               crossAxisSpacing: 0,
               mainAxisSpacing: 0,
-              mainAxisExtent: extent),
+              mainAxisExtent: mainAxisExtent),
           itemBuilder: (context, index) {
             return AlbumItem(
               album: _albums[index],
@@ -96,14 +96,243 @@ class AlbumItem extends StatelessWidget {
 
     final left = index % 2 == 0 ? 4.0 : 2.0;
     final right = index % 2 == 0 ? 2.0 : 4.0;
-    const top = 2.0;
 
-    return InkWell(
-      onTap: () {
-        debugPrint("click: $album");
-      },
-      child: Container(
-        padding: EdgeInsets.fromLTRB(left, top, right, top),
+    return Padding(
+      padding: EdgeInsets.fromLTRB(left, 4, right, 0),
+      child: Material(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(4),
+        child: InkWell(
+          onTap: () {
+            //TODO
+            debugPrint("click: $album");
+          },
+          child: Column(
+            children: [
+              cover,
+              SizedBox(
+                height: 56,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 10),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 4,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              album.album,
+                              style: themeData.textTheme.labelLarge,
+                              maxLines: 1,
+                            ),
+                            Text(
+                              album.artist,
+                              style: themeData.textTheme.labelMedium,
+                              maxLines: 1,
+                            )
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: PopupMenuButton(
+                          icon: const Icon(Icons.more_vert_rounded),
+                          onSelected: (int value) {
+                            debugPrint("select: $value");
+                          },
+                          itemBuilder: (context) {
+                            return [
+                              const PopupMenuItem(
+                                value: 0,
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Icon(Icons.playlist_add),
+                                    Text("添加到播放列表")
+                                  ],
+                                ),
+                              ),
+                              const PopupMenuItem(
+                                value: 1,
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [Icon(Icons.delete), Text("删除")],
+                                ),
+                              )
+                            ];
+                          },
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+
+    return Material(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(4),
+      child: InkWell(
+        onTap: () {},
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(left, 0, right, 0),
+          child: Column(
+            children: [
+              cover,
+              SizedBox(
+                height: 60,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 10, top: 4, bottom: 4),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 4,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              album.album,
+                              style: themeData.textTheme.labelLarge,
+                              maxLines: 1,
+                            ),
+                            Text(
+                              album.artist,
+                              style: themeData.textTheme.labelMedium,
+                              maxLines: 1,
+                            )
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: PopupMenuButton(
+                          icon: const Icon(Icons.more_vert_rounded),
+                          onSelected: (int value) {
+                            debugPrint("select: $value");
+                          },
+                          itemBuilder: (context) {
+                            return [
+                              const PopupMenuItem(
+                                value: 0,
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Icon(Icons.playlist_add),
+                                    Text("添加到播放列表")
+                                  ],
+                                ),
+                              ),
+                              const PopupMenuItem(
+                                value: 1,
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [Icon(Icons.delete), Text("删除")],
+                                ),
+                              )
+                            ];
+                          },
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+
+    return Material(
+      child: InkWell(
+        onTap: () {
+          debugPrint("click: $album");
+        },
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(left, 0, right, 0),
+          child: Column(
+            children: [
+              cover,
+              SizedBox(
+                height: 60,
+                child: DecoratedBox(
+                  decoration: const BoxDecoration(color: Colors.white),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 10, top: 4, bottom: 4),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          flex: 4,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                album.album,
+                                style: themeData.textTheme.labelLarge,
+                                maxLines: 1,
+                              ),
+                              Text(
+                                album.artist,
+                                style: themeData.textTheme.labelMedium,
+                                maxLines: 1,
+                              )
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: PopupMenuButton(
+                            icon: const Icon(Icons.more_vert_rounded),
+                            onSelected: (int value) {
+                              debugPrint("select: $value");
+                            },
+                            itemBuilder: (context) {
+                              return [
+                                const PopupMenuItem(
+                                  value: 0,
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Icon(Icons.playlist_add),
+                                      Text("添加到播放列表")
+                                    ],
+                                  ),
+                                ),
+                                const PopupMenuItem(
+                                  value: 1,
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [Icon(Icons.delete), Text("删除")],
+                                  ),
+                                )
+                              ];
+                            },
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+
+    return Padding(
+      padding: EdgeInsets.fromLTRB(left, 0, right, 0),
+      child: InkWell(
+        onTap: () {},
         child: Column(
           children: [
             cover,
@@ -167,11 +396,85 @@ class AlbumItem extends StatelessWidget {
                   ),
                 ),
               ),
-            )
-            ,
+            ),
           ],
         ),
       ),
     );
+
+    // return InkWell(
+    //   onTap: () {
+    //     debugPrint("click: $album");
+    //   },
+    //   child: Container(
+    //     padding: EdgeInsets.fromLTRB(left, 0, right, 0),
+    //     child: Column(
+    //       children: [
+    //         cover,
+    //         SizedBox(
+    //           height: 60,
+    //           child: DecoratedBox(
+    //             decoration: const BoxDecoration(color: Colors.white),
+    //             child: Padding(
+    //               padding: const EdgeInsets.only(left: 10, top: 4, bottom: 4),
+    //               child: Row(
+    //                 children: [
+    //                   Expanded(
+    //                     flex: 4,
+    //                     child: Column(
+    //                       crossAxisAlignment: CrossAxisAlignment.start,
+    //                       children: [
+    //                         Text(
+    //                           album.album,
+    //                           style: themeData.textTheme.labelLarge,
+    //                           maxLines: 1,
+    //                         ),
+    //                         Text(
+    //                           album.artist,
+    //                           style: themeData.textTheme.labelMedium,
+    //                           maxLines: 1,
+    //                         )
+    //                       ],
+    //                     ),
+    //                   ),
+    //                   Expanded(
+    //                     flex: 1,
+    //                     child: PopupMenuButton(
+    //                       icon: const Icon(Icons.more_vert_rounded),
+    //                       onSelected: (int value) {
+    //                         debugPrint("select: $value");
+    //                       },
+    //                       itemBuilder: (context) {
+    //                         return [
+    //                           const PopupMenuItem(
+    //                             value: 0,
+    //                             child: Row(
+    //                               crossAxisAlignment: CrossAxisAlignment.center,
+    //                               children: [
+    //                                 Icon(Icons.playlist_add),
+    //                                 Text("添加到播放列表")
+    //                               ],
+    //                             ),
+    //                           ),
+    //                           const PopupMenuItem(
+    //                             value: 1,
+    //                             child: Row(
+    //                               crossAxisAlignment: CrossAxisAlignment.center,
+    //                               children: [Icon(Icons.delete), Text("删除")],
+    //                             ),
+    //                           )
+    //                         ];
+    //                       },
+    //                     ),
+    //                   )
+    //                 ],
+    //               ),
+    //             ),
+    //           ),
+    //         ),
+    //       ],
+    //     ),
+    //   ),
+    // );
   }
 }
