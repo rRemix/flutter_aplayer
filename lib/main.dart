@@ -17,8 +17,7 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
-  late TabController _tabController;
+class _MyAppState extends State<MyApp> {
   final children = [
     const SongLibrary(),
     const AlbumLibrary(),
@@ -31,29 +30,66 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: children.length, vsync: this);
   }
 
   @override
   void dispose() {
     super.dispose();
-    _tabController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text('APlayer'),
-          bottom: TabBar(
-            tabs: titles.map((e) => Text(e)).toList(),
-            controller: _tabController,
+        body: DefaultTabController(
+          length: titles.length,
+          child: Scaffold(
+            body: NestedScrollView(
+              headerSliverBuilder:
+                  (BuildContext context, bool innerBoxIsScrolled) {
+                return <Widget>[
+                  SliverOverlapAbsorber(
+                    handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
+                        context),
+                    sliver: SliverAppBar(
+                      title: const Text("APlayer"),
+                      floating: true,
+                      snap: true,
+                      pinned: true,
+                      forceElevated: innerBoxIsScrolled,
+                      bottom: TabBar(
+                        tabs: titles
+                            .map((String name) => Tab(text: name))
+                            .toList(),
+                      ),
+                    ),
+                  ),
+                ];
+              },
+              body: TabBarView(
+                children: titles.asMap().keys.map((int index) {
+                  return Builder(
+                    builder: (BuildContext context) {
+                      return Container(
+                        color: const Color.fromARGB(0xff, 0xf1, 0xf1, 0xf1),
+                        child: CustomScrollView(
+                          key: PageStorageKey<String>(titles[index]),
+                          slivers: <Widget>[
+                            SliverOverlapInjector(
+                              handle:
+                              NestedScrollView.sliverOverlapAbsorberHandleFor(
+                                  context),
+                            ),
+                            children[index],
+                          ],
+                        ),
+                      );
+                    },
+                  );
+                }).toList(),
+              ),
+            ),
           ),
-        ),
-        body: TabBarView(
-          controller: _tabController,
-          children: children,
         ),
       ),
     );

@@ -33,7 +33,7 @@ class _SongLibraryState extends AbsState<SongLibrary> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+    return SliverList.builder(
         itemCount: _songs.length,
         itemBuilder: (context, index) {
           return SongItem(
@@ -82,7 +82,8 @@ class SongItem extends StatelessWidget {
         //TODO
         debugPrint("click: $song");
       },
-      child: SizedBox(
+      child: Container(
+        color: Colors.white,
         width: double.infinity,
         height: itemHeight,
         child: Row(

@@ -1,8 +1,9 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:flutter_aplayer/widgets/library/abs_library.dart';
 
-class GenreLibrary extends StatefulWidget {
+class GenreLibrary extends AbsLibrary {
   const GenreLibrary({super.key});
 
   @override
@@ -12,11 +13,13 @@ class GenreLibrary extends StatefulWidget {
 
 }
 
-class _GenreLibraryState extends State<GenreLibrary> {
+class _GenreLibraryState extends AbsState<GenreLibrary> {
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text("Genre"),
+    return SliverToBoxAdapter(
+      child: Center(
+        child: Text("Genre"),
+      ),
     );
   }
 

@@ -1,11 +1,12 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_aplayer/widgets/library/abs_library.dart';
 import 'package:flutter_audio/core.dart';
 
 import '../../abilities.dart';
 
-class AlbumLibrary extends StatefulWidget {
+class AlbumLibrary extends AbsLibrary {
   const AlbumLibrary({super.key});
 
   @override
@@ -14,7 +15,9 @@ class AlbumLibrary extends StatefulWidget {
   }
 }
 
-class _AlbumLibraryState extends State<AlbumLibrary> {
+const double _contentHeight = 56.0;
+
+class _AlbumLibraryState extends AbsState<AlbumLibrary> {
   final _albums = <Album>[];
 
   @override
@@ -34,27 +37,22 @@ class _AlbumLibraryState extends State<AlbumLibrary> {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
-    return LayoutBuilder(builder: (context, constraints) {
-      var mainAxisExtent = mediaQuery.size.width / 2 + 56;
-      return DecoratedBox(
-        decoration:
-            const BoxDecoration(color: Color.fromARGB(0xff, 0xf1, 0xf1, 0xf1)),
-        child: GridView.builder(
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              crossAxisSpacing: 0,
-              mainAxisSpacing: 0,
-              mainAxisExtent: mainAxisExtent),
-          itemBuilder: (context, index) {
-            return AlbumItem(
-              album: _albums[index],
-              index: index,
-            );
-          },
-          itemCount: _albums.length,
-        ),
-      );
-    });
+    final mainAxisExtent = mediaQuery.size.width / 2 + _contentHeight;
+
+    return SliverGrid.builder(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          crossAxisSpacing: 0,
+          mainAxisSpacing: 0,
+          mainAxisExtent: mainAxisExtent),
+      itemBuilder: (context, index) {
+        return AlbumItem(
+          album: _albums[index],
+          index: index,
+        );
+      },
+      itemCount: _albums.length,
+    );
   }
 }
 
@@ -111,7 +109,7 @@ class AlbumItem extends StatelessWidget {
             children: [
               cover,
               SizedBox(
-                height: 56,
+                height: _contentHeight,
                 child: Padding(
                   padding: const EdgeInsets.only(left: 10),
                   child: Row(

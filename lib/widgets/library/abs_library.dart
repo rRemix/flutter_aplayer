@@ -5,8 +5,8 @@ abstract class AbsLibrary extends StatefulWidget {
   const AbsLibrary({super.key});
 }
 
-abstract class AbsState<T extends AbsLibrary> extends State<T> with AutomaticKeepAliveClientMixin{
+abstract class AbsState<T extends AbsLibrary> extends State<T>{
 
-  @override
-  bool get wantKeepAlive => true;
+  // @override
+  // bool get wantKeepAlive => true;
 }

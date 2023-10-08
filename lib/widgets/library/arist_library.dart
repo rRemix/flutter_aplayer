@@ -1,8 +1,9 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:flutter_aplayer/widgets/library/abs_library.dart';
 
-class ArtistLibrary extends StatefulWidget {
+class ArtistLibrary extends AbsLibrary {
   const ArtistLibrary({super.key});
 
   @override
@@ -12,11 +13,13 @@ class ArtistLibrary extends StatefulWidget {
 
 }
 
-class _ArtistLibraryState extends State<ArtistLibrary> {
+class _ArtistLibraryState extends AbsState<ArtistLibrary> {
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text("Artist"),
+    return SliverToBoxAdapter(
+      child: Center(
+        child: Text("Artist"),
+      ),
     );
   }
 
