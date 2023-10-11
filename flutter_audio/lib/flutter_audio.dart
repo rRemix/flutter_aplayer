@@ -34,4 +34,12 @@ class FlutterAudio {
     return FlutterAudioPlatform.instance
         .queryArtwork(id, type, format: format, size: size, quality: quality);
   }
+
+  Future<void> setLogConfig(LogType type) async {
+    return FlutterAudioPlatform.instance.setLogConfig(type);
+  }
+
+  Future<void> setLogEnable(bool enable) async {
+    return FlutterAudioPlatform.instance.setLogEnable(enable);
+  }
 }

@@ -2,7 +2,7 @@ package com.remix.flutter_audio
 
 import com.remix.flutter_audio.controller.MethodController
 import com.remix.flutter_audio.controller.PermissionController
-import io.flutter.Log
+import com.remix.flutter_audio.utils.LogUtil
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
@@ -10,6 +10,7 @@ import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
+import java.lang.IllegalArgumentException
 
 /** FlutterAudioPlugin */
 class FlutterAudioPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
@@ -20,18 +21,18 @@ class FlutterAudioPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
   private val methodController = MethodController()
 
   override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-    Log.d(TAG, "onAttachedToEngine")
+    LogUtil.d(TAG, "onAttachedToEngine")
     channel = MethodChannel(flutterPluginBinding.binaryMessenger, CHANNEL_NAME)
     channel.setMethodCallHandler(this)
   }
 
   override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
-    Log.d(TAG, "onDetachedFromEngine")
+    LogUtil.d(TAG, "onDetachedFromEngine")
     channel.setMethodCallHandler(null)
   }
 
   override fun onMethodCall(call: MethodCall, result: Result) {
-    Log.d(TAG, "onMethodCall, name: ${call.method}")
+    LogUtil.d(TAG, "onMethodCall, name: ${call.method}")
 
     PluginProvider.setCurrentMethod(call, result)
 
@@ -47,10 +48,18 @@ class FlutterAudioPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         permissionController.requestPermission()
       }
 
+      Method.SET_LOG_CONFIG -> {
+        LogUtil.setLogLevel(call.argument<Int>("config") ?: throw IllegalArgumentException("request 'config'"))
+      }
+
+      Method.SET_LOG_ENABLE -> {
+        LogUtil.setEnable(call.argument<Boolean>("enable") ?: throw IllegalArgumentException("request 'enable'"))
+      }
+
       else -> {
         // check permission
         val hasPermission = permissionController.permissionStatus()
-        Log.d(TAG, "check permissions: $hasPermission")
+        LogUtil.d(TAG, "check permissions: $hasPermission")
         if (!hasPermission) {
           result.error(
             "MissingPermissions",
@@ -66,7 +75,7 @@ class FlutterAudioPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
   }
 
   override fun onAttachedToActivity(binding: ActivityPluginBinding) {
-    Log.d(TAG, "onAttachedToActivity")
+    LogUtil.d(TAG, "onAttachedToActivity")
     PluginProvider.set(binding.activity)
     this.binding = binding
     binding.addRequestPermissionsResultListener(permissionController)
@@ -75,16 +84,16 @@ class FlutterAudioPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
   override fun onDetachedFromActivity() {
     binding?.removeRequestPermissionsResultListener(permissionController)
     this.binding = null
-    Log.d(TAG, "onDetachedFromActivity")
+    LogUtil.d(TAG, "onDetachedFromActivity")
   }
 
   override fun onDetachedFromActivityForConfigChanges() {
-    Log.d(TAG, "onDetachedFromActivityForConfigChanges")
+    LogUtil.d(TAG, "onDetachedFromActivityForConfigChanges")
     onDetachedFromActivity()
   }
 
   override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
-    Log.d(TAG, "onReattachedToActivityForConfigChanges")
+    LogUtil.d(TAG, "onReattachedToActivityForConfigChanges")
     onAttachedToActivity(binding)
   }
 

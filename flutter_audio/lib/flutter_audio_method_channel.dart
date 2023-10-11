@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_audio/type/artwork_type.dart';
+import 'package:flutter_audio/type/log_type.dart';
 import 'package:flutter_audio/type/order_type.dart';
 import 'package:flutter_audio/type/sort_type/sort_type_album.dart';
 import 'package:flutter_audio/type/sort_type/sort_type_song.dart';
@@ -64,5 +65,17 @@ class MethodChannelFlutterAudio extends FlutterAudioPlatform {
       "size": size ?? 200,
       "quality": quality ?? 50
     });
+  }
+
+  @override
+  Future<void> setLogConfig(LogType type) async {
+    return await methodChannel
+        .invokeMethod("setLogConfig", {"config": type.value});
+  }
+
+  @override
+  Future<void> setLogEnable(bool enable) async {
+    return await methodChannel
+        .invokeMethod("setLogEnable", {"enable": enable});
   }
 }

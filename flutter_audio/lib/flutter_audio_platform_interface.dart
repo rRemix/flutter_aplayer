@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter_audio/core.dart';
 import 'package:flutter_audio/type/artwork_type.dart';
+import 'package:flutter_audio/type/log_type.dart';
 import 'package:flutter_audio/type/order_type.dart';
 import 'package:flutter_audio/type/sort_type/sort_type_song.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
@@ -53,5 +54,13 @@ abstract class FlutterAudioPlatform extends PlatformInterface {
 
   Future<Uint8List?> queryArtwork(num id, ArtworkType type, {ArtworkFormat? format, int? size, int? quality}){
     throw UnimplementedError('queryArtwork() has not been implemented.');
+  }
+
+  Future<void> setLogConfig(LogType type){
+    throw UnimplementedError('setLogConfig() has not been implemented.');
+  }
+
+  Future<void> setLogEnable(bool enable){
+    throw UnimplementedError('setLogEnable() has not been implemented.');
   }
 }

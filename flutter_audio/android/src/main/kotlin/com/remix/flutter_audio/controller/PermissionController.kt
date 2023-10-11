@@ -6,7 +6,7 @@ import android.os.Build
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.remix.flutter_audio.PluginProvider
-import io.flutter.Log
+import com.remix.flutter_audio.utils.LogUtil
 import io.flutter.plugin.common.PluginRegistry
 
 class PermissionController : PluginRegistry.RequestPermissionsResultListener {
@@ -30,7 +30,7 @@ class PermissionController : PluginRegistry.RequestPermissionsResultListener {
     }
 
     val granted = (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-    Log.d(TAG,"granted: $granted")
+    LogUtil.d(TAG,"granted: $granted")
 
     val result = PluginProvider.result()
     when{
@@ -52,7 +52,7 @@ class PermissionController : PluginRegistry.RequestPermissionsResultListener {
   }
 
   fun requestPermission() {
-    Log.d(TAG, "requestPermission")
+    LogUtil.d(TAG, "requestPermission")
     ActivityCompat.requestPermissions(PluginProvider.activity(), permissions, REQUEST_CODE)
   }
 
@@ -61,7 +61,7 @@ class PermissionController : PluginRegistry.RequestPermissionsResultListener {
     if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permissions[0])
       || ActivityCompat.shouldShowRequestPermissionRationale(activity, permissions[1])
     ) {
-      Log.d(TAG, "retryRequestPermission permission request")
+      LogUtil.d(TAG, "retryRequestPermission permission request")
       retryRequest = false
       requestPermission()
     }

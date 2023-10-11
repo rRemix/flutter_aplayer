@@ -7,6 +7,7 @@ object Method {
     const val QUERY_DEVICE_INFO = "queryDeviceInfo"
     const val SCAN = "scan"
     const val SET_LOG_CONFIG = "setLogConfig"
+    const val SET_LOG_ENABLE = "setLogEnable"
 
     // Query methods
     const val QUERY_AUDIOS = "querySongs"

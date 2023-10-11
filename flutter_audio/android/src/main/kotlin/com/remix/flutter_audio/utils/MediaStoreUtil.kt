@@ -12,7 +12,6 @@ import com.remix.flutter_audio.PluginProvider
 import com.remix.flutter_audio.model.Album
 import com.remix.flutter_audio.model.Song
 import com.remix.flutter_audio.model.Song.Companion.EMPTY_SONG
-import io.flutter.Log
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashSet
@@ -146,7 +145,7 @@ object MediaStoreUtil {
           }
         }
     } catch (e: Exception) {
-      Log.d(TAG, "getAllAlbum failed: $e")
+      LogUtil.d(TAG, "getAllAlbum failed: $e")
     }
     return albums
   }
@@ -584,7 +583,7 @@ object MediaStoreUtil {
         }
       }
     } catch (e: Exception) {
-      Log.v(TAG, e.toString())
+      LogUtil.v(TAG, e.toString())
     }
 //    return if (forceSort) {
 //      ItemsSorter.sortedSongs(songs, sortOrder)
@@ -616,7 +615,7 @@ object MediaStoreUtil {
             }
           }
       } catch (e: Exception) {
-        Log.v(TAG, e.toString())
+        LogUtil.v(TAG, e.toString())
       }
       return 0
     }
@@ -681,7 +680,7 @@ object MediaStoreUtil {
         }
       }
     } catch (e: Exception) {
-//            Log.i("on_audio_error", e.toString())
+//            LogUtil.i("on_audio_error", e.toString())
     }
     
     //
@@ -697,7 +696,7 @@ object MediaStoreUtil {
             cursor.getString(0)
           }
       } catch (e: Exception) {
-        Log.w(TAG, "err: $e")
+        LogUtil.w(TAG, "err: $e")
       }
     }
     cursor?.close()

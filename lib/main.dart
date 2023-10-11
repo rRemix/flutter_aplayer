@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_aplayer/abilities.dart';
 import 'package:flutter_aplayer/widgets/bottom_screen.dart';
 import 'package:flutter_aplayer/widgets/library/album_library.dart';
 import 'package:flutter_aplayer/widgets/library/arist_library.dart';
@@ -6,8 +7,9 @@ import 'package:flutter_aplayer/widgets/library/genre_library.dart';
 import 'package:flutter_aplayer/widgets/library/playlist_library.dart';
 import 'package:flutter_aplayer/widgets/library/song_library.dart';
 
-void main() {
+void main() async{
   WidgetsFlutterBinding.ensureInitialized();
+  Abilities.instance.setLogEnable(false);
   runApp(const MyApp());
 }
 

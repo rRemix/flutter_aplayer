@@ -14,3 +14,4 @@ export 'type/sort_type/sort_type_artist.dart';
 export 'type/sort_type/sort_type_genre.dart';
 export 'type/sort_type/sort_type_playlist.dart';
 export 'type/sort_type/sort_type_song.dart';
+export 'type/log_type.dart';

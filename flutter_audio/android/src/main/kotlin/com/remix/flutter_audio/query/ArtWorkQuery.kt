@@ -2,7 +2,6 @@ package com.remix.flutter_audio.query
 
 import android.content.ContentResolver
 import android.content.ContentUris
-import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.media.MediaMetadataRetriever
@@ -13,14 +12,13 @@ import android.util.Size
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.remix.flutter_audio.PluginProvider
+import com.remix.flutter_audio.utils.LogUtil
 import com.remix.flutter_audio.utils.MediaStoreUtil
-import io.flutter.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
 import java.io.FileInputStream
-import kotlin.math.min
 
 class ArtWorkQuery : ViewModel() {
   private var type: Int = -1
@@ -80,7 +78,7 @@ class ArtWorkQuery : ViewModel() {
         val bitmap = resolver.loadThumbnail(query, Size(size, size), null)
         artData = convertOrResize(bitmap)
       } catch (e: Exception) {
-        Log.w(TAG, "loadArt, err: $e")
+        LogUtil.w(TAG, "loadArt, err: $e")
       }
     } else {
       val item = MediaStoreUtil.loadFirstItem(type, id, resolver) ?: return@withContext null
@@ -93,7 +91,7 @@ class ArtWorkQuery : ViewModel() {
         artData = convertOrResize(byteArray = metaData.embeddedPicture) ?: return@withContext null
         
       } catch (e: Exception) {
-        Log.w(TAG, "loadArt, err: $e")
+        LogUtil.w(TAG, "loadArt, err: $e")
       }
     }
     
@@ -118,7 +116,7 @@ class ArtWorkQuery : ViewModel() {
     } catch (e: Exception) {
       // This may produce a lot of logging on console so, will required a explicit request
       // to show the errors.
-      Log.w(TAG, "($id) Message: $e")
+      LogUtil.w(TAG, "($id) Message: $e")
     }
     
     convertedBytes = byteArrayBase.toByteArray()

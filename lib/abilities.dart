@@ -1,10 +1,6 @@
 import 'dart:typed_data';
 
 import 'package:flutter_audio/core.dart';
-import 'package:flutter_audio/flutter_audio.dart';
-import 'package:flutter_audio/type/artwork_type.dart';
-import 'package:flutter_audio/type/order_type.dart';
-import 'package:flutter_audio/type/sort_type/sort_type_song.dart';
 
 class Abilities {
   Abilities._();
@@ -53,5 +49,9 @@ class Abilities {
       {ArtworkFormat? format, int? size, int? quality}) async {
     return await _audioPlugin.queryArtwork(id, type,
         format: format, size: size, quality: quality);
+  }
+
+  Future<void> setLogEnable(bool enable) async {
+    return await _audioPlugin.setLogEnable(enable);
   }
 }
