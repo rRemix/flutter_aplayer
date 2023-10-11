@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_aplayer/widgets/indicator.dart';
 import 'package:flutter_aplayer/widgets/playing_screen/cover_screen.dart';
 import 'package:flutter_aplayer/widgets/playing_screen/lyric_screen.dart';
 import 'package:flutter_audio/models/song.dart';
@@ -16,6 +17,7 @@ class PlayingScreen extends StatefulWidget {
 
 class _PlayingScreenState extends State<PlayingScreen> {
   Song? _currentSong;
+  final ValueNotifier<int> _selected = ValueNotifier(0);
 
   @override
   void initState() {
@@ -91,24 +93,41 @@ class _PlayingScreenState extends State<PlayingScreen> {
               flex: 12,
               child: PageView(
                 onPageChanged: (int index) {
-                  debugPrint("onPageChanged: $index");
+                  _selected.value = index;
                 },
-                children: [CoverScreen(song: _currentSong,), const LyricScreen()].map((e) => LayoutBuilder(builder: (context, constraints) {
-                  return UnconstrainedBox(
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints(minHeight: 0, maxHeight: constraints.maxHeight, minWidth: 0, maxWidth: constraints.maxWidth),
-                      child: e,
-                    ),
-                  );
-                })).toList(),
+                children: [
+                  CoverScreen(
+                    song: _currentSong,
+                  ),
+                  const LyricScreen()
+                ]
+                    .map((e) => LayoutBuilder(builder: (context, constraints) {
+                          return UnconstrainedBox(
+                            child: ConstrainedBox(
+                              constraints: BoxConstraints(
+                                  minHeight: 0,
+                                  maxHeight: constraints.maxHeight,
+                                  minWidth: 0,
+                                  maxWidth: constraints.maxWidth),
+                              child: e,
+                            ),
+                          );
+                        }))
+                    .toList(),
               ),
             ),
             Expanded(
               flex: 2,
-              child: Container(
-                width: double.infinity,
-                color: Colors.yellow,
-                child: const Text("indicator"),
+              child: ValueListenableBuilder<int>(
+                builder: (context, value, child) {
+                  return Center(
+                    child: Indicator(
+                      count: 2,
+                      highLight: value,
+                    ),
+                  );
+                },
+                valueListenable: _selected,
               ),
             ),
             Expanded(

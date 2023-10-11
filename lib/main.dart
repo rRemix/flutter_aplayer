@@ -99,7 +99,7 @@ class _MyAppState extends State<MyApp> {
                 ),
               ),
             ),
-            Positioned(bottom: 0, child: BottomScreen())
+            const Positioned(bottom: 0, child: BottomScreen())
           ],
         ),
       ),

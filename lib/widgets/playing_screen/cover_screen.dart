@@ -17,7 +17,6 @@ class CoverScreen extends StatelessWidget {
             ? Abilities.instance.queryArtwork(song!.id, ArtworkType.AUDIO)
             : Future.value(null),
         builder: (BuildContext context, AsyncSnapshot<Uint8List?> snapshot) {
-          debugPrint("data: ${snapshot.data}");
           Widget img;
           if (snapshot.data != null) {
             img = Image.memory(
