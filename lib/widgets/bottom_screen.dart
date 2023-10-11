@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_aplayer/widgets/playing_screen/playing_screen.dart';
 import 'package:flutter_audio/models/song.dart';
 import 'package:flutter_audio/type/artwork_type.dart';
 
@@ -19,7 +20,6 @@ class BottomScreen extends StatefulWidget {
 
 class _BottomScreenState extends State<BottomScreen> {
   Song? _currentSong;
-  final _songs = <Song>[];
 
   @override
   void initState() {
@@ -30,9 +30,7 @@ class _BottomScreenState extends State<BottomScreen> {
   _loadSongs() async {
     final songs = await Abilities.instance.querySongs();
     setState(() {
-      _songs.clear();
-      _songs.addAll(songs);
-      _currentSong = _songs.firstOrNull;
+      _currentSong = songs.firstOrNull;
     });
   }
 
@@ -72,54 +70,61 @@ class _BottomScreenState extends State<BottomScreen> {
           border: Border(
               top: BorderSide(
                   width: 0.25, color: themeData.dividerColor.withAlpha(0x1f)))),
-      child: Row(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 8),
-            child: cover,
-          ),
-          Expanded(
-              child: Padding(
-            padding: const EdgeInsets.only(left: 8, right: 8),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
+      child: GestureDetector(
+        onTap: () {
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+            return const PlayingScreen();
+          }));
+        },
+        child: Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 8),
+              child: Hero(tag: "cover", child: cover,),
+            ),
+            Expanded(
+                child: Padding(
+              padding: const EdgeInsets.only(left: 8, right: 8),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    _currentSong?.displayName ?? "",
+                    maxLines: 1,
+                    style: themeData.textTheme.labelLarge,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Text(
+                    _currentSong?.album ?? "",
+                    maxLines: 1,
+                    style: themeData.textTheme.labelMedium,
+                  ),
+                ],
+              ),
+            )),
+            Row(
               children: [
-                Text(
-                  _currentSong?.displayName ?? "",
-                  maxLines: 1,
-                  style: themeData.textTheme.labelLarge,
-                  overflow: TextOverflow.ellipsis,
+                Padding(
+                  padding: const EdgeInsets.only(right: 8),
+                  child: Image.asset(
+                    "images/ic_bottom_btn_play.png",
+                    width: 48,
+                    height: 48,
+                  ),
                 ),
-                Text(
-                  _currentSong?.album ?? "",
-                  maxLines: 1,
-                  style: themeData.textTheme.labelMedium,
-                ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 12),
+                  child: Image.asset(
+                    "images/ic_bottom_btn_next.png",
+                    width: 48,
+                    height: 48,
+                  ),
+                )
               ],
             ),
-          )),
-          Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(right: 8),
-                child: Image.asset(
-                  "images/ic_bottom_btn_play.png",
-                  width: 48,
-                  height: 48,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(right: 12),
-                child: Image.asset(
-                  "images/ic_bottom_btn_next.png",
-                  width: 48,
-                  height: 48,
-                ),
-              )
-            ],
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

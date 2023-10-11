@@ -66,11 +66,11 @@ class SongItem extends StatelessWidget {
               snapshot.data!,
               width: 42,
               height: 42,
-              fit: BoxFit.contain,
+              fit: BoxFit.cover,
             );
           } else {
             img = Image.asset("images/ic_album_default.png",
-                width: 42, height: 42, fit: BoxFit.contain);
+                width: 42, height: 42, fit: BoxFit.cover);
           }
 
           return img;
@@ -81,52 +81,49 @@ class SongItem extends StatelessWidget {
     );
 
     return Material(
+      color: Colors.white,
       child: InkWell(
         onTap: () {
           //TODO
           debugPrint("click: $song");
         },
-        child: Container(
-          color: Colors.white,
-          width: double.infinity,
-          child: Row(
-            children: [
-              indicator,
-              Expanded(
-                  child: ListTile(
-                    leading: cover,
-                    title: Text(song.title),
-                    subtitle: Text(
-                      "${song.artist}-${song.album}",
-                      maxLines: 1,
-                    ),
-                    trailing: PopupMenuButton(
-                      icon: const Icon(Icons.more_vert_rounded),
-                      onSelected: (int value) {
-                        debugPrint("select: $value");
-                      },
-                      itemBuilder: (context) {
-                        return [
-                          const PopupMenuItem(
-                            value: 0,
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [Icon(Icons.playlist_add), Text("添加到播放列表")],
-                            ),
+        child: Row(
+          children: [
+            indicator,
+            Expanded(
+                child: ListTile(
+                  leading: cover,
+                  title: Text(song.title),
+                  subtitle: Text(
+                    "${song.artist}-${song.album}",
+                    maxLines: 1,
+                  ),
+                  trailing: PopupMenuButton(
+                    icon: const Icon(Icons.more_vert_rounded),
+                    onSelected: (int value) {
+                      debugPrint("select: $value");
+                    },
+                    itemBuilder: (context) {
+                      return [
+                        const PopupMenuItem(
+                          value: 0,
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [Icon(Icons.playlist_add), Text("添加到播放列表")],
                           ),
-                          const PopupMenuItem(
-                            value: 1,
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [Icon(Icons.delete), Text("删除")],
-                            ),
-                          )
-                        ];
-                      },
-                    ),
-                  ))
-            ],
-          ),
+                        ),
+                        const PopupMenuItem(
+                          value: 1,
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [Icon(Icons.delete), Text("删除")],
+                          ),
+                        )
+                      ];
+                    },
+                  ),
+                ))
+          ],
         ),
       ),
     );
