@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_aplayer/widgets/indicator.dart';
 import 'package:flutter_aplayer/widgets/playing_screen/cover_screen.dart';
+import 'package:flutter_aplayer/widgets/playing_screen/indicator.dart';
 import 'package:flutter_aplayer/widgets/playing_screen/lyric_screen.dart';
+import 'package:flutter_aplayer/widgets/playing_screen/seekbar.dart';
 import 'package:flutter_audio/models/song.dart';
 
 import '../../abilities.dart';
@@ -132,10 +133,19 @@ class _PlayingScreenState extends State<PlayingScreen> {
             ),
             Expanded(
               flex: 2,
-              child: Container(
-                width: double.infinity,
-                color: Colors.green,
-                child: const Text("seekbar"),
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: SizedBox(
+                  height: 30,
+                  child: Seekbar(
+                    listener: (seekbar, progress, fromUser) {
+                      debugPrint("progress: $progress fromUser: $fromUser");
+                    },
+                    textStyle: const TextStyle(
+                        color: Color.fromARGB(0xff, 0x6b, 0x6b, 0x6b),
+                        fontSize: 12),
+                  ),
+                ),
               ),
             ),
             Expanded(

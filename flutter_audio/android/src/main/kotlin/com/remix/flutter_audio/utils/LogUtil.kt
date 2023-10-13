@@ -23,43 +23,43 @@ object LogUtil {
   }
 
   fun println(level: Int, tag: String, message: String) {
-    if (enable && BuildConfig.DEBUG && logLevel <= level) {
+    if (enable) {
       Log.println(level, tag, message)
     }
   }
 
   fun v(tag: String, message: String) {
-    if (enable && BuildConfig.DEBUG && logLevel <= Log.VERBOSE) {
+    if (enable) {
       Log.v(tag, message)
     }
   }
 
   fun v(tag: String, message: String, tr: Throwable) {
-    if (enable && BuildConfig.DEBUG && logLevel <= Log.VERBOSE) {
+    if (enable) {
       Log.v(tag, message, tr)
     }
   }
 
   fun i(tag: String, message: String) {
-    if (enable && BuildConfig.DEBUG && logLevel <= Log.INFO) {
+    if (enable) {
       Log.i(tag, message)
     }
   }
 
   fun i(tag: String, message: String, tr: Throwable) {
-    if (enable && BuildConfig.DEBUG && logLevel <= Log.INFO) {
+    if (enable) {
       Log.i(tag, message, tr)
     }
   }
 
   fun d(tag: String, message: String) {
-    if (enable && BuildConfig.DEBUG && logLevel <= Log.DEBUG) {
+    if (enable) {
       Log.d(tag, message)
     }
   }
 
   fun d(tag: String, message: String, tr: Throwable) {
-    if (enable && BuildConfig.DEBUG && logLevel <= Log.DEBUG) {
+    if (enable) {
       Log.d(tag, message, tr)
     }
   }
