@@ -38,6 +38,7 @@ dependencies:
   flutter_audio:
     path: flutter_audio
   provider: ^6.0.5
+  audio_service: ^0.18.12
 
 
 dev_dependencies:
@@ -69,6 +70,12 @@ flutter:
     - images/ic_bottom_btn_stop.png
     - images/ic_playing_screen_back.png
     - images/ic_playing_screen_more.png
+    - images/ic_playing_screen_list.png
+    - images/ic_playing_screen_mode_loop.png
+    - images/ic_playing_screen_mode_loop_one.png
+    - images/ic_playing_screen_mode_shuffle.png
+    - images/ic_playing_screen_next.png
+    - images/ic_playing_screen_previous.png
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

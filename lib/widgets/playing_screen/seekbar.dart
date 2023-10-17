@@ -66,7 +66,6 @@ class _SeekbarState extends State<Seekbar> {
             child: Container(
               height: constraints.maxHeight,
               alignment: Alignment.center,
-              color: Colors.red,
               child: Stack(
                 alignment: Alignment.center,
                 children: [

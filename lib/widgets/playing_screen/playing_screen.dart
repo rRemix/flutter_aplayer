@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_aplayer/widgets/playing_screen/cover_screen.dart';
 import 'package:flutter_aplayer/widgets/playing_screen/indicator.dart';
 import 'package:flutter_aplayer/widgets/playing_screen/lyric_screen.dart';
+import 'package:flutter_aplayer/widgets/playing_screen/play_pause_button.dart';
 import 'package:flutter_aplayer/widgets/playing_screen/seekbar.dart';
 import 'package:flutter_audio/models/song.dart';
 
@@ -149,13 +150,60 @@ class _PlayingScreenState extends State<PlayingScreen> {
               ),
             ),
             Expanded(
-              flex: 4,
-              child: Container(
-                width: double.infinity,
-                color: Colors.black,
-                child: const Text("bottom control"),
+              flex: 2,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  IconButton(
+                    onPressed: () {},
+                    splashRadius: 24,
+                    icon: Image.asset(
+                      "images/ic_playing_screen_mode_loop.png",
+                      width: 24,
+                      height: 24,
+                      color: themeData.primaryColor.withOpacity(0.4),
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () {},
+                    splashRadius: 24,
+                    icon: Image.asset(
+                      "images/ic_playing_screen_previous.png",
+                      width: 24,
+                      height: 24,
+                      color: themeData.primaryColor,
+                    ),
+                  ),
+                  PlayPauseButton(
+                    initial: false,
+                    callback: (isPlay) {
+                      debugPrint("isPlay: $isPlay");
+                    },
+                  ),
+                  IconButton(
+                    onPressed: () {},
+                    splashRadius: 24,
+                    icon: Image.asset(
+                      "images/ic_playing_screen_next.png",
+                      width: 24,
+                      height: 24,
+                      color: themeData.primaryColor,
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () {},
+                    splashRadius: 24,
+                    icon: Image.asset(
+                      "images/ic_playing_screen_list.png",
+                      width: 24,
+                      height: 24,
+                      color: themeData.primaryColor.withOpacity(0.4),
+                    ),
+                  )
+                ],
               ),
             ),
+            const Spacer(flex: 2)
           ],
         ),
       ),
