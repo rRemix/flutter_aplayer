@@ -1,6 +1,4 @@
-
-
-class Song{
+class Song {
   final num id;
   final String displayName;
   final String title;
@@ -34,42 +32,19 @@ class Song{
     required this.dateModified,
   });
 
+  String get uri => "content://media/external/audio/media/$id";
+  String get artUri => "content://media/external/audio/media/$id/albumart";
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is Song &&
           runtimeType == other.runtimeType &&
-          id == other.id &&
-          displayName == other.displayName &&
-          title == other.title &&
-          album == other.album &&
-          albumId == other.albumId &&
-          artist == other.artist &&
-          artistId == other.artistId &&
-          duration == other.duration &&
-          data == other.data &&
-          size == other.size &&
-          year == other.year &&
-          genre == other.genre &&
-          track == other.track &&
-          dateModified == other.dateModified);
+          id == other.id);
 
   @override
   int get hashCode =>
-      id.hashCode ^
-      displayName.hashCode ^
-      title.hashCode ^
-      album.hashCode ^
-      albumId.hashCode ^
-      artist.hashCode ^
-      artistId.hashCode ^
-      duration.hashCode ^
-      data.hashCode ^
-      size.hashCode ^
-      year.hashCode ^
-      genre.hashCode ^
-      track.hashCode ^
-      dateModified.hashCode;
+      id.hashCode;
 
   @override
   String toString() {
@@ -164,4 +139,6 @@ class Song{
   }
 
 //</editor-fold>
+
+
 }

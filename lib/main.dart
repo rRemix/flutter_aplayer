@@ -1,16 +1,36 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_aplayer/abilities.dart';
+import 'package:flutter_aplayer/service/audio_handler_impl.dart';
+import 'package:flutter_aplayer/service/audio_service_provider.dart';
 import 'package:flutter_aplayer/widgets/bottom_screen.dart';
 import 'package:flutter_aplayer/widgets/library/album_library.dart';
 import 'package:flutter_aplayer/widgets/library/arist_library.dart';
 import 'package:flutter_aplayer/widgets/library/genre_library.dart';
 import 'package:flutter_aplayer/widgets/library/playlist_library.dart';
 import 'package:flutter_aplayer/widgets/library/song_library.dart';
+import 'package:get_it/get_it.dart';
+import 'package:logger/logger.dart';
 
-void main() async{
+late Logger logger;
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Abilities.instance.setLogEnable(false);
+
+  await startService();
   runApp(const MyApp());
+}
+
+Future<void> startService() async {
+  logger = Logger(printer: PrettyPrinter(methodCount: 0, printEmojis: false));
+
+  Abilities.instance.setLogEnable(false);
+
+  final audioHandlerHelper = AudioHandlerHelper();
+  final audioHandler = await audioHandlerHelper.getAudioHandler();
+
+  GetIt.I.registerSingleton<AudioHandlerImpl>(audioHandler);
 }
 
 class MyApp extends StatefulWidget {
