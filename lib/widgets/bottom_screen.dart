@@ -1,12 +1,12 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_aplayer/widgets/cover.dart';
 import 'package:flutter_aplayer/widgets/playing_screen/playing_screen.dart';
 import 'package:flutter_audio/type/artwork_type.dart';
 import 'package:get_it/get_it.dart';
 
 import '../abilities.dart';
-import '../main.dart';
 import '../service/audio_handler_impl.dart';
 
 const double bottomScreenHeight = 64;
@@ -37,30 +37,7 @@ class _BottomScreenState extends State<BottomScreen> {
       builder: (context, snapshot) {
         final mediaItem = snapshot.data;
 
-        final cover = FutureBuilder(
-            future: mediaItem != null
-                ? Abilities.instance
-                    .queryArtwork(int.parse(mediaItem.id), ArtworkType.AUDIO)
-                : Future.value(null),
-            builder:
-                (BuildContext context, AsyncSnapshot<Uint8List?> snapshot) {
-              Widget img;
-              if (snapshot.data != null) {
-                img = Image.memory(
-                  snapshot.data!,
-                  width: 48,
-                  height: 48,
-                  fit: BoxFit.contain,
-                );
-              } else {
-                img = Image.asset("images/ic_album_default.png",
-                    width: 48, height: 48, fit: BoxFit.contain);
-              }
-
-              return ClipOval(
-                child: img,
-              );
-            });
+        final cover = Cover(id: mediaItem != null ? int.parse(mediaItem.id) : null, type: ArtworkType.AUDIO, size: 48,);
 
         return Container(
           width: MediaQuery.of(context).size.width,
@@ -83,7 +60,9 @@ class _BottomScreenState extends State<BottomScreen> {
                   padding: const EdgeInsets.only(left: 8),
                   child: Hero(
                     tag: "cover",
-                    child: cover,
+                    child: ClipOval(
+                      child: cover,
+                    ),
                   ),
                 ),
                 Expanded(

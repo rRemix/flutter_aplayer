@@ -1,8 +1,7 @@
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_aplayer/abilities.dart';
 import 'package:flutter_aplayer/service/audio_handler_impl.dart';
+import 'package:flutter_aplayer/widgets/cover.dart';
 import 'package:flutter_aplayer/widgets/library/abs_library.dart';
 import 'package:flutter_audio/core.dart';
 import 'package:get_it/get_it.dart';
@@ -76,24 +75,11 @@ class SongItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeData = Theme.of(context);
 
-    final cover = FutureBuilder(
-        future: Abilities.instance.queryArtwork(song.id, ArtworkType.AUDIO),
-        builder: (BuildContext context, AsyncSnapshot<Uint8List?> snapshot) {
-          Widget img;
-          if (snapshot.data != null) {
-            img = Image.memory(
-              snapshot.data!,
-              width: 42,
-              height: 42,
-              fit: BoxFit.cover,
-            );
-          } else {
-            img = Image.asset("images/ic_album_default.png",
-                width: 42, height: 42, fit: BoxFit.cover);
-          }
-
-          return img;
-        });
+    final cover = Cover(
+      id: song.id,
+      type: ArtworkType.AUDIO,
+      size: 42,
+    );
     final indicator = Container(
       width: 4,
       color: highLight ? themeData.primaryColor : Colors.transparent,

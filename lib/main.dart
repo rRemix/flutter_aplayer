@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_aplayer/abilities.dart';
@@ -12,12 +11,12 @@ import 'package:flutter_aplayer/setting_page.dart';
 import 'package:flutter_aplayer/support_page.dart';
 import 'package:flutter_aplayer/utils.dart';
 import 'package:flutter_aplayer/widgets/bottom_screen.dart';
+import 'package:flutter_aplayer/widgets/cover.dart';
 import 'package:flutter_aplayer/widgets/library/album_library.dart';
 import 'package:flutter_aplayer/widgets/library/arist_library.dart';
 import 'package:flutter_aplayer/widgets/library/genre_library.dart';
 import 'package:flutter_aplayer/widgets/library/playlist_library.dart';
 import 'package:flutter_aplayer/widgets/library/song_library.dart';
-import 'package:flutter_audio/type/artwork_type.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
 import 'package:logger/logger.dart';
@@ -172,33 +171,6 @@ class _DrawerState extends State<_Drawer> {
 
   @override
   Widget build(BuildContext context) {
-    final cover = StreamBuilder(
-        stream: audioHandler.mediaItem,
-        builder: (context, snapshot) {
-          final mediaItem = snapshot.data;
-
-          return FutureBuilder(
-              future: mediaItem != null
-                  ? Abilities.instance
-                      .queryArtwork(int.parse(mediaItem.id), ArtworkType.AUDIO)
-                  : Future.value(null),
-              builder:
-                  (BuildContext context, AsyncSnapshot<Uint8List?> snapshot) {
-                Widget img;
-                if (snapshot.data != null) {
-                  img = Image.memory(
-                    snapshot.data!,
-                    fit: BoxFit.cover,
-                  );
-                } else {
-                  img = Image.asset("images/ic_album_default.png",
-                      fit: BoxFit.cover);
-                }
-
-                return img;
-              });
-        });
-
     final themeData = Theme.of(context);
     final List<Map<String, dynamic>> menu = [
       {
@@ -267,13 +239,13 @@ class _DrawerState extends State<_Drawer> {
                 color: themeData.primaryColor,
                 child: Column(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 48, bottom: 10),
+                    const Padding(
+                      padding: EdgeInsets.only(top: 48, bottom: 10),
                       child: Center(
                         child: SizedBox(
                           width: 108,
                           height: 108,
-                          child: cover,
+                          child: StreamCover(),
                         ),
                       ),
                     ),
