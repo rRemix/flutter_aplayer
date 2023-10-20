@@ -13,8 +13,7 @@ class StreamCover extends StatelessWidget {
   final BoxFit? boxFit;
   final double? size;
 
-  const StreamCover(
-      {super.key, this.boxFit, this.size});
+  const StreamCover({super.key, this.boxFit, this.size});
 
   @override
   Widget build(BuildContext context) {

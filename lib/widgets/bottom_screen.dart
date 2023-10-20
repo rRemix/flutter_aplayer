@@ -1,12 +1,9 @@
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_aplayer/widgets/cover.dart';
 import 'package:flutter_aplayer/widgets/playing_screen/playing_screen.dart';
 import 'package:flutter_audio/type/artwork_type.dart';
 import 'package:get_it/get_it.dart';
 
-import '../abilities.dart';
 import '../service/audio_handler_impl.dart';
 
 const double bottomScreenHeight = 64;
@@ -37,23 +34,29 @@ class _BottomScreenState extends State<BottomScreen> {
       builder: (context, snapshot) {
         final mediaItem = snapshot.data;
 
-        final cover = Cover(id: mediaItem != null ? int.parse(mediaItem.id) : null, type: ArtworkType.AUDIO, size: 48,);
+        final cover = Cover(
+          id: mediaItem != null ? int.parse(mediaItem.id) : null,
+          type: ArtworkType.AUDIO,
+          size: 48,
+        );
 
-        return Container(
-          width: MediaQuery.of(context).size.width,
-          height: bottomScreenHeight,
-          decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border(
-                  top: BorderSide(
-                      width: 0.25,
-                      color: themeData.dividerColor.withAlpha(0x1f)))),
-          child: GestureDetector(
-            onTap: () {
+        return GestureDetector(
+          onTap: () {
+            if (mediaItem != null) {
               Navigator.of(context).push(MaterialPageRoute(builder: (context) {
                 return const PlayingScreen();
               }));
-            },
+            }
+          },
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            height: bottomScreenHeight,
+            decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border(
+                    top: BorderSide(
+                        width: 0.25,
+                        color: themeData.dividerColor.withAlpha(0x1f)))),
             child: Row(
               children: [
                 Padding(
