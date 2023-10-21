@@ -17,10 +17,13 @@ import 'package:flutter_aplayer/widgets/library/arist_library.dart';
 import 'package:flutter_aplayer/widgets/library/genre_library.dart';
 import 'package:flutter_aplayer/widgets/library/playlist_library.dart';
 import 'package:flutter_aplayer/widgets/library/song_library.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
 import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
+
+import 'generated/l10n.dart';
 
 late Logger logger;
 
@@ -69,7 +72,6 @@ class _MyAppState extends State<MyApp> {
     const GenreLibrary(),
     const PlayListLibrary()
   ];
-  final titles = ["歌曲", "专辑", "艺术家", "流派", "播放列表"];
 
   @override
   void initState() {
@@ -84,69 +86,92 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        drawer: _Drawer(),
-        body: Stack(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(bottom: bottomScreenHeight),
-              child: DefaultTabController(
-                length: titles.length,
-                child: NestedScrollView(
-                  headerSliverBuilder:
-                      (BuildContext context, bool innerBoxIsScrolled) {
-                    return <Widget>[
-                      SliverOverlapAbsorber(
-                        handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
-                            context),
-                        sliver: SliverAppBar(
-                          title: const Text("APlayer"),
-                          leading: IconButton(
-                            icon: const Icon(Icons.menu),
-                            onPressed: () {
-                              Scaffold.of(context).openDrawer();
-                            },
-                          ),
-                          floating: true,
-                          snap: true,
-                          pinned: true,
-                          forceElevated: innerBoxIsScrolled,
-                          bottom: TabBar(
-                            tabs: titles
-                                .map((String name) => Tab(text: name))
-                                .toList(),
-                          ),
-                        ),
-                      ),
-                    ];
-                  },
-                  body: TabBarView(
-                    children: titles.asMap().keys.map((int index) {
-                      return Builder(
-                        builder: (BuildContext context) {
-                          return Container(
-                            color: const Color.fromARGB(0xff, 0xf1, 0xf1, 0xf1),
-                            child: CustomScrollView(
-                              key: PageStorageKey<String>(titles[index]),
-                              slivers: <Widget>[
-                                SliverOverlapInjector(
-                                  handle: NestedScrollView
-                                      .sliverOverlapAbsorberHandleFor(context),
-                                ),
-                                children[index],
-                              ],
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        S.delegate
+      ],
+      locale: const Locale("zh", "CN"),
+      supportedLocales: S.delegate.supportedLocales,
+      home: Builder(
+        builder: (context) {
+          final titles = [
+            S.of(context).tab_song,
+            S.of(context).tab_album,
+            S.of(context).tab_artist,
+            S.of(context).tab_genre,
+            S.of(context).tab_playlist
+          ];
+
+          return Scaffold(
+            drawer: _Drawer(),
+            body: Stack(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: bottomScreenHeight),
+                  child: DefaultTabController(
+                    length: titles.length,
+                    child: NestedScrollView(
+                      headerSliverBuilder:
+                          (BuildContext context, bool innerBoxIsScrolled) {
+                        return <Widget>[
+                          SliverOverlapAbsorber(
+                            handle:
+                                NestedScrollView.sliverOverlapAbsorberHandleFor(
+                                    context),
+                            sliver: SliverAppBar(
+                              title: const Text("APlayer"),
+                              leading: IconButton(
+                                icon: const Icon(Icons.menu),
+                                onPressed: () {
+                                  Scaffold.of(context).openDrawer();
+                                },
+                              ),
+                              floating: true,
+                              snap: true,
+                              pinned: true,
+                              forceElevated: innerBoxIsScrolled,
+                              bottom: TabBar(
+                                tabs: titles
+                                    .map((String name) => Tab(text: name))
+                                    .toList(),
+                              ),
                             ),
+                          ),
+                        ];
+                      },
+                      body: TabBarView(
+                        children: titles.asMap().keys.map((int index) {
+                          return Builder(
+                            builder: (BuildContext context) {
+                              return Container(
+                                color: const Color.fromARGB(
+                                    0xff, 0xf1, 0xf1, 0xf1),
+                                child: CustomScrollView(
+                                  key: PageStorageKey<String>(titles[index]),
+                                  slivers: <Widget>[
+                                    SliverOverlapInjector(
+                                      handle: NestedScrollView
+                                          .sliverOverlapAbsorberHandleFor(
+                                              context),
+                                    ),
+                                    children[index],
+                                  ],
+                                ),
+                              );
+                            },
                           );
-                        },
-                      );
-                    }).toList(),
+                        }).toList(),
+                      ),
+                    ),
                   ),
                 ),
-              ),
+                const Positioned(bottom: 0, child: BottomScreen())
+              ],
             ),
-            const Positioned(bottom: 0, child: BottomScreen())
-          ],
-        ),
+          );
+        },
       ),
     );
   }
@@ -174,7 +199,7 @@ class _DrawerState extends State<_Drawer> {
     final themeData = Theme.of(context);
     final List<Map<String, dynamic>> menu = [
       {
-        "text": "歌曲库",
+        "text": S.of(context).song_library,
         "icon": Icon(
           Icons.library_music,
           color: themeData.primaryColor,
@@ -184,7 +209,7 @@ class _DrawerState extends State<_Drawer> {
         }
       },
       {
-        "text": "最近播放",
+        "text": S.of(context).play_history,
         "icon": Icon(
           Icons.access_time,
           color: themeData.primaryColor,
@@ -196,7 +221,7 @@ class _DrawerState extends State<_Drawer> {
         }
       },
       {
-        "text": "支持开发者",
+        "text": S.of(context).support_developer,
         "icon": Icon(Icons.favorite, color: themeData.primaryColor),
         "callback": () {
           Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -205,7 +230,7 @@ class _DrawerState extends State<_Drawer> {
         }
       },
       {
-        "text": "设置",
+        "text": S.of(context).setting,
         "icon": Icon(Icons.settings, color: themeData.primaryColor),
         "callback": () {
           Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -214,7 +239,7 @@ class _DrawerState extends State<_Drawer> {
         }
       },
       {
-        "text": "退出",
+        "text": S.of(context).exit,
         "icon": Icon(
           Icons.exit_to_app,
           color: themeData.primaryColor,
@@ -265,7 +290,7 @@ class _DrawerState extends State<_Drawer> {
                                     vertical: 8, horizontal: 30),
                                 child: Text(
                                   snapshot.hasData
-                                      ? "正在播放: ${snapshot.data?.title}"
+                                      ? S.of(context).playing_song(snapshot.data!.title)
                                       : "",
                                   maxLines: 1,
                                   style: const TextStyle(

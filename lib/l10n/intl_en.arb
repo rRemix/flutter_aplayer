@@ -1,0 +1,17 @@
+{
+  "tab_song": "Song",
+  "tab_album": "Album",
+  "tab_artist": "Artist",
+  "tab_genre": "Genre",
+  "tab_playlist": "Playlist",
+
+  "song_library": "Library",
+  "play_history" : "Playback History",
+  "support_developer" : "Support Developer",
+  "setting" : "Settings",
+  "exit": "Exit",
+  "playing_song": "Playing: {title}",
+
+  "add_to_playlist" : "add to playlist",
+  "delete" : "delete"
+}

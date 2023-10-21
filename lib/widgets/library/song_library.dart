@@ -6,6 +6,8 @@ import 'package:flutter_aplayer/widgets/library/abs_library.dart';
 import 'package:flutter_audio/core.dart';
 import 'package:get_it/get_it.dart';
 
+import '../../generated/l10n.dart';
+
 class SongLibrary extends AbsLibrary {
   const SongLibrary({super.key});
 
@@ -109,18 +111,24 @@ class SongItem extends StatelessWidget {
                 },
                 itemBuilder: (context) {
                   return [
-                    const PopupMenuItem(
+                    PopupMenuItem(
                       value: 0,
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [Icon(Icons.playlist_add), Text("添加到播放列表")],
+                        children: [
+                          const Icon(Icons.playlist_add),
+                          Text(S.of(context).add_to_playlist)
+                        ],
                       ),
                     ),
-                    const PopupMenuItem(
+                    PopupMenuItem(
                       value: 1,
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [Icon(Icons.delete), Text("删除")],
+                        children: [
+                          const Icon(Icons.delete),
+                          Text(S.of(context).delete)
+                        ],
                       ),
                     )
                   ];

@@ -1,0 +1,17 @@
+{
+  "tab_song": "歌曲",
+  "tab_album": "专辑",
+  "tab_artist": "艺术家",
+  "tab_genre": "流派",
+  "tab_playlist": "播放列表",
+
+  "song_library": "歌曲库",
+  "play_history" : "播放历史",
+  "support_developer" : "支持开发者",
+  "setting" : "设置",
+  "exit": "退出",
+  "playing_song": "正在播放: {title}",
+
+  "add_to_playlist" : "添加到播放列表",
+  "delete" : "删除"
+}
