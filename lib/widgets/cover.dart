@@ -9,11 +9,14 @@ import '../service/audio_handler_impl.dart';
 
 final AudioHandlerImpl _audioHandler = GetIt.I<AudioHandlerImpl>();
 
+typedef Callback = Function(Uint8List coverBytes);
+
 class StreamCover extends StatelessWidget {
   final BoxFit? boxFit;
   final double? size;
+  final Callback? callback;
 
-  const StreamCover({super.key, this.boxFit, this.size});
+  const StreamCover({super.key, this.boxFit, this.size, this.callback});
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +25,10 @@ class StreamCover extends StatelessWidget {
         builder: (context, snapshot) {
           final mediaItem = snapshot.data;
           return Cover(
-              id: mediaItem != null ? int.parse(mediaItem.id) : null,
-              type: ArtworkType.AUDIO);
+            id: mediaItem != null ? int.parse(mediaItem.id) : null,
+            type: ArtworkType.AUDIO,
+            callback: callback,
+          );
         });
   }
 }
@@ -33,13 +38,15 @@ class Cover extends StatelessWidget {
   final ArtworkType type;
   final BoxFit? boxFit;
   final double? size;
+  final Callback? callback;
 
   const Cover(
       {super.key,
       required this.id,
       required this.type,
       this.size,
-      this.boxFit});
+      this.boxFit,
+      this.callback});
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +57,7 @@ class Cover extends StatelessWidget {
         builder: (BuildContext context, AsyncSnapshot<Uint8List?> snapshot) {
           Widget img;
           if (snapshot.data != null) {
+            callback?.call(snapshot.data!);
             img = Image.memory(
               snapshot.data!,
               fit: boxFit ?? BoxFit.cover,

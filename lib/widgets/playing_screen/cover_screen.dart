@@ -7,9 +7,8 @@ import '../cover.dart';
 
 class CoverScreen extends StatelessWidget {
   final AudioHandlerImpl audioHandler = GetIt.I<AudioHandlerImpl>();
-  final Song? song;
-
-  CoverScreen({super.key, required this.song});
+  final Callback? callback;
+  CoverScreen({super.key, this.callback});
 
   @override
   Widget build(BuildContext context) {
@@ -28,9 +27,9 @@ class CoverScreen extends StatelessWidget {
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8),
-              child: const AspectRatio(
+              child: AspectRatio(
                 aspectRatio: 1,
-                child: StreamCover(),
+                child: StreamCover(callback: callback,),
               ),
             ),
           ),
