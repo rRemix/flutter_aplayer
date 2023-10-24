@@ -27,7 +27,7 @@ const _defaultColor = Color.fromARGB(0xff, 0x88, 0x88, 0x88);
 class _PlayingScreenState extends State<PlayingScreen>
     with TickerProviderStateMixin {
   final AudioHandlerImpl audioHandlerImpl = GetIt.I<AudioHandlerImpl>();
-  final ValueNotifier<int> _selected = ValueNotifier(0);
+  final ValueNotifier<int> _selectedPage = ValueNotifier(0);
   late AnimationController _controller;
 
   @override
@@ -131,7 +131,7 @@ class _PlayingScreenState extends State<PlayingScreen>
                 flex: 12,
                 child: PageView(
                   onPageChanged: (int index) {
-                    _selected.value = index;
+                    _selectedPage.value = index;
                   },
                   children: [
                     CoverScreen(
@@ -168,7 +168,7 @@ class _PlayingScreenState extends State<PlayingScreen>
                       ),
                     );
                   },
-                  valueListenable: _selected,
+                  valueListenable: _selectedPage,
                 ),
               ),
               Expanded(
@@ -179,7 +179,9 @@ class _PlayingScreenState extends State<PlayingScreen>
                     height: 30,
                     child: Seekbar(
                       listener: (seekbar, progress, fromUser) {
-                        debugPrint("progress: $progress fromUser: $fromUser");
+                        if(mediaItem != null) {
+                          audioHandlerImpl.seek(mediaItem.duration! * progress);
+                        }
                       },
                       textStyle: const TextStyle(
                           color: Color.fromARGB(0xff, 0x6b, 0x6b, 0x6b),
@@ -251,7 +253,7 @@ class _PlayingScreenState extends State<PlayingScreen>
               builder: (context, snapshot) {
                 const surfaceColor = Colors.white;
                 final targetColor =
-                    snapshot.hasData ? snapshot.data! : Colors.white;
+                    snapshot.hasData ? snapshot.data!.withAlpha(0x7f) : Colors.white;
                 final animation =
                     ColorTween(begin: surfaceColor, end: targetColor)
                         .animate(_controller);
@@ -265,7 +267,6 @@ class _PlayingScreenState extends State<PlayingScreen>
                     animation: animation,
                     child: child,
                     builder: (ctx, child) {
-                      logger.i("value: ${animation.value}");
                       return DecoratedBox(
                         decoration: BoxDecoration(
                             gradient: LinearGradient(

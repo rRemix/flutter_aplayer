@@ -16,6 +16,11 @@ class AudioHandlerImpl extends BaseAudioHandler with QueueHandler, SeekHandler {
   final List<Song> _queue = <Song>[];
   final List<Song> _allSongs = <Song>[];
 
+  Stream<Duration?> get durationStream =>
+      mediaItem.map((event) => event?.duration).distinct();
+
+  Stream<Duration> get positionStream => _player.positionStream;
+
   AudioHandlerImpl() {
     _init();
   }
@@ -86,6 +91,12 @@ class AudioHandlerImpl extends BaseAudioHandler with QueueHandler, SeekHandler {
       ));
     });
 
+    _player.processingStateStream.listen((state) {
+      if (state == ProcessingState.completed) {
+        skipToNext();
+      }
+    });
+
     _restore();
   }
 
@@ -119,6 +130,11 @@ class AudioHandlerImpl extends BaseAudioHandler with QueueHandler, SeekHandler {
   @override
   Future<void> stop() {
     return _player.stop();
+  }
+
+  @override
+  Future<void> seek(Duration position) {
+    return _player.seek(position);
   }
 
   @override
