@@ -26,7 +26,7 @@ const _defaultColor = Color.fromARGB(0xff, 0x88, 0x88, 0x88);
 
 class _PlayingScreenState extends State<PlayingScreen>
     with TickerProviderStateMixin {
-  final AudioHandlerImpl audioHandlerImpl = GetIt.I<AudioHandlerImpl>();
+  final AudioHandlerImpl audioHandler = GetIt.I<AudioHandlerImpl>();
   final ValueNotifier<int> _selectedPage = ValueNotifier(0);
   late AnimationController _controller;
 
@@ -72,7 +72,7 @@ class _PlayingScreenState extends State<PlayingScreen>
 
     return Scaffold(
       body: StreamBuilder(
-        stream: audioHandlerImpl.mediaItem,
+        stream: audioHandler.mediaItem,
         builder: (context, snapshot) {
           final mediaItem = snapshot.data;
 
@@ -179,8 +179,8 @@ class _PlayingScreenState extends State<PlayingScreen>
                     height: 30,
                     child: Seekbar(
                       listener: (seekbar, progress, fromUser) {
-                        if(mediaItem != null) {
-                          audioHandlerImpl.seek(mediaItem.duration! * progress);
+                        if (mediaItem != null) {
+                          audioHandler.seek(mediaItem.duration! * progress);
                         }
                       },
                       textStyle: const TextStyle(
@@ -206,7 +206,9 @@ class _PlayingScreenState extends State<PlayingScreen>
                       ),
                     ),
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        audioHandler.skipToPrevious();
+                      },
                       splashRadius: 24,
                       icon: Image.asset(
                         "images/ic_playing_screen_previous.png",
@@ -215,14 +217,25 @@ class _PlayingScreenState extends State<PlayingScreen>
                         color: themeData.primaryColor,
                       ),
                     ),
-                    PlayPauseButton(
-                      initial: false,
-                      callback: (isPlay) {
-                        debugPrint("isPlay: $isPlay");
-                      },
-                    ),
+                    StreamBuilder(
+                        stream: audioHandler.playbackState,
+                        initialData: audioHandler.playbackState.value,
+                        builder: (context, snapshot) {
+                          return PlayPauseButton(
+                            initial: snapshot.data?.playing ?? false,
+                            onTapCallback: (isPlay) {
+                              if (isPlay) {
+                                audioHandler.play();
+                              } else {
+                                audioHandler.pause();
+                              }
+                            },
+                          );
+                        }),
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        audioHandler.skipToNext();
+                      },
                       splashRadius: 24,
                       icon: Image.asset(
                         "images/ic_playing_screen_next.png",
@@ -252,8 +265,9 @@ class _PlayingScreenState extends State<PlayingScreen>
               future: _updatePalette(mediaItem),
               builder: (context, snapshot) {
                 const surfaceColor = Colors.white;
-                final targetColor =
-                    snapshot.hasData ? snapshot.data!.withAlpha(0x7f) : Colors.white;
+                final targetColor = snapshot.hasData
+                    ? snapshot.data!.withAlpha(0x7f)
+                    : Colors.white;
                 final animation =
                     ColorTween(begin: surfaceColor, end: targetColor)
                         .animate(_controller);

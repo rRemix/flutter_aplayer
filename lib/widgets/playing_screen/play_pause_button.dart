@@ -3,43 +3,56 @@ import 'package:flutter/material.dart';
 class PlayPauseButton extends StatefulWidget {
   final double? size;
   final double? iconSize;
-  final bool? initial;
-  final ValueChanged<bool>? callback;
+  final bool initial;
+  final ValueChanged<bool>? onTapCallback;
 
   const PlayPauseButton(
-      {super.key, this.size, this.iconSize, this.initial, this.callback});
+      {super.key,
+      required this.initial,
+      this.size,
+      this.iconSize,
+      this.onTapCallback});
 
   @override
   State<StatefulWidget> createState() {
     return PlayPauseButtonState();
   }
 
-  static PlayPauseButtonState? of(BuildContext context) {
+  static PlayPauseButtonState of(BuildContext context) {
     final PlayPauseButtonState? result =
         context.findAncestorStateOfType<PlayPauseButtonState>();
     if (result != null) {
       return result;
     }
 
-    return null;
+    throw FlutterError("can't find PlayPauseButtonState");
   }
 }
 
 class PlayPauseButtonState extends State<PlayPauseButton>
     with TickerProviderStateMixin<PlayPauseButton> {
   late AnimationController _controller;
-  bool isPlay = false;
+  bool _isPlay = false;
 
   @override
   void initState() {
     _controller = AnimationController(vsync: this)
       ..drive(Tween(begin: 0, end: 1))
       ..duration = const Duration(milliseconds: 350);
-    if (isPlay = widget.initial ?? false) {
-      isPlay = true;
+    if (_isPlay = widget.initial) {
+      _isPlay = true;
       _controller.value = 1;
     }
     super.initState();
+  }
+
+  void setPlay(bool isPlay) {
+    if (isPlay) {
+      _controller.forward();
+    } else {
+      _controller.reverse();
+    }
+    _isPlay = isPlay;
   }
 
   @override
@@ -54,12 +67,12 @@ class PlayPauseButtonState extends State<PlayPauseButton>
       onTap: () {
         if (_controller.status == AnimationStatus.completed) {
           _controller.reverse();
-          isPlay = false;
-          widget.callback?.call(isPlay);
+          _isPlay = false;
+          widget.onTapCallback?.call(_isPlay);
         } else if (_controller.status == AnimationStatus.dismissed) {
           _controller.forward();
-          isPlay = true;
-          widget.callback?.call(isPlay);
+          _isPlay = true;
+          widget.onTapCallback?.call(_isPlay);
         }
       },
       child: ClipOval(
@@ -77,5 +90,13 @@ class PlayPauseButtonState extends State<PlayPauseButton>
         ),
       ),
     );
+  }
+
+  @override
+  void didUpdateWidget(PlayPauseButton oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.initial != widget.initial) {
+      setPlay(widget.initial);
+    }
   }
 }
