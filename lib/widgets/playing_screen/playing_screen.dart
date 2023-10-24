@@ -22,7 +22,7 @@ class PlayingScreen extends StatefulWidget {
   }
 }
 
-const _defaultColor = Color.fromARGB(0xff, 0x88, 0x88, 0x88);
+final _defaultPaletteColor = PaletteColor(Color.fromARGB(0xff, 0x88, 0x88, 0x88), 100);
 
 class _PlayingScreenState extends State<PlayingScreen>
     with TickerProviderStateMixin {
@@ -43,7 +43,7 @@ class _PlayingScreenState extends State<PlayingScreen>
     super.dispose();
   }
 
-  Future<Color> _updatePalette(MediaItem? mediaItem) async {
+  Future<PaletteColor> _updatePalette(MediaItem? mediaItem) async {
     if (mediaItem != null) {
       return Future(() async {
         final bytes = await Abilities.instance
@@ -54,16 +54,16 @@ class _PlayingScreenState extends State<PlayingScreen>
           final paletteColors = <PaletteColor>[];
           paletteColors.addAll(paletteGenerator.paletteColors);
           if (paletteColors.isEmpty) {
-            paletteColors.add(PaletteColor(_defaultColor, 100));
+            paletteColors.add(_defaultPaletteColor);
           }
           paletteColors.sort((a, b) => -a.population.compareTo(b.population));
-          return paletteColors.first.color;
+          return paletteColors.first;
         }
-        return _defaultColor;
+        return _defaultPaletteColor;
       });
     }
 
-    return Future.value(_defaultColor);
+    return Future.value(_defaultPaletteColor);
   }
 
   @override
@@ -76,202 +76,214 @@ class _PlayingScreenState extends State<PlayingScreen>
         builder: (context, snapshot) {
           final mediaItem = snapshot.data;
 
-          final child = Flex(
-            direction: Axis.vertical,
-            children: [
-              Expanded(
-                flex: 2,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8),
-                      child: Image.asset(
-                        "images/ic_playing_screen_back.png",
-                        width: 24,
-                        height: 24,
-                      ),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Text(
-                              mediaItem?.title ?? "",
-                              style: themeData.textTheme.headlineMedium!
-                                  .copyWith(fontSize: 18),
-                              maxLines: 1,
-                            ),
-                            Text(
-                              "${mediaItem?.album}-${mediaItem?.artist}",
-                              style: themeData.textTheme.labelMedium!
-                                  .copyWith(fontSize: 14),
-                              maxLines: 1,
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 8),
-                      child: Image.asset(
-                        "images/ic_playing_screen_more.png",
-                        width: 24,
-                        height: 24,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Expanded(
-                flex: 12,
-                child: PageView(
-                  onPageChanged: (int index) {
-                    _selectedPage.value = index;
-                  },
-                  children: [
-                    CoverScreen(
-                      callback: (coverBytes) {
-                        // _updatePalette(coverBytes);
-                      },
-                    ),
-                    const LyricScreen()
-                  ]
-                      .map(
-                          (e) => LayoutBuilder(builder: (context, constraints) {
-                                return UnconstrainedBox(
-                                  child: ConstrainedBox(
-                                    constraints: BoxConstraints(
-                                        minHeight: 0,
-                                        maxHeight: constraints.maxHeight,
-                                        minWidth: 0,
-                                        maxWidth: constraints.maxWidth),
-                                    child: e,
-                                  ),
-                                );
-                              }))
-                      .toList(),
-                ),
-              ),
-              Expanded(
-                flex: 2,
-                child: ValueListenableBuilder<int>(
-                  builder: (context, value, child) {
-                    return Center(
-                      child: Indicator(
-                        count: 2,
-                        highLight: value,
-                      ),
-                    );
-                  },
-                  valueListenable: _selectedPage,
-                ),
-              ),
-              Expanded(
-                flex: 2,
-                child: Align(
-                  alignment: Alignment.topCenter,
-                  child: SizedBox(
-                    height: 30,
-                    child: Seekbar(
-                      listener: (seekbar, progress, fromUser) {
-                        if (mediaItem != null) {
-                          audioHandler.seek(mediaItem.duration! * progress);
-                        }
-                      },
-                      textStyle: const TextStyle(
-                          color: Color.fromARGB(0xff, 0x6b, 0x6b, 0x6b),
-                          fontSize: 12),
-                    ),
-                  ),
-                ),
-              ),
-              Expanded(
-                flex: 2,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    IconButton(
-                      onPressed: () {},
-                      splashRadius: 24,
-                      icon: Image.asset(
-                        "images/ic_playing_screen_mode_loop.png",
-                        width: 24,
-                        height: 24,
-                        color: themeData.primaryColor.withOpacity(0.4),
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        audioHandler.skipToPrevious();
-                      },
-                      splashRadius: 24,
-                      icon: Image.asset(
-                        "images/ic_playing_screen_previous.png",
-                        width: 24,
-                        height: 24,
-                        color: themeData.primaryColor,
-                      ),
-                    ),
-                    StreamBuilder(
-                        stream: audioHandler.playbackState,
-                        initialData: audioHandler.playbackState.value,
-                        builder: (context, snapshot) {
-                          return PlayPauseButton(
-                            initial: snapshot.data?.playing ?? false,
-                            onTapCallback: (isPlay) {
-                              if (isPlay) {
-                                audioHandler.play();
-                              } else {
-                                audioHandler.pause();
-                              }
-                            },
-                          );
-                        }),
-                    IconButton(
-                      onPressed: () {
-                        audioHandler.skipToNext();
-                      },
-                      splashRadius: 24,
-                      icon: Image.asset(
-                        "images/ic_playing_screen_next.png",
-                        width: 24,
-                        height: 24,
-                        color: themeData.primaryColor,
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () {},
-                      splashRadius: 24,
-                      icon: Image.asset(
-                        "images/ic_playing_screen_list.png",
-                        width: 24,
-                        height: 24,
-                        color: themeData.primaryColor.withOpacity(0.4),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              const Spacer(flex: 2)
-            ],
-          );
-
           return FutureBuilder(
               future: _updatePalette(mediaItem),
               builder: (context, snapshot) {
+                final paletteColor = snapshot.data!;
+                final child = Flex(
+                  direction: Axis.vertical,
+                  children: [
+                    Expanded(
+                      flex: 2,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8),
+                            child: Image.asset(
+                              "images/ic_playing_screen_back.png",
+                              width: 20,
+                              height: 20,
+                              color: paletteColor.titleTextColor,
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 20),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Text(
+                                    mediaItem?.title ?? "",
+                                    style: TextStyle(fontSize: 18, color: paletteColor.titleTextColor),
+                                    maxLines: 1,
+                                  ),
+                                  Text(
+                                    "${mediaItem?.album}-${mediaItem?.artist}",
+                                    style: TextStyle(fontSize: 14, color: paletteColor.bodyTextColor),
+                                    maxLines: 1,
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 8),
+                            child: Image.asset(
+                              "images/ic_playing_screen_more.png",
+                              width: 20,
+                              height: 20,
+                              color: paletteColor.titleTextColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      flex: 12,
+                      child: PageView(
+                        onPageChanged: (int index) {
+                          _selectedPage.value = index;
+                        },
+                        children: [
+                          CoverScreen(
+                            callback: (coverBytes) {
+                              // _updatePalette(coverBytes);
+                            },
+                          ),
+                          const LyricScreen()
+                        ]
+                            .map(
+                                (e) => LayoutBuilder(builder: (context, constraints) {
+                              return UnconstrainedBox(
+                                child: ConstrainedBox(
+                                  constraints: BoxConstraints(
+                                      minHeight: 0,
+                                      maxHeight: constraints.maxHeight,
+                                      minWidth: 0,
+                                      maxWidth: constraints.maxWidth),
+                                  child: e,
+                                ),
+                              );
+                            }))
+                            .toList(),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 2,
+                      child: ValueListenableBuilder<int>(
+                        builder: (context, value, child) {
+                          return Center(
+                            child: Indicator(
+                              count: 2,
+                              highLight: value,
+                              normalColor: paletteColor.color.withOpacity(0.3),
+                              highLightColor: paletteColor.color,
+                            ),
+                          );
+                        },
+                        valueListenable: _selectedPage,
+                      ),
+                    ),
+                    Expanded(
+                      flex: 2,
+                      child: Align(
+                        alignment: Alignment.topCenter,
+                        child: SizedBox(
+                          height: 30,
+                          child: Seekbar(
+                            listener: (seekbar, progress, fromUser) {
+                              if (mediaItem != null) {
+                                audioHandler.seek(mediaItem.duration! * progress);
+                              }
+                            },
+                            trackColor: paletteColor.color,
+                            textStyle: const TextStyle(
+                                color: Color.fromARGB(0xff, 0x6b, 0x6b, 0x6b),
+                                fontSize: 12),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 2,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          IconButton(
+                            onPressed: () {},
+                            splashRadius: 30,
+                            highlightColor: paletteColor.color,
+                            icon: Image.asset(
+                              "images/ic_playing_screen_mode_loop.png",
+                              width: 24,
+                              height: 24,
+                              color: paletteColor.color.withOpacity(0.5),
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              audioHandler.skipToPrevious();
+                              audioHandler.play();
+                            },
+                            splashRadius: 30,
+                            highlightColor: paletteColor.color,
+                            icon: Image.asset(
+                              "images/ic_playing_screen_previous.png",
+                              width: 24,
+                              height: 24,
+                              color: paletteColor.color,
+                            ),
+                          ),
+                          StreamBuilder(
+                              stream: audioHandler.playbackState,
+                              initialData: audioHandler.playbackState.value,
+                              builder: (context, snapshot) {
+                                return PlayPauseButton(
+                                  initial: snapshot.data?.playing ?? false,
+                                  backgroundColor: paletteColor.color,
+                                  onTapCallback: (isPlay) {
+                                    if (isPlay) {
+                                      audioHandler.play();
+                                    } else {
+                                      audioHandler.pause();
+                                    }
+                                  },
+                                );
+                              }),
+                          IconButton(
+                            onPressed: () {
+                              audioHandler.skipToNext();
+                              audioHandler.play();
+                            },
+                            splashRadius: 30,
+                            highlightColor: paletteColor.color,
+                            icon: Image.asset(
+                              "images/ic_playing_screen_next.png",
+                              width: 24,
+                              height: 24,
+                              color: paletteColor.color,
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () {},
+                            splashRadius: 30,
+                            highlightColor: paletteColor.color,
+                            icon: Image.asset(
+                              "images/ic_playing_screen_list.png",
+                              width: 24,
+                              height: 24,
+                              color: paletteColor.color.withOpacity(0.5),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    const Spacer(flex: 2)
+                  ],
+                );
+
                 const surfaceColor = Colors.white;
                 final targetColor = snapshot.hasData
-                    ? snapshot.data!.withAlpha(0x7f)
+                    ? paletteColor.color.withOpacity(0.7)
                     : Colors.white;
                 final animation =
                     ColorTween(begin: surfaceColor, end: targetColor)
                         .animate(_controller);
 
+                _controller.reset();
                 _controller.stop();
                 if (snapshot.hasData) {
                   _controller.forward();

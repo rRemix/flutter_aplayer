@@ -18,8 +18,9 @@ const _thumbHeight = 6.0;
 class Seekbar extends StatefulWidget {
   final OnSeekBarChangedListener? listener;
   final TextStyle? textStyle;
+  final Color trackColor;
 
-  const Seekbar({super.key, this.listener, this.textStyle});
+  const Seekbar({super.key, this.listener, this.textStyle, required this.trackColor});
 
   @override
   State<StatefulWidget> createState() {
@@ -107,7 +108,7 @@ class _SeekbarState extends State<Seekbar> {
                     children: [
                       Container(
                         ///track background
-                        color: Colors.white,
+                        color: const Color.fromARGB(0xff, 0xef, 0xee, 0xed),
                         height: _trackHeight,
                       ),
                       Row(
@@ -115,14 +116,14 @@ class _SeekbarState extends State<Seekbar> {
                         children: [
                           Container(
                             ///track
-                            color: theme.primaryColor,
+                            color: widget.trackColor,
                             height: _trackHeight,
                             width: clampDouble(
                                 progress * maxWidth, 0, maxWidth - _thumbWidth),
                           ),
                           Container(
                             ///thumb
-                            color: theme.primaryColor,
+                            color: widget.trackColor,
                             width: _thumbWidth,
                             height: _thumbHeight,
                           )

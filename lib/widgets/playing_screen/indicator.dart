@@ -3,8 +3,15 @@ import 'package:flutter/material.dart';
 class Indicator extends StatelessWidget {
   final int count;
   final int highLight;
+  final Color normalColor;
+  final Color highLightColor;
 
-  const Indicator({super.key, required this.count, required this.highLight})
+  const Indicator(
+      {super.key,
+      required this.count,
+      required this.highLight,
+      required this.normalColor,
+      required this.highLightColor})
       : assert(count > 0 && highLight >= 0);
 
   Widget _makeWidget(BuildContext context, bool highLight, bool needPadding) {
@@ -14,9 +21,7 @@ class Indicator extends StatelessWidget {
       child: Container(
         width: 8,
         height: 2,
-        color: highLight
-            ? themeData.primaryColor
-            : themeData.primaryColor.withOpacity(0.3),
+        color: highLight ? highLightColor : normalColor,
       ),
     );
   }

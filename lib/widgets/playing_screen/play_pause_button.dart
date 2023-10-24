@@ -4,6 +4,7 @@ class PlayPauseButton extends StatefulWidget {
   final double? size;
   final double? iconSize;
   final bool initial;
+  final Color backgroundColor;
   final ValueChanged<bool>? onTapCallback;
 
   const PlayPauseButton(
@@ -11,7 +12,7 @@ class PlayPauseButton extends StatefulWidget {
       required this.initial,
       this.size,
       this.iconSize,
-      this.onTapCallback});
+      this.onTapCallback, required this.backgroundColor});
 
   @override
   State<StatefulWidget> createState() {
@@ -77,7 +78,7 @@ class PlayPauseButtonState extends State<PlayPauseButton>
       },
       child: ClipOval(
         child: Container(
-          color: Theme.of(context).primaryColor,
+          color: widget.backgroundColor,
           alignment: Alignment.center,
           width: widget.size ?? 56,
           height: widget.size ?? 56,
