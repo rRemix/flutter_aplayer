@@ -4,7 +4,6 @@ import 'package:flutter_aplayer/service/audio_handler_impl.dart';
 import 'package:flutter_aplayer/widgets/cover.dart';
 import 'package:flutter_aplayer/widgets/library/abs_library.dart';
 import 'package:flutter_audio/core.dart';
-import 'package:get_it/get_it.dart';
 
 import '../../generated/l10n.dart';
 
@@ -21,7 +20,6 @@ const _itemHeight = 64.0;
 
 class _SongLibraryState extends AbsState<SongLibrary> {
   final _songs = <Song>[];
-  final audioHandler = GetIt.I<AudioHandlerImpl>();
 
   @override
   void initState() {
@@ -97,44 +95,48 @@ class SongItem extends StatelessWidget {
           children: [
             indicator,
             Expanded(
-                child: ListTile(
-              leading: cover,
-              title: Text(song.title),
-              subtitle: Text(
-                "${song.artist}-${song.album}",
-                maxLines: 1,
-              ),
-              trailing: PopupMenuButton(
-                icon: const Icon(Icons.more_vert_rounded),
-                onSelected: (int value) {
-                  debugPrint("select: $value");
-                },
-                itemBuilder: (context) {
-                  return [
-                    PopupMenuItem(
-                      value: 0,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          const Icon(Icons.playlist_add),
-                          Text(S.of(context).add_to_playlist)
-                        ],
+              child: ListTile(
+                leading: cover,
+                title: Text(
+                  song.title,
+                  maxLines: 1,
+                ),
+                subtitle: Text(
+                  "${song.artist}-${song.album}",
+                  maxLines: 1,
+                ),
+                trailing: PopupMenuButton(
+                  icon: const Icon(Icons.more_vert_rounded),
+                  onSelected: (int value) {
+                    debugPrint("select: $value");
+                  },
+                  itemBuilder: (context) {
+                    return [
+                      PopupMenuItem(
+                        value: 0,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            const Icon(Icons.playlist_add),
+                            Text(S.of(context).add_to_playlist)
+                          ],
+                        ),
                       ),
-                    ),
-                    PopupMenuItem(
-                      value: 1,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          const Icon(Icons.delete),
-                          Text(S.of(context).delete)
-                        ],
-                      ),
-                    )
-                  ];
-                },
+                      PopupMenuItem(
+                        value: 1,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            const Icon(Icons.delete),
+                            Text(S.of(context).delete)
+                          ],
+                        ),
+                      )
+                    ];
+                  },
+                ),
               ),
-            ))
+            )
           ],
         ),
       ),

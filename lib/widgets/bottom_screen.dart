@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_aplayer/widgets/cover.dart';
 import 'package:flutter_aplayer/widgets/playing_screen/playing_screen.dart';
 import 'package:flutter_audio/type/artwork_type.dart';
-import 'package:get_it/get_it.dart';
 
 import '../service/audio_handler_impl.dart';
 
@@ -18,8 +17,6 @@ class BottomScreen extends StatefulWidget {
 }
 
 class _BottomScreenState extends State<BottomScreen> {
-  final audioHandler = GetIt.I<AudioHandlerImpl>();
-
   @override
   void initState() {
     super.initState();

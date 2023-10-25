@@ -2,12 +2,10 @@ import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_audio/type/artwork_type.dart';
-import 'package:get_it/get_it.dart';
 
 import '../abilities.dart';
 import '../service/audio_handler_impl.dart';
 
-final AudioHandlerImpl _audioHandler = GetIt.I<AudioHandlerImpl>();
 
 typedef Callback = Function(Uint8List coverBytes);
 
@@ -21,7 +19,7 @@ class StreamCover extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-        stream: _audioHandler.mediaItem,
+        stream: audioHandler.mediaItem,
         builder: (context, snapshot) {
           final mediaItem = snapshot.data;
           return Cover(

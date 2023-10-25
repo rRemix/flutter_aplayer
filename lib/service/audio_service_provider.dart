@@ -30,6 +30,7 @@ class AudioHandlerHelper {
       await _initialize();
       _initial = true;
     }
+    audioHandler = _audioHandler!;
     return _audioHandler!;
   }
 }

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_aplayer/abilities.dart';
 import 'package:flutter_aplayer/constants/constants.dart';
 import 'package:flutter_aplayer/recent_page.dart';
@@ -30,6 +31,7 @@ late Logger logger;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
   await startService();
   runApp(const MyApp());
 }

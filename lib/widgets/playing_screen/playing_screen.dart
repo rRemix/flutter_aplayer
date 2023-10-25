@@ -1,6 +1,5 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_aplayer/main.dart';
 import 'package:flutter_aplayer/service/audio_handler_impl.dart';
 import 'package:flutter_aplayer/widgets/playing_screen/cover_screen.dart';
 import 'package:flutter_aplayer/widgets/playing_screen/indicator.dart';
@@ -8,7 +7,6 @@ import 'package:flutter_aplayer/widgets/playing_screen/lyric_screen.dart';
 import 'package:flutter_aplayer/widgets/playing_screen/play_pause_button.dart';
 import 'package:flutter_aplayer/widgets/playing_screen/seekbar.dart';
 import 'package:flutter_audio/type/artwork_type.dart';
-import 'package:get_it/get_it.dart';
 import 'package:palette_generator/palette_generator.dart';
 
 import '../../abilities.dart';
@@ -22,11 +20,11 @@ class PlayingScreen extends StatefulWidget {
   }
 }
 
-final _defaultPaletteColor = PaletteColor(Color.fromARGB(0xff, 0x88, 0x88, 0x88), 100);
+final _defaultPaletteColor =
+    PaletteColor(Color.fromARGB(0xff, 0x88, 0x88, 0x88), 100);
 
 class _PlayingScreenState extends State<PlayingScreen>
     with TickerProviderStateMixin {
-  final AudioHandlerImpl audioHandler = GetIt.I<AudioHandlerImpl>();
   final ValueNotifier<int> _selectedPage = ValueNotifier(0);
   late AnimationController _controller;
 
@@ -79,56 +77,66 @@ class _PlayingScreenState extends State<PlayingScreen>
           return FutureBuilder(
               future: _updatePalette(mediaItem),
               builder: (context, snapshot) {
-                final paletteColor = snapshot.data!;
+                final paletteColor = snapshot.data ?? _defaultPaletteColor;
                 final child = Flex(
                   direction: Axis.vertical,
                   children: [
                     Expanded(
                       flex: 2,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8),
-                            child: Image.asset(
-                              "images/ic_playing_screen_back.png",
-                              width: 20,
-                              height: 20,
-                              color: paletteColor.titleTextColor,
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 20),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Text(
-                                    mediaItem?.title ?? "",
-                                    style: TextStyle(fontSize: 18, color: paletteColor.titleTextColor),
-                                    maxLines: 1,
-                                  ),
-                                  Text(
-                                    "${mediaItem?.album}-${mediaItem?.artist}",
-                                    style: TextStyle(fontSize: 14, color: paletteColor.bodyTextColor),
-                                    maxLines: 1,
-                                  )
-                                ],
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                            top: MediaQuery.of(context).padding.top),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8),
+                              child: Image.asset(
+                                "images/ic_playing_screen_back.png",
+                                width: 20,
+                                height: 20,
+                                color: paletteColor.titleTextColor,
                               ),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 8),
-                            child: Image.asset(
-                              "images/ic_playing_screen_more.png",
-                              width: 20,
-                              height: 20,
-                              color: paletteColor.titleTextColor,
+                            Expanded(
+                              flex: 1,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 20),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Text(
+                                      mediaItem?.title ?? "",
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          color: paletteColor.titleTextColor),
+                                      maxLines: 1,
+                                    ),
+                                    Text(
+                                      "${mediaItem?.album}-${mediaItem?.artist}",
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          color: paletteColor.bodyTextColor),
+                                      maxLines: 1,
+                                    )
+                                  ],
+                                ),
+                              ),
                             ),
-                          ),
-                        ],
+                            Padding(
+                              padding: const EdgeInsets.only(right: 8),
+                              child: Image.asset(
+                                "images/ic_playing_screen_more.png",
+                                width: 20,
+                                height: 20,
+                                color: paletteColor.titleTextColor,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     Expanded(
@@ -145,19 +153,19 @@ class _PlayingScreenState extends State<PlayingScreen>
                           ),
                           const LyricScreen()
                         ]
-                            .map(
-                                (e) => LayoutBuilder(builder: (context, constraints) {
-                              return UnconstrainedBox(
-                                child: ConstrainedBox(
-                                  constraints: BoxConstraints(
-                                      minHeight: 0,
-                                      maxHeight: constraints.maxHeight,
-                                      minWidth: 0,
-                                      maxWidth: constraints.maxWidth),
-                                  child: e,
-                                ),
-                              );
-                            }))
+                            .map((e) =>
+                                LayoutBuilder(builder: (context, constraints) {
+                                  return UnconstrainedBox(
+                                    child: ConstrainedBox(
+                                      constraints: BoxConstraints(
+                                          minHeight: 0,
+                                          maxHeight: constraints.maxHeight,
+                                          minWidth: 0,
+                                          maxWidth: constraints.maxWidth),
+                                      child: e,
+                                    ),
+                                  );
+                                }))
                             .toList(),
                       ),
                     ),
@@ -186,7 +194,8 @@ class _PlayingScreenState extends State<PlayingScreen>
                           child: Seekbar(
                             listener: (seekbar, progress, fromUser) {
                               if (mediaItem != null) {
-                                audioHandler.seek(mediaItem.duration! * progress);
+                                audioHandler
+                                    .seek(mediaItem.duration! * progress);
                               }
                             },
                             trackColor: paletteColor.color,
@@ -288,22 +297,19 @@ class _PlayingScreenState extends State<PlayingScreen>
                 if (snapshot.hasData) {
                   _controller.forward();
                 }
-                return SafeArea(
-                  child: AnimatedBuilder(
-                    animation: animation,
-                    child: child,
-                    builder: (ctx, child) {
-                      return DecoratedBox(
-                        decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                                colors: [animation.value!, surfaceColor])),
-                        // decoration: BoxDecoration(color: animation.value),
-                        child: child,
-                      );
-                    },
-                  ),
+                return AnimatedBuilder(
+                  animation: animation,
+                  child: child,
+                  builder: (ctx, child) {
+                    return DecoratedBox(
+                      decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [animation.value!, surfaceColor])),
+                      child: child,
+                    );
+                  },
                 );
               });
         },

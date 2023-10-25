@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_audio/core.dart';
-import 'package:get_it/get_it.dart';
 
-import '../../service/audio_handler_impl.dart';
 import '../cover.dart';
 
 class CoverScreen extends StatelessWidget {
-  final AudioHandlerImpl audioHandler = GetIt.I<AudioHandlerImpl>();
   final Callback? callback;
-  CoverScreen({super.key, this.callback});
+
+  const CoverScreen({super.key, this.callback});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +26,9 @@ class CoverScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(8),
               child: AspectRatio(
                 aspectRatio: 1,
-                child: StreamCover(callback: callback,),
+                child: StreamCover(
+                  callback: callback,
+                ),
               ),
             ),
           ),

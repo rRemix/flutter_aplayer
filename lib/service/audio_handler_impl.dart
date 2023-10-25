@@ -9,6 +9,8 @@ import 'package:just_audio/just_audio.dart';
 const _keyLastSongId = "key_last_song_id";
 const _keyQueue = "key_queue";
 
+late AudioHandlerImpl audioHandler;
+
 class AudioHandlerImpl extends BaseAudioHandler with QueueHandler, SeekHandler {
   late AudioPlayer _player;
   Box? cacheBox = Hive.isBoxOpen("cache") ? Hive.box("cache") : null;
