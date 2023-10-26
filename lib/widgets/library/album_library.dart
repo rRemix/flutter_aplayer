@@ -3,9 +3,11 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_aplayer/widgets/library/abs_library.dart';
 import 'package:flutter_audio/core.dart';
+import 'package:provider/provider.dart';
 
 import '../../abilities.dart';
 import '../../generated/l10n.dart';
+import '../../setting/app_theme.dart';
 
 class AlbumLibrary extends AbsLibrary {
   const AlbumLibrary({super.key});
@@ -65,7 +67,7 @@ class AlbumItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ThemeData themeData = Theme.of(context);
+    final appTheme = Provider.of<AppTheme>(context);
 
     final cover = LayoutBuilder(builder: (context, constraints) {
       return FutureBuilder(
@@ -124,12 +126,12 @@ class AlbumItem extends StatelessWidget {
                           children: [
                             Text(
                               album.album,
-                              style: themeData.textTheme.labelLarge,
+                              style: TextStyle(color: appTheme.primaryTextColor),
                               maxLines: 1,
                             ),
                             Text(
                               album.artist,
-                              style: themeData.textTheme.labelMedium,
+                              style: TextStyle(color: appTheme.secondaryTextColor),
                               maxLines: 1,
                             )
                           ],

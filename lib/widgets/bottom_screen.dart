@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_aplayer/widgets/cover.dart';
 import 'package:flutter_aplayer/widgets/playing_screen/playing_screen.dart';
 import 'package:flutter_audio/type/artwork_type.dart';
+import 'package:provider/provider.dart';
 
 import '../service/audio_handler_impl.dart';
+import '../setting/app_theme.dart';
 
 const double bottomScreenHeight = 64;
 
@@ -24,7 +26,7 @@ class _BottomScreenState extends State<BottomScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final themeData = Theme.of(context);
+    final appTheme = Provider.of<AppTheme>(context);
 
     return StreamBuilder(
       stream: audioHandler.mediaItem,
@@ -53,7 +55,7 @@ class _BottomScreenState extends State<BottomScreen> {
                 border: Border(
                     top: BorderSide(
                         width: 0.25,
-                        color: themeData.dividerColor.withAlpha(0x1f)))),
+                        color: appTheme.theme.dividerColor.withAlpha(0x1f)))),
             child: Row(
               children: [
                 Padding(
@@ -75,13 +77,13 @@ class _BottomScreenState extends State<BottomScreen> {
                       Text(
                         mediaItem?.displayTitle ?? "",
                         maxLines: 1,
-                        style: themeData.textTheme.labelLarge,
+                        style: TextStyle(color: appTheme.primaryTextColor),
                         overflow: TextOverflow.ellipsis,
                       ),
                       Text(
                         mediaItem?.album ?? "",
                         maxLines: 1,
-                        style: themeData.textTheme.labelMedium,
+                        style: TextStyle(color: appTheme.secondaryTextColor),
                       ),
                     ],
                   ),

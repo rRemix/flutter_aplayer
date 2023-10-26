@@ -1,17 +1,26 @@
 {
+  "confirm": "确认",
+  "cancel": "取消",
   "tab_song": "歌曲",
   "tab_album": "专辑",
   "tab_artist": "艺术家",
   "tab_genre": "流派",
   "tab_playlist": "播放列表",
-
   "song_library": "歌曲库",
-  "play_history" : "播放历史",
-  "support_developer" : "支持开发者",
-  "setting" : "设置",
+  "play_history": "播放历史",
+  "support_developer": "支持开发者",
+  "setting": "设置",
   "exit": "退出",
   "playing_song": "正在播放: {title}",
-
-  "add_to_playlist" : "添加到播放列表",
-  "delete" : "删除"
+  "add_to_playlist": "添加到播放列表",
+  "delete": "删除",
+  "color": "色彩",
+  "dark_theme": "深色主题",
+  "follow_system": "跟随系统",
+  "always_off": "总是关闭",
+  "always_on": "总是开启",
+  "primary_color": "主色调",
+  "primary_color_tip": "所有页面主色调",
+  "accent_color": "强调色",
+  "accent_color_tip": "选择你喜欢的强调色"
 }

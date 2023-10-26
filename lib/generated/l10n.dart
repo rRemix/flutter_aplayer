@@ -50,6 +50,26 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
+  /// `Confirm`
+  String get confirm {
+    return Intl.message(
+      'Confirm',
+      name: 'confirm',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel`
+  String get cancel {
+    return Intl.message(
+      'Cancel',
+      name: 'cancel',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Song`
   String get tab_song {
     return Intl.message(
@@ -175,6 +195,96 @@ class S {
     return Intl.message(
       'delete',
       name: 'delete',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Color`
+  String get color {
+    return Intl.message(
+      'Color',
+      name: 'color',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Dark theme`
+  String get dark_theme {
+    return Intl.message(
+      'Dark theme',
+      name: 'dark_theme',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Follow system`
+  String get follow_system {
+    return Intl.message(
+      'Follow system',
+      name: 'follow_system',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Always off`
+  String get always_off {
+    return Intl.message(
+      'Always off',
+      name: 'always_off',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Always on`
+  String get always_on {
+    return Intl.message(
+      'Always on',
+      name: 'always_on',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Primary color`
+  String get primary_color {
+    return Intl.message(
+      'Primary color',
+      name: 'primary_color',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Main color for all page`
+  String get primary_color_tip {
+    return Intl.message(
+      'Main color for all page',
+      name: 'primary_color_tip',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Accent color`
+  String get accent_color {
+    return Intl.message(
+      'Accent color',
+      name: 'accent_color',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Customize your favorite color for APlayer`
+  String get accent_color_tip {
+    return Intl.message(
+      'Customize your favorite color for APlayer',
+      name: 'accent_color_tip',
       desc: '',
       args: [],
     );

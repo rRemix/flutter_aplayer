@@ -24,11 +24,22 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "accent_color": MessageLookupByLibrary.simpleMessage("强调色"),
+        "accent_color_tip": MessageLookupByLibrary.simpleMessage("选择你喜欢的强调色"),
         "add_to_playlist": MessageLookupByLibrary.simpleMessage("添加到播放列表"),
+        "always_off": MessageLookupByLibrary.simpleMessage("总是关闭"),
+        "always_on": MessageLookupByLibrary.simpleMessage("总是开启"),
+        "cancel": MessageLookupByLibrary.simpleMessage("取消"),
+        "color": MessageLookupByLibrary.simpleMessage("色彩"),
+        "confirm": MessageLookupByLibrary.simpleMessage("确认"),
+        "dark_theme": MessageLookupByLibrary.simpleMessage("深色主题"),
         "delete": MessageLookupByLibrary.simpleMessage("删除"),
         "exit": MessageLookupByLibrary.simpleMessage("退出"),
+        "follow_system": MessageLookupByLibrary.simpleMessage("跟随系统"),
         "play_history": MessageLookupByLibrary.simpleMessage("播放历史"),
         "playing_song": m0,
+        "primary_color": MessageLookupByLibrary.simpleMessage("主色调"),
+        "primary_color_tip": MessageLookupByLibrary.simpleMessage("所有页面主色调"),
         "setting": MessageLookupByLibrary.simpleMessage("设置"),
         "song_library": MessageLookupByLibrary.simpleMessage("歌曲库"),
         "support_developer": MessageLookupByLibrary.simpleMessage("支持开发者"),

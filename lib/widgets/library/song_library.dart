@@ -4,8 +4,10 @@ import 'package:flutter_aplayer/service/audio_handler_impl.dart';
 import 'package:flutter_aplayer/widgets/cover.dart';
 import 'package:flutter_aplayer/widgets/library/abs_library.dart';
 import 'package:flutter_audio/core.dart';
+import 'package:provider/provider.dart';
 
 import '../../generated/l10n.dart';
+import '../../setting/app_theme.dart';
 
 class SongLibrary extends AbsLibrary {
   const SongLibrary({super.key});
@@ -73,7 +75,7 @@ class SongItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeData = Theme.of(context);
+    final appTheme = Provider.of<AppTheme>(context);
 
     final cover = Cover(
       id: song.id,
@@ -82,11 +84,11 @@ class SongItem extends StatelessWidget {
     );
     final indicator = Container(
       width: 4,
-      color: highLight ? themeData.primaryColor : Colors.transparent,
+      color: highLight ? appTheme.theme.primaryColor : Colors.transparent,
     );
 
     return Material(
-      color: Colors.white,
+      color: appTheme.libraryColor,
       child: InkWell(
         onTap: () {
           callback?.call(index);
@@ -100,10 +102,12 @@ class SongItem extends StatelessWidget {
                 title: Text(
                   song.title,
                   maxLines: 1,
+                  style: TextStyle(color: appTheme.primaryTextColor),
                 ),
                 subtitle: Text(
                   "${song.artist}-${song.album}",
                   maxLines: 1,
+                  style: TextStyle(color: appTheme.secondaryTextColor),
                 ),
                 trailing: PopupMenuButton(
                   icon: const Icon(Icons.more_vert_rounded),

@@ -5,11 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_aplayer/abilities.dart';
 import 'package:flutter_aplayer/constants/constants.dart';
-import 'package:flutter_aplayer/recent_page.dart';
 import 'package:flutter_aplayer/service/audio_handler_impl.dart';
 import 'package:flutter_aplayer/service/audio_service_provider.dart';
-import 'package:flutter_aplayer/setting_page.dart';
-import 'package:flutter_aplayer/support_page.dart';
+import 'package:flutter_aplayer/setting/app_theme.dart';
+import 'package:flutter_aplayer/setting/setting_manager.dart';
 import 'package:flutter_aplayer/utils.dart';
 import 'package:flutter_aplayer/widgets/bottom_screen.dart';
 import 'package:flutter_aplayer/widgets/cover.dart';
@@ -18,11 +17,15 @@ import 'package:flutter_aplayer/widgets/library/arist_library.dart';
 import 'package:flutter_aplayer/widgets/library/genre_library.dart';
 import 'package:flutter_aplayer/widgets/library/playlist_library.dart';
 import 'package:flutter_aplayer/widgets/library/song_library.dart';
+import 'package:flutter_aplayer/widgets/page/recent_page.dart';
+import 'package:flutter_aplayer/widgets/page/setting_page.dart';
+import 'package:flutter_aplayer/widgets/page/support_page.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
 import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
 
 import 'generated/l10n.dart';
 
@@ -31,7 +34,8 @@ late Logger logger;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
+  SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
   await startService();
   runApp(const MyApp());
 }
@@ -67,14 +71,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final children = [
-    const SongLibrary(),
-    const AlbumLibrary(),
-    const ArtistLibrary(),
-    const GenreLibrary(),
-    const PlayListLibrary()
-  ];
-
   @override
   void initState() {
     super.initState();
@@ -87,93 +83,118 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      localizationsDelegates: const [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-        S.delegate
+    SettingManager.instance.initialize(context);
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => SettingManager.instance.appTheme,
+        )
       ],
-      locale: const Locale("zh", "CN"),
-      supportedLocales: S.delegate.supportedLocales,
-      home: Builder(
-        builder: (context) {
-          final titles = [
-            S.of(context).tab_song,
-            S.of(context).tab_album,
-            S.of(context).tab_artist,
-            S.of(context).tab_genre,
-            S.of(context).tab_playlist
-          ];
-
-          return Scaffold(
-            drawer: _Drawer(),
-            body: Stack(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: bottomScreenHeight),
-                  child: DefaultTabController(
-                    length: titles.length,
-                    child: NestedScrollView(
-                      headerSliverBuilder:
-                          (BuildContext context, bool innerBoxIsScrolled) {
-                        return <Widget>[
-                          SliverOverlapAbsorber(
-                            handle:
-                                NestedScrollView.sliverOverlapAbsorberHandleFor(
-                                    context),
-                            sliver: SliverAppBar(
-                              title: const Text("APlayer"),
-                              leading: IconButton(
-                                icon: const Icon(Icons.menu),
-                                onPressed: () {
-                                  Scaffold.of(context).openDrawer();
-                                },
-                              ),
-                              floating: true,
-                              snap: true,
-                              pinned: true,
-                              forceElevated: innerBoxIsScrolled,
-                              bottom: TabBar(
-                                tabs: titles
-                                    .map((String name) => Tab(text: name))
-                                    .toList(),
-                              ),
-                            ),
-                          ),
-                        ];
-                      },
-                      body: TabBarView(
-                        children: titles.asMap().keys.map((int index) {
-                          return Builder(
-                            builder: (BuildContext context) {
-                              return Container(
-                                color: const Color.fromARGB(
-                                    0xff, 0xf1, 0xf1, 0xf1),
-                                child: CustomScrollView(
-                                  key: PageStorageKey<String>(titles[index]),
-                                  slivers: <Widget>[
-                                    SliverOverlapInjector(
-                                      handle: NestedScrollView
-                                          .sliverOverlapAbsorberHandleFor(
-                                              context),
-                                    ),
-                                    children[index],
-                                  ],
-                                ),
-                              );
-                            },
-                          );
-                        }).toList(),
-                      ),
-                    ),
-                  ),
-                ),
-                const Positioned(bottom: 0, child: BottomScreen())
-              ],
-            ),
+      child: Consumer<AppTheme>(
+        builder: (context, appTheme, child) {
+          return MaterialApp(
+            themeMode: appTheme.themeMode,
+            theme: appTheme.theme,
+            localizationsDelegates: const [
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+              S.delegate
+            ],
+            locale: const Locale("zh", "CN"),
+            supportedLocales: S.delegate.supportedLocales,
+            home: HomePage(),
           );
         },
+      ),
+    );
+  }
+}
+
+class HomePage extends StatelessWidget {
+  final children = [
+    const SongLibrary(),
+    const AlbumLibrary(),
+    const ArtistLibrary(),
+    const GenreLibrary(),
+    const PlayListLibrary()
+  ];
+
+  HomePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final titles = [
+      S.of(context).tab_song,
+      S.of(context).tab_album,
+      S.of(context).tab_artist,
+      S.of(context).tab_genre,
+      S.of(context).tab_playlist
+    ];
+    final appTheme = Provider.of<AppTheme>(context);
+
+    return Scaffold(
+      drawer: _Drawer(),
+      body: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(bottom: bottomScreenHeight),
+            child: DefaultTabController(
+              length: titles.length,
+              child: NestedScrollView(
+                headerSliverBuilder:
+                    (BuildContext context, bool innerBoxIsScrolled) {
+                  return <Widget>[
+                    SliverOverlapAbsorber(
+                      handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
+                          context),
+                      sliver: SliverAppBar(
+                        title: const Text("APlayer"),
+                        leading: IconButton(
+                          icon: const Icon(Icons.menu),
+                          onPressed: () {
+                            Scaffold.of(context).openDrawer();
+                          },
+                        ),
+                        floating: true,
+                        snap: true,
+                        pinned: true,
+                        forceElevated: innerBoxIsScrolled,
+                        bottom: TabBar(
+                          tabs: titles
+                              .map((String name) => Tab(text: name))
+                              .toList(),
+                        ),
+                      ),
+                    ),
+                  ];
+                },
+                body: TabBarView(
+                  children: titles.asMap().keys.map((int index) {
+                    return Builder(
+                      builder: (BuildContext context) {
+                        return Container(
+                          color: appTheme.libraryColor,
+                          child: CustomScrollView(
+                            key: PageStorageKey<String>(titles[index]),
+                            slivers: <Widget>[
+                              SliverOverlapInjector(
+                                handle: NestedScrollView
+                                    .sliverOverlapAbsorberHandleFor(context),
+                              ),
+                              children[index],
+                            ],
+                          ),
+                        );
+                      },
+                    );
+                  }).toList(),
+                ),
+              ),
+            ),
+          ),
+          const Positioned(bottom: 0, child: BottomScreen())
+        ],
       ),
     );
   }
@@ -198,13 +219,13 @@ class _DrawerState extends State<_Drawer> {
 
   @override
   Widget build(BuildContext context) {
-    final themeData = Theme.of(context);
+    final appTheme = Provider.of<AppTheme>(context);
     final List<Map<String, dynamic>> menu = [
       {
         "text": S.of(context).song_library,
         "icon": Icon(
           Icons.library_music,
-          color: themeData.primaryColor,
+          color: appTheme.theme.colorScheme.secondary,
         ),
         "callback": () {
           Scaffold.of(context).closeDrawer();
@@ -214,7 +235,7 @@ class _DrawerState extends State<_Drawer> {
         "text": S.of(context).play_history,
         "icon": Icon(
           Icons.access_time,
-          color: themeData.primaryColor,
+          color: appTheme.theme.colorScheme.secondary,
         ),
         "callback": () {
           Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -224,7 +245,8 @@ class _DrawerState extends State<_Drawer> {
       },
       {
         "text": S.of(context).support_developer,
-        "icon": Icon(Icons.favorite, color: themeData.primaryColor),
+        "icon":
+            Icon(Icons.favorite, color: appTheme.theme.colorScheme.secondary),
         "callback": () {
           Navigator.push(context, MaterialPageRoute(builder: (context) {
             return const SupportPage();
@@ -233,7 +255,8 @@ class _DrawerState extends State<_Drawer> {
       },
       {
         "text": S.of(context).setting,
-        "icon": Icon(Icons.settings, color: themeData.primaryColor),
+        "icon":
+            Icon(Icons.settings, color: appTheme.theme.colorScheme.secondary),
         "callback": () {
           Navigator.push(context, MaterialPageRoute(builder: (context) {
             return const SettingPage();
@@ -244,7 +267,7 @@ class _DrawerState extends State<_Drawer> {
         "text": S.of(context).exit,
         "icon": Icon(
           Icons.exit_to_app,
-          color: themeData.primaryColor,
+          color: appTheme.theme.colorScheme.secondary,
         ),
         "callback": () {
           exit(0);
@@ -263,7 +286,7 @@ class _DrawerState extends State<_Drawer> {
             mainAxisSize: MainAxisSize.max,
             children: [
               Container(
-                color: themeData.primaryColor,
+                color: appTheme.theme.primaryColor,
                 child: Column(
                   children: [
                     const Padding(
@@ -286,13 +309,15 @@ class _DrawerState extends State<_Drawer> {
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(4),
                                   color: Utils.shiftColor(
-                                      themeData.primaryColor, 0.8)),
+                                      appTheme.theme.primaryColor, 0.8)),
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
                                     vertical: 8, horizontal: 30),
                                 child: Text(
                                   snapshot.hasData
-                                      ? S.of(context).playing_song(snapshot.data!.title)
+                                      ? S
+                                          .of(context)
+                                          .playing_song(snapshot.data!.title)
                                       : "",
                                   maxLines: 1,
                                   style: const TextStyle(
@@ -324,7 +349,7 @@ class _DrawerState extends State<_Drawer> {
                           leading: mnuItem["icon"],
                           title: Text(
                             mnuItem["text"],
-                            style: const TextStyle(fontSize: 15),
+                            style: const TextStyle(fontSize: 16),
                           ),
                         ),
                       ),

@@ -24,13 +24,26 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "accent_color": MessageLookupByLibrary.simpleMessage("Accent color"),
+        "accent_color_tip": MessageLookupByLibrary.simpleMessage(
+            "Customize your favorite color for APlayer"),
         "add_to_playlist":
             MessageLookupByLibrary.simpleMessage("add to playlist"),
+        "always_off": MessageLookupByLibrary.simpleMessage("Always off"),
+        "always_on": MessageLookupByLibrary.simpleMessage("Always on"),
+        "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
+        "color": MessageLookupByLibrary.simpleMessage("Color"),
+        "confirm": MessageLookupByLibrary.simpleMessage("Confirm"),
+        "dark_theme": MessageLookupByLibrary.simpleMessage("Dark theme"),
         "delete": MessageLookupByLibrary.simpleMessage("delete"),
         "exit": MessageLookupByLibrary.simpleMessage("Exit"),
+        "follow_system": MessageLookupByLibrary.simpleMessage("Follow system"),
         "play_history":
             MessageLookupByLibrary.simpleMessage("Playback History"),
         "playing_song": m0,
+        "primary_color": MessageLookupByLibrary.simpleMessage("Primary color"),
+        "primary_color_tip":
+            MessageLookupByLibrary.simpleMessage("Main color for all page"),
         "setting": MessageLookupByLibrary.simpleMessage("Settings"),
         "song_library": MessageLookupByLibrary.simpleMessage("Library"),
         "support_developer":

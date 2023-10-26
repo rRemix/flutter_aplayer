@@ -1,17 +1,27 @@
 {
+  "confirm": "Confirm",
+  "cancel": "Cancel",
   "tab_song": "Song",
   "tab_album": "Album",
   "tab_artist": "Artist",
   "tab_genre": "Genre",
   "tab_playlist": "Playlist",
-
   "song_library": "Library",
-  "play_history" : "Playback History",
-  "support_developer" : "Support Developer",
-  "setting" : "Settings",
+  "play_history": "Playback History",
+  "support_developer": "Support Developer",
+  "setting": "Settings",
   "exit": "Exit",
   "playing_song": "Playing: {title}",
+  "add_to_playlist": "add to playlist",
+  "delete": "delete",
+  "color": "Color",
+  "dark_theme": "Dark theme",
+  "follow_system": "Follow system",
+  "always_off": "Always off",
+  "always_on": "Always on",
+  "primary_color": "Primary color",
+  "primary_color_tip": "Main color for all page",
+  "accent_color": "Accent color",
+  "accent_color_tip": "Customize your favorite color for APlayer"
 
-  "add_to_playlist" : "add to playlist",
-  "delete" : "delete"
 }
