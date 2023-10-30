@@ -6,14 +6,14 @@ import 'package:flutter_audio/core.dart';
 import 'package:hive/hive.dart';
 import 'package:just_audio/just_audio.dart';
 
-const _keyLastSongId = "key_last_song_id";
-const _keyQueue = "key_queue";
+const _keyLastSongId = 'key_last_song_id';
+const _keyQueue = 'key_queue';
 
 late AudioHandlerImpl audioHandler;
 
 class AudioHandlerImpl extends BaseAudioHandler with QueueHandler, SeekHandler {
   late AudioPlayer _player;
-  Box? cacheBox = Hive.isBoxOpen("cache") ? Hive.box("cache") : null;
+  Box? cacheBox = Hive.isBoxOpen('cache') ? Hive.box('cache') : null;
   Song? _currentSong;
   final List<Song> _queue = <Song>[];
   final List<Song> _allSongs = <Song>[];

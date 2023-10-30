@@ -19,8 +19,8 @@ class AudioHandlerHelper {
         builder: () => AudioHandlerImpl(),
         config: const AudioServiceConfig(
           androidNotificationChannelId:
-              "com.remix.flutter_aplayer.playing_notification",
-          androidNotificationChannelName: "now playing notification",
+              'com.remix.flutter_aplayer.playing_notification',
+          androidNotificationChannelName: 'now playing notification',
           androidNotificationOngoing: true,
         ));
   }

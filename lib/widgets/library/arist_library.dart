@@ -18,7 +18,7 @@ class _ArtistLibraryState extends AbsState<ArtistLibrary> {
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(
       child: Center(
-        child: Text("Artist"),
+        child: Text('Artist'),
       ),
     );
   }

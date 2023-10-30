@@ -105,14 +105,14 @@ class SongItem extends StatelessWidget {
                   style: TextStyle(color: appTheme.primaryTextColor),
                 ),
                 subtitle: Text(
-                  "${song.artist}-${song.album}",
+                  '${song.artist}-${song.album}',
                   maxLines: 1,
                   style: TextStyle(color: appTheme.secondaryTextColor),
                 ),
                 trailing: PopupMenuButton(
                   icon: const Icon(Icons.more_vert_rounded),
                   onSelected: (int value) {
-                    debugPrint("select: $value");
+                    debugPrint('select: $value');
                   },
                   itemBuilder: (context) {
                     return [

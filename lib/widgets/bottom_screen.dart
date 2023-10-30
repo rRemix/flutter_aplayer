@@ -61,7 +61,7 @@ class _BottomScreenState extends State<BottomScreen> {
                 Padding(
                   padding: const EdgeInsets.only(left: 8),
                   child: Hero(
-                    tag: "cover",
+                    tag: 'cover',
                     child: ClipOval(
                       child: cover,
                     ),
@@ -75,13 +75,13 @@ class _BottomScreenState extends State<BottomScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        mediaItem?.displayTitle ?? "",
+                        mediaItem?.displayTitle ?? '',
                         maxLines: 1,
                         style: TextStyle(color: appTheme.primaryTextColor),
                         overflow: TextOverflow.ellipsis,
                       ),
                       Text(
-                        mediaItem?.album ?? "",
+                        mediaItem?.album ?? '',
                         maxLines: 1,
                         style: TextStyle(color: appTheme.secondaryTextColor),
                       ),
@@ -107,8 +107,8 @@ class _BottomScreenState extends State<BottomScreen> {
                             },
                             child: Image.asset(
                               playbackState?.playing == true
-                                  ? "images/ic_bottom_btn_stop.png"
-                                  : "images/ic_bottom_btn_play.png",
+                                  ? 'images/ic_bottom_btn_stop.png'
+                                  : 'images/ic_bottom_btn_play.png',
                               width: 48,
                               height: 48,
                             ),
@@ -124,7 +124,7 @@ class _BottomScreenState extends State<BottomScreen> {
                           audioHandler.skipToNext();
                         },
                         child: Image.asset(
-                          "images/ic_bottom_btn_next.png",
+                          'images/ic_bottom_btn_next.png',
                           width: 48,
                           height: 48,
                         ),

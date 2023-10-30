@@ -64,7 +64,7 @@ class Cover extends StatelessWidget {
             );
           } else {
             img = Image.asset(
-              "images/ic_album_default.png",
+              'images/ic_album_default.png',
               fit: boxFit ?? BoxFit.cover,
               width: size,
               height: size,

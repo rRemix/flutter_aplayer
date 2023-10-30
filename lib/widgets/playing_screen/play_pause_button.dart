@@ -26,7 +26,7 @@ class PlayPauseButton extends StatefulWidget {
       return result;
     }
 
-    throw FlutterError("can't find PlayPauseButtonState");
+    throw FlutterError('can\'t find PlayPauseButtonState');
   }
 }
 

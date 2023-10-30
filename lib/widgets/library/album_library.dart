@@ -83,7 +83,7 @@ class AlbumItem extends StatelessWidget {
                 fit: BoxFit.cover,
               );
             } else {
-              img = Image.asset("images/ic_album_default.png",
+              img = Image.asset('images/ic_album_default.png',
                   width: constraints.maxWidth,
                   height: constraints.maxWidth,
                   fit: BoxFit.cover);
@@ -106,7 +106,7 @@ class AlbumItem extends StatelessWidget {
         child: InkWell(
           onTap: () {
             //TODO
-            debugPrint("click: $album");
+            debugPrint('click: $album');
           },
           child: Column(
             children: [
@@ -142,7 +142,7 @@ class AlbumItem extends StatelessWidget {
                         child: PopupMenuButton(
                           icon: const Icon(Icons.more_vert_rounded),
                           onSelected: (int value) {
-                            debugPrint("select: $value");
+                            debugPrint('select: $value');
                           },
                           itemBuilder: (context) {
                             return [

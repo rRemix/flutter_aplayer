@@ -7,7 +7,7 @@ class LyricScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text("Screen"),
+      child: Text('Screen'),
     );
   }
 }

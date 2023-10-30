@@ -12,7 +12,7 @@ class Utils {
 
   static String getTime(Duration duration) {
     if (duration == Duration.zero) {
-      return "00:00";
+      return '00:00';
     }
     final millSecond = duration.inMilliseconds;
 
@@ -21,15 +21,15 @@ class Utils {
 
     if (minute < 10) {
       if (second < 10) {
-        return "0$minute:0$second";
+        return '0$minute:0$second';
       } else {
-        return "0$minute:$second";
+        return '0$minute:$second';
       }
     } else {
       if (second < 10) {
-        return "$minute:0$second";
+        return '$minute:0$second';
       } else {
-        return "$minute:$second";
+        return '$minute:$second';
       }
     }
   }

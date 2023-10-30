@@ -10,7 +10,7 @@ class CoverScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Hero(
-        tag: "cover",
+        tag: 'cover',
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: DecoratedBox(

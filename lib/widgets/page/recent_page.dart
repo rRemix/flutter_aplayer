@@ -7,7 +7,7 @@ class RecentPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("最近播放"),
+        title: Text('最近播放'),
       ),
     );
   }

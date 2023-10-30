@@ -92,7 +92,7 @@ class _PlayingScreenState extends State<PlayingScreen>
                             Padding(
                               padding: const EdgeInsets.only(left: 8),
                               child: Image.asset(
-                                "images/ic_playing_screen_back.png",
+                                'images/ic_playing_screen_back.png',
                                 width: 20,
                                 height: 20,
                                 color: paletteColor.titleTextColor,
@@ -109,14 +109,14 @@ class _PlayingScreenState extends State<PlayingScreen>
                                       MainAxisAlignment.spaceEvenly,
                                   children: [
                                     Text(
-                                      mediaItem?.title ?? "",
+                                      mediaItem?.title ?? '',
                                       style: TextStyle(
                                           fontSize: 18,
                                           color: paletteColor.titleTextColor),
                                       maxLines: 1,
                                     ),
                                     Text(
-                                      "${mediaItem?.album}-${mediaItem?.artist}",
+                                      '${mediaItem?.album}-${mediaItem?.artist}',
                                       style: TextStyle(
                                           fontSize: 14,
                                           color: paletteColor.bodyTextColor),
@@ -129,7 +129,7 @@ class _PlayingScreenState extends State<PlayingScreen>
                             Padding(
                               padding: const EdgeInsets.only(right: 8),
                               child: Image.asset(
-                                "images/ic_playing_screen_more.png",
+                                'images/ic_playing_screen_more.png',
                                 width: 20,
                                 height: 20,
                                 color: paletteColor.titleTextColor,
@@ -216,7 +216,7 @@ class _PlayingScreenState extends State<PlayingScreen>
                             splashRadius: 30,
                             highlightColor: paletteColor.color,
                             icon: Image.asset(
-                              "images/ic_playing_screen_mode_loop.png",
+                              'images/ic_playing_screen_mode_loop.png',
                               width: 24,
                               height: 24,
                               color: paletteColor.color.withOpacity(0.5),
@@ -230,7 +230,7 @@ class _PlayingScreenState extends State<PlayingScreen>
                             splashRadius: 30,
                             highlightColor: paletteColor.color,
                             icon: Image.asset(
-                              "images/ic_playing_screen_previous.png",
+                              'images/ic_playing_screen_previous.png',
                               width: 24,
                               height: 24,
                               color: paletteColor.color,
@@ -260,7 +260,7 @@ class _PlayingScreenState extends State<PlayingScreen>
                             splashRadius: 30,
                             highlightColor: paletteColor.color,
                             icon: Image.asset(
-                              "images/ic_playing_screen_next.png",
+                              'images/ic_playing_screen_next.png',
                               width: 24,
                               height: 24,
                               color: paletteColor.color,
@@ -271,7 +271,7 @@ class _PlayingScreenState extends State<PlayingScreen>
                             splashRadius: 30,
                             highlightColor: paletteColor.color,
                             icon: Image.asset(
-                              "images/ic_playing_screen_list.png",
+                              'images/ic_playing_screen_list.png',
                               width: 24,
                               height: 24,
                               color: paletteColor.color.withOpacity(0.5),

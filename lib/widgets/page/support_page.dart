@@ -7,7 +7,7 @@ class SupportPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("支持开发者"),
+        title: Text('支持开发者'),
       ),
     );
   }

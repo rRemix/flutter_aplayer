@@ -15,7 +15,6 @@ class Indicator extends StatelessWidget {
       : assert(count > 0 && highLight >= 0);
 
   Widget _makeWidget(BuildContext context, bool highLight, bool needPadding) {
-    ThemeData themeData = Theme.of(context);
     return Padding(
       padding: EdgeInsets.only(right: needPadding ? 4 : 0),
       child: Container(

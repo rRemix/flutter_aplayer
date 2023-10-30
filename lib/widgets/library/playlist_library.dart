@@ -18,7 +18,7 @@ class _PlayListLibraryState extends AbsState<PlayListLibrary> {
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(
       child: Center(
-        child: Text("Playlist"),
+        child: Text('Playlist'),
       ),
     );
   }

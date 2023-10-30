@@ -3,9 +3,9 @@ import 'package:hive/hive.dart';
 
 import '../main.dart';
 
-const _keyColorPrimary = "key_color_primary";
-const _keyColorAccent = "key_color_accent";
-const _keyThemeMode = "key_theme_mode";
+const _keyColorPrimary = 'key_color_primary';
+const _keyColorAccent = 'key_color_accent';
+const _keyThemeMode = 'key_theme_mode';
 
 class AppTheme with ChangeNotifier {
   final Box? _settingBox;

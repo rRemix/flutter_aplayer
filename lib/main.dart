@@ -58,7 +58,7 @@ Future<void> initHive() async {
   Hive.init(cacheDir.path);
 
   for (final box in hiveBoxes) {
-    final boxName = box["name"].toString();
+    final boxName = box['name'].toString();
     await Hive.openBox(boxName);
   }
 }
@@ -101,7 +101,7 @@ class _MyAppState extends State<MyApp> {
               GlobalCupertinoLocalizations.delegate,
               S.delegate
             ],
-            locale: const Locale("zh", "CN"),
+            locale: const Locale('zh', 'CN'),
             supportedLocales: S.delegate.supportedLocales,
             home: HomePage(),
           );
@@ -149,7 +149,7 @@ class HomePage extends StatelessWidget {
                       handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
                           context),
                       sliver: SliverAppBar(
-                        title: const Text("APlayer"),
+                        title: const Text('APlayer'),
                         leading: IconButton(
                           icon: const Icon(Icons.menu),
                           onPressed: () {
@@ -222,54 +222,54 @@ class _DrawerState extends State<_Drawer> {
     final appTheme = Provider.of<AppTheme>(context);
     final List<Map<String, dynamic>> menu = [
       {
-        "text": S.of(context).song_library,
-        "icon": Icon(
+        'text': S.of(context).song_library,
+        'icon': Icon(
           Icons.library_music,
           color: appTheme.theme.colorScheme.secondary,
         ),
-        "callback": () {
+        'callback': () {
           Scaffold.of(context).closeDrawer();
         }
       },
       {
-        "text": S.of(context).play_history,
-        "icon": Icon(
+        'text': S.of(context).play_history,
+        'icon': Icon(
           Icons.access_time,
           color: appTheme.theme.colorScheme.secondary,
         ),
-        "callback": () {
+        'callback': () {
           Navigator.push(context, MaterialPageRoute(builder: (context) {
             return const RecentPage();
           }));
         }
       },
       {
-        "text": S.of(context).support_developer,
-        "icon":
+        'text': S.of(context).support_developer,
+        'icon':
             Icon(Icons.favorite, color: appTheme.theme.colorScheme.secondary),
-        "callback": () {
+        'callback': () {
           Navigator.push(context, MaterialPageRoute(builder: (context) {
             return const SupportPage();
           }));
         }
       },
       {
-        "text": S.of(context).setting,
-        "icon":
+        'text': S.of(context).setting,
+        'icon':
             Icon(Icons.settings, color: appTheme.theme.colorScheme.secondary),
-        "callback": () {
+        'callback': () {
           Navigator.push(context, MaterialPageRoute(builder: (context) {
             return const SettingPage();
           }));
         }
       },
       {
-        "text": S.of(context).exit,
-        "icon": Icon(
+        'text': S.of(context).exit,
+        'icon': Icon(
           Icons.exit_to_app,
           color: appTheme.theme.colorScheme.secondary,
         ),
-        "callback": () {
+        'callback': () {
           exit(0);
         }
       },
@@ -318,7 +318,7 @@ class _DrawerState extends State<_Drawer> {
                                       ? S
                                           .of(context)
                                           .playing_song(snapshot.data!.title)
-                                      : "",
+                                      : '',
                                   maxLines: 1,
                                   style: const TextStyle(
                                       color: Colors.white, fontSize: 14),
@@ -342,13 +342,13 @@ class _DrawerState extends State<_Drawer> {
                           : drawerDefaultColor,
                       child: GestureDetector(
                         onTap: () {
-                          mnuItem["callback"]();
+                          mnuItem['callback']();
                           _select(index);
                         },
                         child: ListTile(
-                          leading: mnuItem["icon"],
+                          leading: mnuItem['icon'],
                           title: Text(
-                            mnuItem["text"],
+                            mnuItem['text'],
                             style: const TextStyle(fontSize: 16),
                           ),
                         ),
