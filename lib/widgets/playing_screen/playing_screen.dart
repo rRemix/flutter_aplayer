@@ -151,7 +151,7 @@ class _PlayingScreenState extends State<PlayingScreen>
                               // _updatePalette(coverBytes);
                             },
                           ),
-                          const LyricScreen()
+                          LyricScreen()
                         ]
                             .map((e) =>
                                 LayoutBuilder(builder: (context, constraints) {

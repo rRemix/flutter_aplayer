@@ -46,8 +46,6 @@ class _SeekbarState extends State<Seekbar> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return StreamBuilder(
       stream: Rx.combineLatest2(
           audioHandlerImpl.durationStream, audioHandlerImpl.positionStream,

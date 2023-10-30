@@ -44,6 +44,7 @@ dependencies:
   logger: ^2.0.2+1
   palette_generator: ^0.3.3+3
   flutter_colorpicker: ^1.0.3
+  dio: ^5.3.2
 
 dev_dependencies:
   flutter_test:

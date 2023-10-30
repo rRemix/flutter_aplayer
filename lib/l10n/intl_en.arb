@@ -22,6 +22,7 @@
   "primary_color": "Primary color",
   "primary_color_tip": "Main color for all page",
   "accent_color": "Accent color",
-  "accent_color_tip": "Customize your favorite color for APlayer"
-
+  "accent_color_tip": "Customize your favorite color for APlayer",
+  "searching": "Searching",
+  "no_lrc": "No lyrics"
 }

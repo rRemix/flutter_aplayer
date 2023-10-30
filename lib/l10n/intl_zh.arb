@@ -22,5 +22,7 @@
   "primary_color": "主色调",
   "primary_color_tip": "所有页面主色调",
   "accent_color": "强调色",
-  "accent_color_tip": "选择你喜欢的强调色"
+  "accent_color_tip": "选择你喜欢的强调色",
+  "searching": "搜索中",
+  "no_lrc": "暂无歌词"
 }

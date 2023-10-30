@@ -38,12 +38,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "delete": MessageLookupByLibrary.simpleMessage("delete"),
         "exit": MessageLookupByLibrary.simpleMessage("Exit"),
         "follow_system": MessageLookupByLibrary.simpleMessage("Follow system"),
+        "no_lrc": MessageLookupByLibrary.simpleMessage("No lyrics"),
         "play_history":
             MessageLookupByLibrary.simpleMessage("Playback History"),
         "playing_song": m0,
         "primary_color": MessageLookupByLibrary.simpleMessage("Primary color"),
         "primary_color_tip":
             MessageLookupByLibrary.simpleMessage("Main color for all page"),
+        "searching": MessageLookupByLibrary.simpleMessage("Searching"),
         "setting": MessageLookupByLibrary.simpleMessage("Settings"),
         "song_library": MessageLookupByLibrary.simpleMessage("Library"),
         "support_developer":
