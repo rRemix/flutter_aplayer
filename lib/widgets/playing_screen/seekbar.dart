@@ -29,7 +29,6 @@ class Seekbar extends StatefulWidget {
 }
 
 class _SeekbarState extends State<Seekbar> {
-  final AudioHandlerImpl audioHandlerImpl = GetIt.I<AudioHandlerImpl>();
 
   ///0-1
   double progress = 0;
@@ -46,11 +45,9 @@ class _SeekbarState extends State<Seekbar> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return StreamBuilder(
       stream: Rx.combineLatest2(
-          audioHandlerImpl.durationStream, audioHandlerImpl.positionStream,
+          audioHandler.durationStream, audioHandler.positionStream,
           (duration, position) {
         return PositionData(duration ?? Duration.zero, position);
       }),
