@@ -2,6 +2,7 @@ import 'package:audio_service/audio_service.dart';
 import 'package:audio_session/audio_session.dart';
 import 'package:flutter_aplayer/abilities.dart';
 import 'package:flutter_aplayer/extension.dart';
+import 'package:flutter_aplayer/main.dart';
 import 'package:flutter_audio/core.dart';
 import 'package:hive/hive.dart';
 import 'package:just_audio/just_audio.dart';
@@ -69,7 +70,6 @@ class AudioHandlerImpl extends BaseAudioHandler with QueueHandler, SeekHandler {
         controls: [
           MediaControl.skipToPrevious,
           if (playing) MediaControl.pause else MediaControl.play,
-          MediaControl.stop,
           MediaControl.skipToNext,
         ],
         systemActions: const {
@@ -96,6 +96,12 @@ class AudioHandlerImpl extends BaseAudioHandler with QueueHandler, SeekHandler {
     _player.processingStateStream.listen((state) {
       if (state == ProcessingState.completed) {
         skipToNext();
+      }
+    });
+
+    _player.playingStream.listen((event) {
+      if(event) {
+        session.setActive(true);
       }
     });
 
@@ -141,6 +147,7 @@ class AudioHandlerImpl extends BaseAudioHandler with QueueHandler, SeekHandler {
 
   @override
   Future customAction(String name, [Map<String, dynamic>? extras]) {
+    logger.i('customAction, name: $name, extra: $extras');
     return super.customAction(name, extras);
   }
 }

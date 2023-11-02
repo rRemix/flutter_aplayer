@@ -47,7 +47,6 @@ class _SongLibraryState extends AbsState<SongLibrary> {
             key: ValueKey(index),
             song: _songs[index],
             index: index,
-            highLight: index == 0,
             callback: (index) {
               audioHandler.setQueue(_songs);
               audioHandler.setSong(_songs[index]);
@@ -63,14 +62,12 @@ typedef ClickCallback = void Function(int index);
 class SongItem extends StatelessWidget {
   final Song song;
   final int index;
-  final bool highLight;
   final ClickCallback? callback;
 
   const SongItem(
       {super.key,
       required this.song,
       required this.index,
-      required this.highLight,
       this.callback});
 
   @override
@@ -82,68 +79,72 @@ class SongItem extends StatelessWidget {
       type: ArtworkType.AUDIO,
       size: 42,
     );
-    final indicator = Container(
-      width: 4,
-      color: highLight ? appTheme.theme.primaryColor : Colors.transparent,
-    );
 
-    return Material(
-      color: appTheme.libraryColor,
-      child: InkWell(
-        onTap: () {
-          callback?.call(index);
-        },
-        child: Row(
-          children: [
-            indicator,
-            Expanded(
-              child: ListTile(
-                leading: cover,
-                title: Text(
-                  song.title,
-                  maxLines: 1,
-                  style: TextStyle(color: appTheme.primaryTextColor),
-                ),
-                subtitle: Text(
-                  '${song.artist}-${song.album}',
-                  maxLines: 1,
-                  style: TextStyle(color: appTheme.secondaryTextColor),
-                ),
-                trailing: PopupMenuButton(
-                  icon: const Icon(Icons.more_vert_rounded),
-                  onSelected: (int value) {
-                    debugPrint('select: $value');
-                  },
-                  itemBuilder: (context) {
-                    return [
-                      PopupMenuItem(
-                        value: 0,
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            const Icon(Icons.playlist_add),
-                            Text(S.of(context).add_to_playlist)
-                          ],
-                        ),
-                      ),
-                      PopupMenuItem(
-                        value: 1,
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            const Icon(Icons.delete),
-                            Text(S.of(context).delete)
-                          ],
-                        ),
-                      )
-                    ];
-                  },
+    final content = Expanded(
+      child: ListTile(
+        leading: cover,
+        title: Text(
+          song.title,
+          maxLines: 1,
+          style: TextStyle(color: appTheme.primaryTextColor),
+        ),
+        subtitle: Text(
+          '${song.artist}-${song.album}',
+          maxLines: 1,
+          style: TextStyle(color: appTheme.secondaryTextColor),
+        ),
+        trailing: PopupMenuButton(
+          icon: const Icon(Icons.more_vert_rounded),
+          onSelected: (int value) {
+            debugPrint('select: $value');
+          },
+          itemBuilder: (context) {
+            return [
+              PopupMenuItem(
+                value: 0,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.playlist_add),
+                    Text(S.of(context).add_to_playlist)
+                  ],
                 ),
               ),
-            )
-          ],
+              PopupMenuItem(
+                value: 1,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.delete),
+                    Text(S.of(context).delete)
+                  ],
+                ),
+              )
+            ];
+          },
         ),
       ),
     );
+
+    return StreamBuilder(stream: audioHandler.mediaItem, builder: (context, snapshot) {
+
+      return Material(
+        color: appTheme.libraryColor,
+        child: InkWell(
+          onTap: () {
+            callback?.call(index);
+          },
+          child: Row(
+            children: [
+              Container(
+                width: 4,
+                color: snapshot.data?.id == song.id.toString() ? appTheme.theme.primaryColor : Colors.transparent,
+              ),
+              content
+            ],
+          ),
+        ),
+      );
+    });
   }
 }
