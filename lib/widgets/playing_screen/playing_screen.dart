@@ -1,11 +1,13 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_aplayer/main.dart';
 import 'package:flutter_aplayer/service/audio_handler_impl.dart';
 import 'package:flutter_aplayer/setting/app_theme.dart';
 import 'package:flutter_aplayer/widgets/playing_screen/cover_screen.dart';
 import 'package:flutter_aplayer/widgets/playing_screen/indicator.dart';
 import 'package:flutter_aplayer/widgets/playing_screen/lyric_screen.dart';
 import 'package:flutter_aplayer/widgets/playing_screen/play_pause_button.dart';
+import 'package:flutter_aplayer/widgets/playing_screen/queue_dialog.dart';
 import 'package:flutter_aplayer/widgets/playing_screen/seekbar.dart';
 import 'package:flutter_audio/type/artwork_type.dart';
 import 'package:palette_generator/palette_generator.dart';
@@ -23,7 +25,7 @@ class PlayingScreen extends StatefulWidget {
 }
 
 final _defaultPaletteColor =
-    PaletteColor(Color.fromARGB(0xff, 0x88, 0x88, 0x88), 100);
+    PaletteColor(const Color.fromARGB(0xff, 0x88, 0x88, 0x88), 100);
 
 class _PlayingScreenState extends State<PlayingScreen>
     with TickerProviderStateMixin {
@@ -273,7 +275,20 @@ class _PlayingScreenState extends State<PlayingScreen>
                                 ),
                               ),
                               IconButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  showModalBottomSheet(
+                                      context: context,
+                                      builder: (context) {
+                                        return BottomSheet(
+                                          onClosing: () {
+                                          },
+                                          builder: (context) {
+                                            return const QueueDialog();
+                                          },
+                                          enableDrag: false,
+                                        );
+                                      });
+                                },
                                 splashRadius: 30,
                                 highlightColor: paletteColor.color,
                                 icon: Image.asset(

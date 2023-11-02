@@ -100,7 +100,7 @@ class AudioHandlerImpl extends BaseAudioHandler with QueueHandler, SeekHandler {
     });
 
     _player.playingStream.listen((event) {
-      if(event) {
+      if (event) {
         session.setActive(true);
       }
     });
@@ -127,6 +127,17 @@ class AudioHandlerImpl extends BaseAudioHandler with QueueHandler, SeekHandler {
       return;
     }
     await setSong(_queue[index]);
+  }
+
+  @override
+  Future<void> playMediaItem(MediaItem mediaItem) async {
+    try {
+      final song =
+          _queue.firstWhere((element) => element.id.toString() == mediaItem.id);
+      await setSong(song);
+    } catch (e) {
+      logger.e(e);
+    }
   }
 
   @override
