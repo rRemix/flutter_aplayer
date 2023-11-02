@@ -22,6 +22,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m0(title) => "Playing: ${title}";
 
+  static String m1(time) => "APlayer will be closed in ${time} minutes";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "accent_color": MessageLookupByLibrary.simpleMessage("Accent color"),
@@ -32,6 +34,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "always_off": MessageLookupByLibrary.simpleMessage("Always off"),
         "always_on": MessageLookupByLibrary.simpleMessage("Always on"),
         "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
+        "cancel_timer":
+            MessageLookupByLibrary.simpleMessage("Cancel sleep timer"),
+        "close": MessageLookupByLibrary.simpleMessage("关闭"),
         "color": MessageLookupByLibrary.simpleMessage("Color"),
         "confirm": MessageLookupByLibrary.simpleMessage("Confirm"),
         "dark_theme": MessageLookupByLibrary.simpleMessage("Dark theme"),
@@ -48,12 +53,16 @@ class MessageLookup extends MessageLookupByLibrary {
         "searching": MessageLookupByLibrary.simpleMessage("Searching"),
         "setting": MessageLookupByLibrary.simpleMessage("Settings"),
         "song_library": MessageLookupByLibrary.simpleMessage("Library"),
+        "start_timer":
+            MessageLookupByLibrary.simpleMessage("Start sleep timer"),
         "support_developer":
             MessageLookupByLibrary.simpleMessage("Support Developer"),
         "tab_album": MessageLookupByLibrary.simpleMessage("Album"),
         "tab_artist": MessageLookupByLibrary.simpleMessage("Artist"),
         "tab_genre": MessageLookupByLibrary.simpleMessage("Genre"),
         "tab_playlist": MessageLookupByLibrary.simpleMessage("Playlist"),
-        "tab_song": MessageLookupByLibrary.simpleMessage("Song")
+        "tab_song": MessageLookupByLibrary.simpleMessage("Song"),
+        "timer": MessageLookupByLibrary.simpleMessage("Fall Asleep to Music"),
+        "will_stop_at_x": m1
       };
 }

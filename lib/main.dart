@@ -20,6 +20,7 @@ import 'package:flutter_aplayer/widgets/library/song_library.dart';
 import 'package:flutter_aplayer/widgets/page/recent_page.dart';
 import 'package:flutter_aplayer/widgets/page/setting_page.dart';
 import 'package:flutter_aplayer/widgets/page/support_page.dart';
+import 'package:flutter_aplayer/widgets/timer.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
@@ -156,6 +157,17 @@ class HomePage extends StatelessWidget {
                             Scaffold.of(context).openDrawer();
                           },
                         ),
+                        actions: [
+                          IconButton(
+                              onPressed: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return const TimerDialog();
+                                    });
+                              },
+                              icon: const Icon(Icons.timer))
+                        ],
                         floating: true,
                         snap: true,
                         pinned: true,

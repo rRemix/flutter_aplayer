@@ -22,6 +22,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m0(title) => "正在播放: ${title}";
 
+  static String m1(time) => "APlayer将在${time}分钟后关闭";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "accent_color": MessageLookupByLibrary.simpleMessage("强调色"),
@@ -30,6 +32,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "always_off": MessageLookupByLibrary.simpleMessage("总是关闭"),
         "always_on": MessageLookupByLibrary.simpleMessage("总是开启"),
         "cancel": MessageLookupByLibrary.simpleMessage("取消"),
+        "cancel_timer": MessageLookupByLibrary.simpleMessage("取消计时"),
+        "close": MessageLookupByLibrary.simpleMessage("关闭"),
         "color": MessageLookupByLibrary.simpleMessage("色彩"),
         "confirm": MessageLookupByLibrary.simpleMessage("确认"),
         "dark_theme": MessageLookupByLibrary.simpleMessage("深色主题"),
@@ -44,11 +48,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "searching": MessageLookupByLibrary.simpleMessage("搜索中"),
         "setting": MessageLookupByLibrary.simpleMessage("设置"),
         "song_library": MessageLookupByLibrary.simpleMessage("歌曲库"),
+        "start_timer": MessageLookupByLibrary.simpleMessage("开始计时"),
         "support_developer": MessageLookupByLibrary.simpleMessage("支持开发者"),
         "tab_album": MessageLookupByLibrary.simpleMessage("专辑"),
         "tab_artist": MessageLookupByLibrary.simpleMessage("艺术家"),
         "tab_genre": MessageLookupByLibrary.simpleMessage("流派"),
         "tab_playlist": MessageLookupByLibrary.simpleMessage("播放列表"),
-        "tab_song": MessageLookupByLibrary.simpleMessage("歌曲")
+        "tab_song": MessageLookupByLibrary.simpleMessage("歌曲"),
+        "timer": MessageLookupByLibrary.simpleMessage("伴着音乐入睡"),
+        "will_stop_at_x": m1
       };
 }

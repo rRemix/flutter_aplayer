@@ -1,6 +1,7 @@
 {
   "confirm": "Confirm",
   "cancel": "Cancel",
+  "close": "关闭",
   "tab_song": "Song",
   "tab_album": "Album",
   "tab_artist": "Artist",
@@ -24,5 +25,9 @@
   "accent_color": "Accent color",
   "accent_color_tip": "Customize your favorite color for APlayer",
   "searching": "Searching",
-  "no_lrc": "No lyrics"
+  "no_lrc": "No lyrics",
+  "will_stop_at_x": "APlayer will be closed in {time} minutes",
+  "timer": "Fall Asleep to Music",
+  "cancel_timer": "Cancel sleep timer",
+  "start_timer": "Start sleep timer"
 }

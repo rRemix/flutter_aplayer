@@ -70,6 +70,16 @@ class S {
     );
   }
 
+  /// `关闭`
+  String get close {
+    return Intl.message(
+      '关闭',
+      name: 'close',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Song`
   String get tab_song {
     return Intl.message(
@@ -305,6 +315,46 @@ class S {
     return Intl.message(
       'No lyrics',
       name: 'no_lrc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `APlayer will be closed in {time} minutes`
+  String will_stop_at_x(Object time) {
+    return Intl.message(
+      'APlayer will be closed in $time minutes',
+      name: 'will_stop_at_x',
+      desc: '',
+      args: [time],
+    );
+  }
+
+  /// `Fall Asleep to Music`
+  String get timer {
+    return Intl.message(
+      'Fall Asleep to Music',
+      name: 'timer',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel sleep timer`
+  String get cancel_timer {
+    return Intl.message(
+      'Cancel sleep timer',
+      name: 'cancel_timer',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Start sleep timer`
+  String get start_timer {
+    return Intl.message(
+      'Start sleep timer',
+      name: 'start_timer',
       desc: '',
       args: [],
     );

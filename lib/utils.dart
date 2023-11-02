@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class Utils {
+  Utils._();
+
   static Color shiftColor(Color color, double shift) {
     if (shift == 1) {
       return color;

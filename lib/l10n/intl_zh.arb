@@ -1,6 +1,7 @@
 {
   "confirm": "确认",
   "cancel": "取消",
+  "close": "关闭",
   "tab_song": "歌曲",
   "tab_album": "专辑",
   "tab_artist": "艺术家",
@@ -24,5 +25,9 @@
   "accent_color": "强调色",
   "accent_color_tip": "选择你喜欢的强调色",
   "searching": "搜索中",
-  "no_lrc": "暂无歌词"
+  "no_lrc": "暂无歌词",
+  "will_stop_at_x": "APlayer将在{time}分钟后关闭",
+  "timer": "伴着音乐入睡",
+  "cancel_timer": "取消计时",
+  "start_timer": "开始计时"
 }
