@@ -35,4 +35,50 @@ class Utils {
       }
     }
   }
+
+  static bool isArtistIllegal(String? artist) {
+    if (artist == null || artist.isEmpty) {
+      return false;
+    }
+    artist = artist.trim().toLowerCase();
+    return artist == 'unknown' || artist == '<unknown>' || artist == '未知艺术家';
+  }
+
+  static bool isAlbumIllegal(String? album) {
+    if (album == null || album.isEmpty) {
+      return false;
+    }
+    album = album.trim().toLowerCase();
+    return album == 'unknown' || album == '<unknown>' || album == '未知专辑';
+  }
+
+  static bool isTitleIllegal(String? name) {
+    if (name == null || name.isEmpty) {
+      return false;
+    }
+    name = name.trim().toLowerCase();
+    return name == 'unknown' || name == '<unknown>' || name == '未知歌曲';
+  }
+
+  static String getNeteaseSearchKey(String title, String album, String? artist, bool searchAlbum) {
+    bool titleLegal = !isTitleIllegal(title);
+    bool albumLegal = !isAlbumIllegal(album);
+    bool artistLegal = !isArtistIllegal(artist);
+
+    if(searchAlbum) {
+      if(titleLegal) {
+        if(artistLegal) {
+          return '$title-$artist';
+        } else if(albumLegal) {
+          return '$title-$album';
+        }
+      }
+      if(albumLegal && artistLegal) {
+        return '$artist-$album';
+      }
+    } else if(artistLegal){
+      return artist!;
+    }
+    return '';
+  }
 }

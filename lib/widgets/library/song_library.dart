@@ -39,6 +39,7 @@ class _SongLibraryState extends AbsState<SongLibrary> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return SliverFixedExtentList.builder(
         itemExtent: _itemHeight,
         itemCount: _songs.length,

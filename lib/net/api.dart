@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_aplayer/model/netease/n_song.dart';
+import 'package:flutter_aplayer/utils.dart';
 
 import '../model/netease/n_lyric.dart';
 
@@ -13,7 +14,6 @@ final neteaseDio = Dio()
 
 class Api {
   static Future<NSong?> searchtNeteaseSong(String key, int offset, int limit) {
-    // key = 'Adele-Rolling In The Deep';
     return neteaseDio
         .request('search/get',
             queryParameters: {
@@ -48,5 +48,12 @@ class Api {
       }
       return Future.value(null);
     });
+  }
+
+  static Future<String?> searchNeteaseArtUri(
+      String title, String? artist, String album, bool searchAlbum) async {
+    String key = Utils.getNeteaseSearchKey(title, album, artist, searchAlbum);
+
+    return searchtNeteaseSong(key, 0, 1).then((nSong) => nSong?.result?.songs?.first.album?.picUrl);
   }
 }

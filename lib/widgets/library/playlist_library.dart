@@ -16,6 +16,7 @@ class PlayListLibrary extends AbsLibrary {
 class _PlayListLibraryState extends AbsState<PlayListLibrary> {
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return SliverToBoxAdapter(
       child: Center(
         child: Text('Playlist'),

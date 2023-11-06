@@ -47,7 +47,7 @@ class Abilities {
         format: format, size: size, quality: quality);
   }
 
-  Future<void> setLogEnable(LogConfig logConfig) async {
+  Future<void> setLogConfig(LogConfig logConfig) async {
     return await _audioQuery.setLogConfig(logConfig);
   }
 }

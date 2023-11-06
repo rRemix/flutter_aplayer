@@ -39,6 +39,7 @@ class _AlbumLibraryState extends AbsState<AlbumLibrary> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     final mediaQuery = MediaQuery.of(context);
     final mainAxisExtent = mediaQuery.size.width / 2 + _contentHeight;
 

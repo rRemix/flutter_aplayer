@@ -16,6 +16,7 @@ class GenreLibrary extends AbsLibrary {
 class _GenreLibraryState extends AbsState<GenreLibrary> {
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return SliverToBoxAdapter(
       child: Center(
         child: Text('Genre'),

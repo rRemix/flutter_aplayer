@@ -45,7 +45,7 @@ void main() async {
 Future<void> startService() async {
   logger = Logger(printer: PrettyPrinter(methodCount: 0, printEmojis: false));
 
-  Abilities.instance.setLogEnable(LogConfig());
+  Abilities.instance.setLogConfig(LogConfig());
 
   await initHive();
 
@@ -189,7 +189,6 @@ class HomePage extends StatelessWidget {
                         return Container(
                           color: appTheme.libraryColor,
                           child: CustomScrollView(
-                            key: PageStorageKey<String>(titles[index]),
                             slivers: <Widget>[
                               SliverOverlapInjector(
                                 handle: NestedScrollView
