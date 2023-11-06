@@ -24,6 +24,9 @@ class AudioHandlerImpl extends BaseAudioHandler with QueueHandler, SeekHandler {
 
   Stream<Duration> get positionStream => _player.positionStream;
 
+  bool _next = true;
+  get next => _next;
+
   AudioHandlerImpl() {
     _init();
   }
@@ -122,11 +125,29 @@ class AudioHandlerImpl extends BaseAudioHandler with QueueHandler, SeekHandler {
   }
 
   @override
+  Future<void> skipToNext() {
+    logger.i('skipToNext');
+    _next = true;
+    return super.skipToNext();
+  }
+
+  @override
+  Future<void> skipToPrevious() {
+    logger.i('skipToPrevious');
+    _next = false;
+    return super.skipToPrevious();
+  }
+
+  @override
   Future<void> skipToQueueItem(int index) async {
+    logger.i('skipToQueueItem, index: $index');
     if (index < 0 || index >= _queue.length) {
       return;
     }
     await setSong(_queue[index]);
+    if (!_player.playing) {
+      play();
+    }
   }
 
   @override

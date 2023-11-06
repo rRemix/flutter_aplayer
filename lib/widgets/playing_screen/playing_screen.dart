@@ -74,6 +74,7 @@ class _PlayingScreenState extends State<PlayingScreen>
       body: Consumer<AppTheme>(
         builder: (context, appTheme, child) {
           return StreamBuilder(
+            initialData: audioHandler.mediaItem.value,
             stream: audioHandler.mediaItem,
             builder: (context, snapshot) {
               final mediaItem = snapshot.data;

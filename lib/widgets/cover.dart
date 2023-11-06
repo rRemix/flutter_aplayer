@@ -25,6 +25,7 @@ class StreamCover extends StatelessWidget {
           final mediaItem = snapshot.data;
           return Cover(
             id: mediaItem != null ? int.parse(mediaItem.id) : null,
+            size: size,
             type: ArtworkType.AUDIO,
             callback: callback,
           );
