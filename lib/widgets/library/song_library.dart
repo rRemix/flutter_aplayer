@@ -3,7 +3,7 @@ import 'package:flutter_aplayer/abilities.dart';
 import 'package:flutter_aplayer/service/audio_handler_impl.dart';
 import 'package:flutter_aplayer/widgets/cover.dart';
 import 'package:flutter_aplayer/widgets/library/abs_library.dart';
-import 'package:flutter_audio/core.dart';
+import 'package:on_audio_query/on_audio_query.dart';
 import 'package:provider/provider.dart';
 
 import '../../generated/l10n.dart';
@@ -21,7 +21,7 @@ class SongLibrary extends AbsLibrary {
 const _itemHeight = 64.0;
 
 class _SongLibraryState extends AbsState<SongLibrary> {
-  final _songs = <Song>[];
+  final _songs = <SongModel>[];
 
   @override
   void initState() {
@@ -60,7 +60,7 @@ class _SongLibraryState extends AbsState<SongLibrary> {
 typedef ClickCallback = void Function(int index);
 
 class SongItem extends StatelessWidget {
-  final Song song;
+  final SongModel song;
   final int index;
   final ClickCallback? callback;
 

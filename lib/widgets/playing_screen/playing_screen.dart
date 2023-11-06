@@ -1,6 +1,5 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_aplayer/main.dart';
 import 'package:flutter_aplayer/service/audio_handler_impl.dart';
 import 'package:flutter_aplayer/setting/app_theme.dart';
 import 'package:flutter_aplayer/widgets/playing_screen/cover_screen.dart';
@@ -9,7 +8,7 @@ import 'package:flutter_aplayer/widgets/playing_screen/lyric_screen.dart';
 import 'package:flutter_aplayer/widgets/playing_screen/play_pause_button.dart';
 import 'package:flutter_aplayer/widgets/playing_screen/queue_dialog.dart';
 import 'package:flutter_aplayer/widgets/playing_screen/seekbar.dart';
-import 'package:flutter_audio/type/artwork_type.dart';
+import 'package:on_audio_query/on_audio_query.dart';
 import 'package:palette_generator/palette_generator.dart';
 import 'package:provider/provider.dart';
 

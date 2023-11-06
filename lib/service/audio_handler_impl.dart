@@ -3,9 +3,9 @@ import 'package:audio_session/audio_session.dart';
 import 'package:flutter_aplayer/abilities.dart';
 import 'package:flutter_aplayer/extension.dart';
 import 'package:flutter_aplayer/main.dart';
-import 'package:flutter_audio/core.dart';
 import 'package:hive/hive.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:on_audio_query/on_audio_query.dart';
 
 const _keyLastSongId = 'key_last_song_id';
 const _keyQueue = 'key_queue';
@@ -15,9 +15,9 @@ late AudioHandlerImpl audioHandler;
 class AudioHandlerImpl extends BaseAudioHandler with QueueHandler, SeekHandler {
   late AudioPlayer _player;
   Box? cacheBox = Hive.isBoxOpen('cache') ? Hive.box('cache') : null;
-  Song? _currentSong;
-  final List<Song> _queue = <Song>[];
-  final List<Song> _allSongs = <Song>[];
+  SongModel? _currentSong;
+  final List<SongModel> _queue = <SongModel>[];
+  final List<SongModel> _allSongs = <SongModel>[];
 
   Stream<Duration?> get durationStream =>
       mediaItem.map((event) => event?.duration).distinct();
@@ -25,6 +25,7 @@ class AudioHandlerImpl extends BaseAudioHandler with QueueHandler, SeekHandler {
   Stream<Duration> get positionStream => _player.positionStream;
 
   bool _next = true;
+
   get next => _next;
 
   AudioHandlerImpl() {
@@ -39,7 +40,7 @@ class AudioHandlerImpl extends BaseAudioHandler with QueueHandler, SeekHandler {
     var ids = cacheBox?.get(_keyQueue);
     if (ids != null) {
       ids = List.castFrom<dynamic, num>(ids);
-      final List<Song> queue = <Song>[];
+      final List<SongModel> queue = <SongModel>[];
       for (final id in ids) {
         final song = _allSongs.where((e) => e.id == id).firstOrNull;
         if (song != null) {
@@ -111,17 +112,17 @@ class AudioHandlerImpl extends BaseAudioHandler with QueueHandler, SeekHandler {
     _restore();
   }
 
-  setQueue(List<Song> songs) {
+  setQueue(List<SongModel> songs) {
     _queue.addAll(songs);
     cacheBox?.put(_keyQueue, songs.map((e) => e.id).toList());
     updateQueue(songs.map((e) => e.toMediaItem()).toList());
   }
 
-  Future<void> setSong(Song song) async {
+  Future<void> setSong(SongModel song) async {
     _currentSong = song;
     mediaItem.add(song.toMediaItem());
     cacheBox?.put(_keyLastSongId, song.id);
-    await _player.setAudioSource(ProgressiveAudioSource(Uri.parse(song.uri)));
+    await _player.setAudioSource(ProgressiveAudioSource(Uri.parse(song.uri!)));
   }
 
   @override

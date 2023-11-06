@@ -2,7 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_aplayer/widgets/library/abs_library.dart';
-import 'package:flutter_audio/core.dart';
+import 'package:on_audio_query/on_audio_query.dart';
 import 'package:provider/provider.dart';
 
 import '../../abilities.dart';
@@ -21,7 +21,7 @@ class AlbumLibrary extends AbsLibrary {
 const double _contentHeight = 56.0;
 
 class _AlbumLibraryState extends AbsState<AlbumLibrary> {
-  final _albums = <Album>[];
+  final _albums = <AlbumModel>[];
 
   @override
   void initState() {
@@ -60,7 +60,7 @@ class _AlbumLibraryState extends AbsState<AlbumLibrary> {
 }
 
 class AlbumItem extends StatelessWidget {
-  final Album album;
+  final AlbumModel album;
   final int index;
 
   const AlbumItem({super.key, required this.album, required this.index});
@@ -72,7 +72,7 @@ class AlbumItem extends StatelessWidget {
     final cover = LayoutBuilder(builder: (context, constraints) {
       return FutureBuilder(
           future:
-              Abilities.instance.queryArtwork(album.albumId, ArtworkType.ALBUM),
+              Abilities.instance.queryArtwork(album.id, ArtworkType.ALBUM),
           builder: (BuildContext context, AsyncSnapshot<Uint8List?> snapshot) {
             Widget img;
             if (snapshot.data != null) {
@@ -130,7 +130,7 @@ class AlbumItem extends StatelessWidget {
                               maxLines: 1,
                             ),
                             Text(
-                              album.artist,
+                              album.artist ?? "",
                               style: TextStyle(color: appTheme.secondaryTextColor),
                               maxLines: 1,
                             )

@@ -1,22 +1,9 @@
 import 'package:audio_service/audio_service.dart';
-import 'package:flutter_audio/core.dart';
+import 'package:on_audio_query/on_audio_query.dart';
 
 const emptyMediaItem = MediaItem(id: '-1', title: '');
-const emptySong = Song(
-    id: -1,
-    displayName: '',
-    title: '',
-    album: '',
-    albumId: -1,
-    artist: '',
-    artistId: -1,
-    duration: 0,
-    data: '',
-    size: 0,
-    year: '',
-    dateModified: 0);
 
-extension SongExt on Song {
+extension SongExt on SongModel {
   MediaItem toMediaItem() {
     return MediaItem(
         id: id.toString(),
@@ -24,8 +11,8 @@ extension SongExt on Song {
         album: album,
         artist: artist,
         genre: genre,
-        duration: Duration(milliseconds: duration.toInt()),
-        artUri: Uri.parse(artUri),
+        duration: Duration(milliseconds: duration ?? 0),
+        artUri: Uri.parse('content://media/external/audio/media/$id/albumart'),
         displayTitle: displayName);
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_aplayer/widgets/cover.dart';
 import 'package:flutter_aplayer/widgets/playing_screen/playing_screen.dart';
-import 'package:flutter_audio/type/artwork_type.dart';
+import 'package:on_audio_query/on_audio_query.dart';
 import 'package:provider/provider.dart';
 
 import '../service/audio_handler_impl.dart';
@@ -68,26 +68,27 @@ class _BottomScreenState extends State<BottomScreen> {
                   ),
                 ),
                 Expanded(
-                    child: Padding(
-                  padding: const EdgeInsets.only(left: 8, right: 8),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        mediaItem?.displayTitle ?? '',
-                        maxLines: 1,
-                        style: TextStyle(color: appTheme.primaryTextColor),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      Text(
-                        mediaItem?.album ?? '',
-                        maxLines: 1,
-                        style: TextStyle(color: appTheme.secondaryTextColor),
-                      ),
-                    ],
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 8, right: 8),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          mediaItem?.title ?? '',
+                          maxLines: 1,
+                          style: TextStyle(color: appTheme.primaryTextColor),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        Text(
+                          mediaItem?.album ?? '',
+                          maxLines: 1,
+                          style: TextStyle(color: appTheme.secondaryTextColor),
+                        ),
+                      ],
+                    ),
                   ),
-                )),
+                ),
                 Row(
                   children: [
                     Padding(

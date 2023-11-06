@@ -2,7 +2,7 @@ import 'dart:collection';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_audio/type/artwork_type.dart';
+import 'package:on_audio_query/on_audio_query.dart';
 
 import '../abilities.dart';
 import '../service/audio_handler_impl.dart';
@@ -34,7 +34,7 @@ class StreamCover extends StatelessWidget {
 }
 
 class Cover extends StatelessWidget {
-  final num? id;
+  final int? id;
   final ArtworkType type;
   final BoxFit? boxFit;
   final double? size;
